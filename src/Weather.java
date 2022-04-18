@@ -28,7 +28,7 @@ public class Weather {
      * Getter for the current weather conditions
      * @return current weather as a String.
      */
-    public String getWeather() {
+    public String toString() {
         if (currentWeather.equals("")) {
             return "NO WEATHER SET";
         }
@@ -40,9 +40,13 @@ public class Weather {
     /**
      * Set the temperature to a random number between 1-100
      */
-    public void setTemperature() {
+    public void setRandomTemperature() {
         temperature = rand.nextInt(100)+1;
 
+    }
+
+    public void setTemperature(int temperature) {
+        temperature = temperature;
     }
 
     /**
@@ -55,8 +59,8 @@ public class Weather {
      * 70-89: hot
      * Greater than or equal to 90: very hot
      */
-    public void setWeather() {
-        setTemperature();
+    public void setRandomWeather() {
+        setRandomTemperature();
         if (temperature < 10) {
             currentWeather = "very cold";
         }
@@ -76,6 +80,7 @@ public class Weather {
             currentWeather = "very hot";
         }
 
-        System.out.println("Weather.java: Current weather is " + getWeather());
+        System.out.println("Weather.java: Current weather is " + toString());
     }
 }
+

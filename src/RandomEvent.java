@@ -47,7 +47,7 @@ public class RandomEvent {
 
         }
         else {
-            
+
         }
 
     }
@@ -64,7 +64,7 @@ public class RandomEvent {
     }
 
     public void setRandomWeather() {
-        weather.setWeather();
+        weather.setRandomWeather();
     }
     public void robTheWagon() {
         if (generateRandomNumber(3)==3 && wagon.getConsumablePartSize() > 0) {
@@ -84,3 +84,4 @@ public class RandomEvent {
         }
     }
 }
+
