@@ -12,12 +12,15 @@
  * For 2 pounds per party member, the size is "meager."
  * For 1 pound per party member, the size is "bare bones."
  */
+
+//!!!! IMPORTANT !!!! Some lines commented out as not all files are present. They are commented for the code to compile.
+
 public class Wagon {
     //private int foodAmount;
     private int pace;
 
 
-    private final Consumable[] consumablePart = new Consumable[2000];
+    //private final Consumable[] consumablePart = new Consumable[2000];
 
     //Pace is currently set to the Wagon. Should it one day be set to an "Oxen" class?
     //Paces:
@@ -51,7 +54,7 @@ public class Wagon {
             //Find out where to add the next food:
             int counter = getConsumablePartSize();
             System.out.println("Wagon.java: Generating some yummy beans in consumablePart at index " + counter);
-            consumablePart[counter] = new Consumable(name,type,restoreHealth);
+            //consumablePart[counter] = new Consumable(name,type,restoreHealth);
         }
     }
 
@@ -142,10 +145,10 @@ public class Wagon {
     public int getConsumablePartSize() {
         boolean found = false;
         int counter = 0;
-        while (!found) {
-            if (consumablePart[counter] == null) {found=true;}
-            else {counter++;}
-        }
+        //while (!found) {
+        //    if (consumablePart[counter] == null) {found=true;}
+         //   else {counter++;}
+      //  }
         return counter;
     }
 
@@ -157,7 +160,7 @@ public class Wagon {
     public void destroyConsumable(int index) {
         try {
             System.out.println("Wagon.java: Destroyed consumable at index " + index);
-            consumablePart[index] = null;
+            //consumablePart[index] = null;
         }
         catch (Exception e) {
             System.out.println("Wagon.java: There are probably no more index in the wagon, but let's take a look at that exception: "  + e);

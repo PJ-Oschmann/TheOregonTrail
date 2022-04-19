@@ -7,7 +7,7 @@ import javax.swing.*;
  */
 public class RandomEvent {
     private final java.util.Random rand = new java.util.Random();
-    private final String[] eventArray = new String[]{"NONE","WEATHER","ROBBERS"}; //Used to see number of events we have without needing to count.
+    private final String[] eventArray = new String[]{"NONE","WEATHER","WAGON DAMAGE","SMALL STREAM","TRAVELERS"}; //Used to see number of events we have without needing to count.
 
     Weather weather;
     Wagon wagon;
@@ -42,8 +42,8 @@ public class RandomEvent {
 
         }
         else if (newEvent==2) {
-            System.out.println("RandomEvent.java: Code for ROBBERS executes here.");
-            robTheWagon();
+            System.out.println("RandomEvent.java: Code for WAGON DAMAGE executes here.");
+            //robTheWagon();
 
         }
         else {
@@ -66,6 +66,8 @@ public class RandomEvent {
     public void setRandomWeather() {
         weather.setRandomWeather();
     }
+
+    /*
     public void robTheWagon() {
         if (generateRandomNumber(3)==3 && wagon.getConsumablePartSize() > 0) {
             int itemsToSteal = generateRandomNumber(3);
@@ -83,5 +85,6 @@ public class RandomEvent {
             System.out.println("OregonTrailUI.java: Not robbing.");
         }
     }
+    */
 }
 
