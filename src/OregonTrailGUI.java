@@ -24,7 +24,7 @@ public class OregonTrailGUI {
     private JLabel InventoryImagePanel;
     private JButton button2;
     private JTextField textField1;
-    private final SceneManager sceneMan = new SceneManager(continueButton,storyTextArea);
+    private final SceneManager sceneMan = new SceneManager(continueButton,storyTextArea,ImageLabel);
 
     private static OregonTrailGUI game = new OregonTrailGUI();
 
@@ -75,6 +75,10 @@ public class OregonTrailGUI {
             }
         });
 
+        //Example of a scene to load:
+        //sceneMan.loadScene("1861-3-19");
+        //Syntax for a chain-loaded scene:
         sceneMan.chainLoadScene(new ArrayList<>(List.of("1861-3-19","TestScene")));
+
     }
 }
