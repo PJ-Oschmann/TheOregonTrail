@@ -1,24 +1,27 @@
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class OregonTrailGUI {
 
     private JPanel MainPanel;
-    private JLabel ImageLabel;
-    private JPanel InventoryPanel;
     private JPanel IMGPanel;
+    private JLabel ImageLabel;
     private JPanel BottomPanel;
     private JTextField StoryTextField;
     private JPanel GeneralPanel;
-    private JPanel InvMainPanel;
-    private JPanel InvBottomPanel;
-    private JPanel InvGeneralPanel;
-    private JScrollBar scrollBar1;
+    private JButton InventoryTestButton;
+    private JPanel InventoryPanel;
+    private JLabel InventoryImagePanel;
+    private JButton button1;
+    private JButton button2;
     private JTextField textField1;
-
+    private static OregonTrailGUI game = new OregonTrailGUI();
 
     public static void main(String[] args) {
         JFrame frame = new JFrame();
-        frame.setContentPane(new OregonTrailGUI().MainPanel);
+        frame.setContentPane(game.MainPanel);
         frame.setTitle("The Oregon Trail -- Remake");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
@@ -42,5 +45,15 @@ public class OregonTrailGUI {
     //Create application
     public OregonTrailGUI(){
         ImageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/TestImage1.png"));
+
+        InventoryTestButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Inventory inv = new Inventory();
+                inv.pack();
+                inv.setVisible(true);
+            }
+        });
+
     }
 }
