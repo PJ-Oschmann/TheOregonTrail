@@ -3,11 +3,18 @@ import javax.swing.*;
 public class OregonTrailGUI {
 
     private JPanel MainPanel;
+    private JLabel ImageLabel;
+    private JPanel InventoryPanel;
     private JPanel IMGPanel;
     private JPanel BottomPanel;
-    private JPanel GeneralPanel;
     private JTextField StoryTextField;
-    private JLabel ImageLabel;
+    private JPanel GeneralPanel;
+    private JPanel InvMainPanel;
+    private JPanel InvBottomPanel;
+    private JPanel InvGeneralPanel;
+    private JScrollBar scrollBar1;
+    private JTextField textField1;
+
 
     public static void main(String[] args) {
         JFrame frame = new JFrame();
