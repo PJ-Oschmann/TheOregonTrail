@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class OregonTrailGUI {
 
@@ -16,10 +17,15 @@ public class OregonTrailGUI {
     private JPanel Char3Panel;
     private JPanel Char4Panel;
     private JButton partyInfoTestButton;
+    private JButton continueButton;
+    private JTextArea storyTextArea;
     private JPanel InventoryPanel;
     private JLabel InventoryImagePanel;
     private JButton button2;
     private JTextField textField1;
+    private ReadText readText = new ReadText();
+    private boolean sceneIsLoaded = false;
+    ArrayList<String> sceneToRead = new ArrayList<>();
     private static OregonTrailGUI game = new OregonTrailGUI();
 
     public static void main(String[] args) {
@@ -59,5 +65,50 @@ public class OregonTrailGUI {
             }
         });
 
+        continueButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                continueScene();
+
+
+            }
+        });
+        loadScene("1861-3-19");
+    }
+
+
+
+    //Load scene. Saves to global variable to avoid reopening textfile.
+    public void loadScene(String sceneName) {
+        if (!sceneIsLoaded) {
+            sceneToRead = readText.readScene(sceneName);
+            sceneIsLoaded = true;
+            continueButton.setVisible(true);
+            continueScene();
+        }
+        else {
+            System.out.println("OregonTrailGUI.java: Attempted to load scene " + sceneName + ", but another scene is loaded. Unload the scene first.");
+        }
+    }
+
+    //Continue reading a scene.
+    int readTextCounter = 0;
+    public void continueScene() {
+        try {
+            storyTextArea.setText(sceneToRead.get(readTextCounter));
+            readTextCounter++;
+        }
+        //Exception thrown if end of file is reached. Unload the scene.
+        catch (Exception e) {
+            unloadScene();
+        }
+
+    }
+
+    public void unloadScene() {
+        storyTextArea.setText("");
+        readTextCounter = 0;
+        sceneIsLoaded = false;
+        continueButton.setVisible(false);
     }
 }
