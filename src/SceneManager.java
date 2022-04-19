@@ -5,7 +5,9 @@ public class SceneManager{
 
     private boolean sceneIsLoaded = false;
     private final ReadText readText = new ReadText();
+    private boolean chainScenes = false;
     ArrayList<String> sceneToRead = new ArrayList<>();
+    ArrayList<String> arrayOfScenes = new ArrayList<>();
     JButton continueButton;
     JTextArea storyTextArea;
     public SceneManager(JButton continueButton, JTextArea storyTextArea) {
@@ -21,8 +23,15 @@ public class SceneManager{
             continueScene();
         }
         else {
-            System.out.println("OregonTrailGUI.java: Attempted to load scene " + sceneName + ", but another scene is loaded. Unload the scene first.");
+            System.out.println("SceneManager.java: Attempted to load scene " + sceneName + ", but another scene is loaded. Unload the scene first.");
         }
+    }
+
+    //Play back a scene after the other finishes
+    public void chainLoadScene(ArrayList<String> arrayOfScenes) {
+        chainScenes = true;
+        this.arrayOfScenes = arrayOfScenes;
+        loadScene(arrayOfScenes.get(0));
     }
 
     //Continue reading a scene.
@@ -34,9 +43,23 @@ public class SceneManager{
         }
         //Exception thrown if end of file is reached. Unload the scene.
         catch (Exception e) {
+            if (!chainScenes) {unloadScene();}
+            else {
+                chainScenesCounter++;
+                unloadScene();
+                continueChainScene();
+            }
+        }
+    }
+
+    int chainScenesCounter = 0;
+    public void continueChainScene() {
+        try {
+            loadScene(arrayOfScenes.get(chainScenesCounter));
+        }
+        catch (Exception e) {
             unloadScene();
         }
-
     }
 
     public void unloadScene() {

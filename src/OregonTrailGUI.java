@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 
 public class OregonTrailGUI {
 
@@ -74,6 +75,6 @@ public class OregonTrailGUI {
             }
         });
 
-        sceneMan.loadScene("1861-3-19");
+        sceneMan.chainLoadScene(new ArrayList<>(List.of("1861-3-19","TestScene")));
     }
 }
