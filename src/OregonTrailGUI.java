@@ -28,8 +28,6 @@ public class OregonTrailGUI {
         frame.setTitle("The Oregon Trail -- Remake");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
-        frame.setVisible(true);
-
         JMenuBar menuBar = new JMenuBar();
         menuBar.setVisible(true);
         frame.setJMenuBar(menuBar);
@@ -43,6 +41,9 @@ public class OregonTrailGUI {
         menu1.add(menu1Item1);
         JMenuItem menu2Item1 = new JMenuItem("Item 1");
         menu2.add(menu2Item1);
+        frame.setVisible(true);
+
+
     }
 
     //Create application
