@@ -76,9 +76,9 @@ public class OregonTrailGUI {
         });
 
         //Example of a scene to load:
-        //sceneMan.loadScene("1861-3-19");
+        sceneMan.loadScene("1861-3-19");
         //Syntax for a chain-loaded scene:
-        sceneMan.chainLoadScene(new ArrayList<>(List.of("1861-3-19","TestScene")));
+        //sceneMan.chainLoadScene(new ArrayList<>(List.of("1861-3-19","TestScene")));
 
     }
 }
