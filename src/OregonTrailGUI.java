@@ -1,5 +1,4 @@
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -12,6 +11,11 @@ public class OregonTrailGUI {
     private JTextField StoryTextField;
     private JPanel GeneralPanel;
     private JButton InventoryTestButton;
+    private JPanel HattiePanel;
+    private JPanel Char2Panel;
+    private JPanel Char3Panel;
+    private JPanel Char4Panel;
+    private JPanel TravelPanel;
     private JPanel InventoryPanel;
     private JLabel InventoryImagePanel;
     private JButton button1;
