@@ -15,10 +15,9 @@ public class OregonTrailGUI {
     private JPanel Char2Panel;
     private JPanel Char3Panel;
     private JPanel Char4Panel;
-    private JPanel TravelPanel;
+    private JButton partyInfoTestButton;
     private JPanel InventoryPanel;
     private JLabel InventoryImagePanel;
-    private JButton button1;
     private JButton button2;
     private JTextField textField1;
     private static OregonTrailGUI game = new OregonTrailGUI();
