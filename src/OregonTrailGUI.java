@@ -1,3 +1,4 @@
+import javax.sound.midi.SysexMessage;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,6 +30,7 @@ public class OregonTrailGUI {
     private static OregonTrailGUI game = new OregonTrailGUI();
 
     public static void main(String[] args) {
+
         JFrame frame = new JFrame();
         frame.setContentPane(game.MainPanel);
         frame.setTitle("The Oregon Trail -- Remake");
@@ -45,9 +47,12 @@ public class OregonTrailGUI {
 
         JMenuItem menu1Item1 = new JMenuItem("Item 1");
         menu1.add(menu1Item1);
+        JMenuItem menu1Exit = new JMenuItem("Exit");
+        menu1.add(menu1Exit);
         JMenuItem menu2Item1 = new JMenuItem("Item 1");
         menu2.add(menu2Item1);
         frame.setVisible(true);
+
 
 
     }
@@ -75,10 +80,20 @@ public class OregonTrailGUI {
             }
         });
 
+
+
+
+
         //Example of a scene to load:
-        sceneMan.loadScene("1861-3-19");
+        //sceneMan.loadScene("1861-3-19");
         //Syntax for a chain-loaded scene:
-        //sceneMan.chainLoadScene(new ArrayList<>(List.of("1861-3-19","TestScene")));
+        sceneMan.chainLoadScene(new ArrayList<>(List.of("1861-3-19","TestScene")));
 
     }
+
+    public static void exitGame() {
+        System.exit(0);
+    }
 }
+
+

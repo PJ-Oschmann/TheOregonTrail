@@ -40,6 +40,7 @@ public class SceneManager{
 
     //Continue reading a scene.
     int readTextCounter = 0;
+
     public void continueScene() {
         try {
             storyTextArea.setText(sceneToRead.get(readTextCounter));
