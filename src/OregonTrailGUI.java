@@ -1,9 +1,6 @@
-import javax.sound.midi.SysexMessage;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 
 public class OregonTrailGUI {
 
@@ -21,11 +18,12 @@ public class OregonTrailGUI {
     private JButton partyInfoTestButton;
     private JButton continueButton;
     private JTextArea storyTextArea;
+    private JButton sceneGUITestButton;
     private JPanel InventoryPanel;
     private JLabel InventoryImagePanel;
     private JButton button2;
     private JTextField textField1;
-    private final SceneManager sceneMan = new SceneManager(continueButton,storyTextArea,ImageLabel);
+    private final Scene scene = new Scene();
 
     private static OregonTrailGUI game = new OregonTrailGUI();
 
@@ -74,7 +72,7 @@ public class OregonTrailGUI {
         continueButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                sceneMan.continueScene();
+                //sceneMan.continueScene();
 
 
             }
@@ -84,16 +82,23 @@ public class OregonTrailGUI {
 
 
 
-        //Example of a scene to load:
-        //sceneMan.loadScene("1861-3-19");
-        //Syntax for a chain-loaded scene:
-        sceneMan.chainLoadScene(new ArrayList<>(List.of("1861-3-19","TestScene")));
+        sceneGUITestButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //Uncomment whichever you want. (Both cannot be uncommented!)
 
+                //Example of a scene to load:
+                scene.loadScene("1861-3-19");
+                //Example of a chained scene to load:
+                //scene.chainLoadScene(new ArrayList<>(List.of("1861-3-19","TestScene")));
+            }
+        });
     }
 
-    public static void exitGame() {
+    public void exitGame() {
         System.exit(0);
     }
+
 }
 
 

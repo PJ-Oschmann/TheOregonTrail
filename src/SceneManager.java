@@ -11,10 +11,12 @@ public class SceneManager{
     JButton continueButton;
     JTextArea storyTextArea;
     JLabel imageLabel;
-    public SceneManager(JButton continueButton, JTextArea storyTextArea, JLabel imageLabel) {
+    Scene sceneWindow;
+    public SceneManager(JButton continueButton, JTextArea storyTextArea, JLabel imageLabel, Scene sceneWindow) {
         this.continueButton = continueButton;
         this.storyTextArea = storyTextArea;
         this.imageLabel = imageLabel;
+        this.sceneWindow = sceneWindow;
     }
     //Load scene. Saves to global variable to avoid reopening textfile.
     public void loadScene(String sceneName) {
@@ -48,10 +50,10 @@ public class SceneManager{
         }
         //Exception thrown if end of file is reached. Unload the scene.
         catch (Exception e) {
-            if (!chainScenes) {unloadScene();}
+            if (!chainScenes) {unloadScene(true);}
             else {
                 chainScenesCounter++;
-                unloadScene();
+                unloadScene(false);
                 continueChainScene();
             }
         }
@@ -64,14 +66,14 @@ public class SceneManager{
             loadScene(arrayOfScenes.get(chainScenesCounter));
         }
         catch (Exception e) {
-            unloadScene();
+            unloadScene(true);
             arrayOfScenes.clear();
             chainScenesCounter = 0;
         }
     }
 
     //Unload the scene by setting all values back to default.
-    public void unloadScene() {
+    public void unloadScene(boolean destroyWindow) {
         storyTextArea.setText("");
         imageLabel.setIcon(null); //We can set a default image here as well
         readTextCounter = 0;
@@ -79,6 +81,8 @@ public class SceneManager{
         continueButton.setVisible(false);
         chainScenes = false;
         sceneToRead.clear();
+        if (destroyWindow) {sceneWindow.closeSceneWindow();}
+
 
     }
 }
