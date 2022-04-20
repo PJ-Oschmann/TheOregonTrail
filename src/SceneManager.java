@@ -36,6 +36,7 @@ public class SceneManager{
     //Note: Scenes should be put together in their text file. Only use this if needed.
     public void chainLoadScene(ArrayList<String> arrayOfScenes) {
         chainScenes = true;
+        chainScenesCounter = 0;
         this.arrayOfScenes = arrayOfScenes;
         loadScene(arrayOfScenes.get(0));
     }
@@ -66,9 +67,8 @@ public class SceneManager{
             loadScene(arrayOfScenes.get(chainScenesCounter));
         }
         catch (Exception e) {
-            unloadScene(true);
             arrayOfScenes.clear();
-            chainScenesCounter = 0;
+            unloadScene(true);
         }
     }
 
