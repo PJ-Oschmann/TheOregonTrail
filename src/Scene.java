@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -14,8 +15,13 @@ public class Scene extends JDialog {
 
     public Scene() {
         this.setTitle("Scene");
-        this.setSize(800,800);
-        this.setLocationRelativeTo(null);
+        Dimension screenRes = Toolkit.getDefaultToolkit().getScreenSize();
+        int windowDimensions = 700; //Square window
+        int height = (screenRes.height/2)-(windowDimensions/2);
+        int width = (screenRes.width/2)-(windowDimensions/2);
+        this.setLocation(width,height);
+        this.setMinimumSize(new Dimension(windowDimensions,windowDimensions));
+        this.setUndecorated(true);
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -37,6 +43,7 @@ public class Scene extends JDialog {
         sceneMan.chainLoadScene(arrayOfScenes);
         this.pack();
         this.setVisible(true);
+
     }
 
     public void closeSceneWindow() {

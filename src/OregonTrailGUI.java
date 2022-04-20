@@ -51,6 +51,7 @@ public class OregonTrailGUI {
         menu1.add(menu1Exit);
         JMenuItem menu2Item1 = new JMenuItem("Item 1");
         menu2.add(menu2Item1);
+        frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
         frame.setVisible(true);
 
 
