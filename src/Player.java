@@ -51,6 +51,7 @@ public class Player {
      * @return the string value of currentHealth
      */
 
+    /*
     public String healthToString() {
         if (health >=0 && health < 34) {
             currentHealth = "good";
@@ -69,6 +70,26 @@ public class Player {
             //Presumably we'll have a death class or method to check and handle for death cases
             //JOptionPane.showMessageDialog(null,"You died! Game over.");
             System.exit(0);
+        }
+        return currentHealth;
+    }
+    */
+
+    public String healthToString() {
+        if (health <=100 && health >80) {
+            currentHealth = "good";
+        }
+        else if (health <= 80 && health >60) {
+            currentHealth = "fair";
+        }
+        else if (health <= 60 && health >40) {
+            currentHealth = "poor";
+        }
+        else if (health <=40 && health > 20) {
+            currentHealth = "very poor";
+        }
+        else if (health <= 20) {
+            currentHealth = "about to die";
         }
         return currentHealth;
     }
