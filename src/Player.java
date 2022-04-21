@@ -11,19 +11,6 @@ public class Player {
     private String currentHealth;
     private String currentHappiness;
 
-    //Not included in MVP:
-    /*
-    - Money
-    - Equipped Clothing
-    - Equipped Items
-
-     */
-
-    //We can remove anything that won't be used in the MVP
-    //Also nothing here should be considered "final." Feel free to modify obviously.
-
-    //health: closer to 0 is better
-
     /**
      * Constructor for the Player class. Every player shall have a default health count,
      * name, role, and default hunger count.

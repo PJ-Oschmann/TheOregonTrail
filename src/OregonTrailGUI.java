@@ -1,8 +1,6 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 
 public class OregonTrailGUI {
 
@@ -21,11 +19,13 @@ public class OregonTrailGUI {
     private JButton continueButton;
     private JTextArea storyTextArea;
     private JButton sceneGUITestButton;
+    private JButton debugMenuButton;
     private JPanel InventoryPanel;
     private JLabel InventoryImagePanel;
     private JButton button2;
     private JTextField textField1;
     private final Scene scene = new Scene();
+    private final DebugGUI debug = new DebugGUI();
 
     private static OregonTrailGUI game = new OregonTrailGUI();
 
@@ -96,11 +96,20 @@ public class OregonTrailGUI {
                 //scene.chainLoadScene(new ArrayList<>(List.of("1861-3-19","TestScene")));
             }
         });
+
+
+        debugMenuButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                debug.open();
+            }
+        });
     }
 
     public void exitGame() {
         System.exit(0);
     }
+
 
 }
 
