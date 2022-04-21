@@ -1,0 +1,43 @@
+import java.util.Random;
+import java.util.random.*;
+public class Oxen {
+    private int health = 100;
+    private boolean isInjured = false;
+    private int injuryChance = 20; //0-100. Chance this ox will get injured. Changes to 5% if there are more oxen
+    private final Random rand = new Random();
+    public Oxen() {
+
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public boolean isInjured() {
+        return isInjured;
+    }
+
+    public void setInjured(boolean injured) {
+        isInjured = injured;
+    }
+
+    public int getInjuryChance() {
+        return injuryChance;
+    }
+
+    public void setInjuryChance(int injuryChance) {
+        this.injuryChance = injuryChance;
+    }
+
+    public void injureTheOx() {
+        if ((injuryChance >= rand.nextInt(100)+1) && !isInjured) {
+            System.out.println("Oxen.java: The ox is injured now");
+            isInjured = true;
+        }
+    }
+
+}
