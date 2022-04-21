@@ -4,10 +4,12 @@ public class Player {
 
     //Variables
     private int health;
-    private int hunger;
+    private int hunger; //Presumably this is the "food value."
+    private int happiness;
     private String name;
     private String role;
     private String currentHealth;
+    private String currentHappiness;
 
     //Not included in MVP:
     /*
@@ -64,11 +66,34 @@ public class Player {
         }
         else if (health > 140) {
             currentHealth = "about to die";
-            JOptionPane.showMessageDialog(null,"You died! Game over.");
+            //Presumably we'll have a death class or method to check and handle for death cases
+            //JOptionPane.showMessageDialog(null,"You died! Game over.");
             System.exit(0);
         }
         return currentHealth;
     }
+
+    /**
+     * Get the current happiness of the player and return a string based on how happy they are
+     * 0-24 implies the player is unhappy.
+     * 25-75 implies the player is content.
+     * 75-100 implies the player is euphoric.
+     * @return the string value of currentHappiness
+     */
+    public String happinessToString() {
+        if (happiness < 25) {
+            currentHappiness = "Unhappy";
+        }
+        else if (happiness >25 && happiness <=75) {
+            currentHappiness = "Content";
+        }
+        else {
+            currentHappiness = "Euphoric";
+        }
+        return currentHappiness;
+    }
+
+
 
     /**
      * Consume food from the wagon. Removes 1 consumable from the wagon and restores health
@@ -122,6 +147,14 @@ public class Player {
         return role;
     }
 
+    /**
+     * Player's happiness getter
+     * @return the player's happiness as an integer
+     */
+    public int getHappiness() {
+        return happiness;
+    }
+
     //Setters
 
     /**
@@ -155,6 +188,15 @@ public class Player {
     public void setRole(String role) {
         this.role = role;
     }
+
+    /**
+     * Player's happiness setter
+     * @param happiness - Integer for what the Player's happiness should be set to.
+     */
+    public void setHappiness(int happiness) {
+        this.happiness = happiness;
+    }
+
 
 }
 
