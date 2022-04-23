@@ -12,7 +12,6 @@
  */
 public class Weather {
     private final java.util.Random rand = new java.util.Random();
-    private String weatherType = ""; //Good, Neutral, Bad; impacts party happiness.
     private String currentWeather;
     private int temperature;
 
@@ -48,7 +47,7 @@ public class Weather {
 
 
     public void setTemperature(int temperature) {
-        temperature = temperature;
+        this.temperature = temperature;
     }
 
     /**
@@ -62,9 +61,9 @@ public class Weather {
      * Greater than or equal to 90: very hot
      */
     public void setRandomWeather() {
-        String weatherCondition = "";
-        String extraCondition = "";
-        String temperatureCondition = "";
+        String weatherCondition;
+        String extraCondition="";
+        String temperatureCondition;
         int selectWeatherType = rand.nextInt(10)+1;
         if (selectWeatherType == 1) {
             weatherCondition = "Good";
@@ -76,13 +75,13 @@ public class Weather {
             weatherCondition = "Neutral";
         }
 
-        if (weatherCondition == "Good") {
+        if (weatherCondition.equals("Good")) {
             temperatureCondition = "Really nice";
         }
 
-        else if (weatherCondition == "Neutral") {
+        else if (weatherCondition.equals("Neutral")) {
             int selectRain = rand.nextInt(5);
-            int selectTemperature = rand.nextInt(1);
+            int selectTemperature = rand.nextInt(2);
             if (selectTemperature == 0) {
                 temperatureCondition = "Cold";
             }
@@ -98,10 +97,10 @@ public class Weather {
             }
 
         }
-        else { //if weatherCondition == "Bad"
+        else { //if weatherCondition.equals("Bad");
             int selectRain = rand.nextInt(5);
-            int selectTemperature = rand.nextInt(1);
-            int selectExtra = rand.nextInt(3);
+            int selectTemperature = rand.nextInt(2);
+            int selectExtra = rand.nextInt(4);
 
             if (selectTemperature == 0) {
                 temperatureCondition = "Really cold";
@@ -114,13 +113,13 @@ public class Weather {
                 extraCondition = " and freezing";
             }
             else if (selectExtra == 1) {
-                extraCondition = "and really windy";
+                extraCondition = " and really windy";
             }
             else if (selectExtra == 2) {
-                extraCondition = "and stormy";
+                extraCondition = " and stormy";
             }
             else { //if selectExtra == 3
-                extraCondition = "and foggy";
+                extraCondition = " and foggy";
             }
 
         }
@@ -149,7 +148,7 @@ public class Weather {
 
          */
 
-        System.out.println("Weather.java: Current weather is " + toString());
+        System.out.println("Weather.java: Current weather is " + currentWeather);
     }
 
 }
