@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.event.*;
-import java.text.MessageFormat;
 
 public class Inventory extends JDialog {
     private JPanel contentPane;
@@ -27,7 +26,7 @@ public class Inventory extends JDialog {
         invComboBox.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
-                if(invComboBox.getSelectedItem() == "SELECT AN INVENTORY ITEM") {
+                if (invComboBox.getSelectedItem() == "SELECT AN INVENTORY ITEM") {
                     invInfo.setText("""
                             Please select an inventory item using the dropdown menu
                             or enter the letter the letter in the dialogue box
@@ -40,22 +39,59 @@ public class Inventory extends JDialog {
                             W: WAGON TOOLS
                             S: SPLINTS
                             O: OXEN
-                            """);
+                            """
+                    );
                 }
-                if(invComboBox.getSelectedItem() == "F: FOOD") {
-                    invInfo.setText("""
+                if (invComboBox.getSelectedItem() == "F: FOOD") {
+                    invInfo.setText(String.format(
+                            """
                             Food is a resource that prevents your party members
                             from going hungry. If the party has 0 units of food
                             for three days in a row, the game will end.
                             
                             Each unit of food given to a party member will
-                            increase their food level by 2. You can type "U" to
-                            use this item and enter the number corresponding with
-                            the party member you want to feed. Type "M" to return
-                            to the inventory menu.
-                            """);
-                //etc. for rest of inventory
-            }
+                            increase their food level by 2.
+                            
+                            You have %d food.
+                            
+                            Type "U" to use this item.
+                            Type "M" to return to the inventory menu.
+                            """, food
+                    ));
+                }
+                if (invComboBox.getSelectedItem() == "A: AMMUNITION") {
+                    invInfo.setText(String.format(
+                            """
+                            Ammunition is a consumable resource used in
+                            combination with one daily action to go hunting.
+
+                            One ammunition box is consumed when your party goes
+                            hunting. Hunting yields about double the food for
+                            its cost relative to buying food (on average).
+                            
+                            You have %d ammunition.
+                                
+                            Type "M" to return to the inventory menu.
+                            """, ammunition
+                    ));
+                }
+                if (invComboBox.getSelectedItem() == "M: MEDICINE") {
+                    invInfo.setText(String.format(
+                            """
+                            Food is a resource that prevents your party members
+                            from going hungry. If the party has 0 units of food
+                            for three days in a row, the game will end.
+                            
+                            Each unit of food given to a party member will
+                            increase their food level by 2.
+                            
+                            You have %d medicine.
+                            
+                            Type "U" to use this item.
+                            Type "M" to return to the inventory menu.    
+                            """, medicine
+                    ));
+                }
         }});
 
         // call onCancel() when cross is clicked
