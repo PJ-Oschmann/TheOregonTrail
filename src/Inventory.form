@@ -58,7 +58,7 @@
             </constraints>
             <properties>
               <editable value="false"/>
-              <text value="example text about item"/>
+              <text value="Please select an inventory item using the dropdown menu or enter the letter"/>
             </properties>
           </component>
           <component id="5bde" class="javax.swing.JComboBox" binding="invComboBox">

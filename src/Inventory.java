@@ -27,10 +27,36 @@ public class Inventory extends JDialog {
         invComboBox.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
-
+                if(invComboBox.getSelectedItem() == "SELECT AN INVENTORY ITEM") {
+                    invInfo.setText("""
+                            Please select an inventory item using the dropdown menu
+                            or enter the letter the letter in the dialogue box
+                            corresponding with the item you would like to view:
+                            
+                            F: FOOD
+                            A: AMMUNITION
+                            M: MEDICINE
+                            C: CLOTHES
+                            W: WAGON TOOLS
+                            S: SPLINTS
+                            O: OXEN
+                            """);
+                }
+                if(invComboBox.getSelectedItem() == "F: FOOD") {
+                    invInfo.setText("""
+                            Food is a resource that prevents your party members
+                            from going hungry. If the party has 0 units of food
+                            for three days in a row, the game will end.
+                            
+                            Each unit of food given to a party member will
+                            increase their food level by 2. You can type "U" to
+                            use this item and enter the number corresponding with
+                            the party member you want to feed. Type "M" to return
+                            to the inventory menu.
+                            """);
                 //etc. for rest of inventory
             }
-        });
+        }});
 
         // call onCancel() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -51,15 +77,5 @@ public class Inventory extends JDialog {
     private void onCancel() {
         // add your code here if necessary
         dispose();
-    }
-
-    //example runner
-    public static void main(String[] args) {
-        int food = 0, ammunition = 0, medicine = 0, clothes = 0, wagonTools = 0, splint = 0, oxen = 0;
-        Inventory dialog = new Inventory(food, ammunition, medicine, clothes, wagonTools, splint, oxen);
-        dialog.setTitle("Inventory");
-        dialog.pack();
-        dialog.setVisible(true);
-        System.exit(0);
     }
 }
