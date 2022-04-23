@@ -2,6 +2,7 @@ import javax.swing.*;
 
 public class RandomEvent {
     private final java.util.Random rand = new java.util.Random();
+    private int happiness = 0;
     //initialize random event variables: type (good/bad), happiness
 
     //initialize RandomEvent constructor taking in happiness
