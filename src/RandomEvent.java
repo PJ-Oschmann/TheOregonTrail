@@ -13,6 +13,9 @@ public class RandomEvent {
     //call that method in the RandomEvent.generate() which returns a string form of what random event
     //occurs to the main class
 
+    public RandomEvent(int happiness) {
+
+    }
 
 }
 
