@@ -58,7 +58,7 @@ public class OregonTrailGUI {
     }
 
     //Create application
-    public OregonTrailGUI(){
+    public OregonTrailGUI() {
 
         ImageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/TestImage1.png"));
 
@@ -70,6 +70,9 @@ public class OregonTrailGUI {
                 inv.setVisible(true);
             }
         });
+
+
+    }
 
     public void exitGame() {
         System.exit(0);

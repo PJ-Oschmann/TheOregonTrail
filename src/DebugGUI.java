@@ -9,11 +9,13 @@ public class DebugGUI extends JDialog {
     private JTextArea debugTextArea;
     private JButton sceneGUITestButton;
     private JButton clearTextButton;
+    private JButton weatherTestButton;
 
 
     //Declare classes to test here
     Game game = new Game();
-    Shop shop = new Shop(game);
+    Shop shop = new Shop(9);
+    Weather weather = new Weather();
 
     public DebugGUI() {
         setContentPane(contentPane);
@@ -50,6 +52,12 @@ public class DebugGUI extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 testShop();
+            }
+        });
+        weatherTestButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                weather.setRandomWeather();
             }
         });
     }
