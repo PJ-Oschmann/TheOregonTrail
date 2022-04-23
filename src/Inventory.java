@@ -28,7 +28,7 @@ public class Inventory extends JDialog {
             public void itemStateChanged(ItemEvent e) {
                 if (invComboBox.getSelectedItem() == "SELECT AN INVENTORY ITEM") {
                     invInfo.setText("""
-                            Please select an inventory item using the dropdown menu
+                            Please select an INVENTORY item using the dropdown menu
                             or enter the letter the letter in the dialogue box
                             corresponding with the item you would like to view:
                             
@@ -46,16 +46,16 @@ public class Inventory extends JDialog {
                     invInfo.setText(String.format(
                             """
                             Food is a resource that prevents your party members
-                            from going hungry. If the party has 0 units of food
+                            from going HUNGRY. If the party has 0 units of FOOD
                             for three days in a row, the game will end.
                             
-                            Each unit of food given to a party member will
+                            Each unit of FOOD given to a party member will
                             increase their food level by 2.
                             
-                            You have %d units of food.
+                            You have %d units of FOOD.
                             
                             Type "U" to use this item.
-                            Type "M" to return to the inventory menu.
+                            Type "M" to return to the INVENTORY menu.
                             """, food
                     ));
                 }
@@ -63,15 +63,15 @@ public class Inventory extends JDialog {
                     invInfo.setText(String.format(
                             """
                             Ammunition is a consumable resource used in
-                            combination with one daily action to go hunting.
+                            combination with one daily action to go HUNTING.
 
                             One ammunition box is consumed when your party goes
-                            hunting. Hunting yields about double the food for
+                            hunting. HUNTING yields about double the food for
                             its cost relative to buying food (on average).
                             
-                            You have %d boxes of ammunition.
+                            You have %d boxes of AMMUNITION.
                                 
-                            Type "M" to return to the inventory menu.
+                            Type "M" to return to the INVENTORY menu.
                             """, ammunition
                     ));
                 }
@@ -79,17 +79,17 @@ public class Inventory extends JDialog {
                     invInfo.setText(String.format(
                             """
                             Medicine is a resource that cures your party members
-                            of illness. When a party member is ill, their food level
+                            of illness. When a party member is ILL, their food level
                             consumption is increased by 2 a day on top of the travel
                             consumption.
                                                         
                             One unit of medicine can cure a single party member, and
                             can only be used on a sick character.
                             
-                            You have %d units of medicine.
+                            You have %d units of MEDICINE.
                             
                             Type "U" to use this item.
-                            Type "M" to return to the inventory menu.   
+                            Type "M" to return to the INVENTORY menu.
                             """, medicine
                     ));
                 }
@@ -99,18 +99,40 @@ public class Inventory extends JDialog {
                             Clothes are a one-time consumable resource that will
                             protect your party members from weather for the remainder
                             of their journey. If a character is not protected from
-                            extreme weather, they may fall victim to illness and lose
-                            health as a consequence.
+                            extreme weather, they may fall ILL and lose health as a
+                            consequence.
                             
                             This resource can be produced on the trip using a total of
                             3 daily actions to produce clothes. This item may only be
                             used on characters who do not already have a set of clothes.
                             
-                            You have %d sets of clothing.
+                            You have %d sets of CLOTHES.
                             
                             Type "U" to use this item.
-                            Type "M" to return to the inventory menu.   
+                            Type "M" to return to the INVENTORY menu.
                             """, clothes
+                    ));
+                }
+                if (invComboBox.getSelectedItem() == "W: WAGON TOOLS") {
+                    invInfo.setText(String.format(
+                            """
+                            Wagon Tools are a consumable resource used to repair the
+                            wagon when it suffers damage along the journey. If your
+                            wagon is in a DAMAGED state, your party is forced to
+                            travel at the slowest pace. If it is left DAMAGED without
+                            repair for 7 consecutive days, the wagon will become BROKEN
+                            and the party will lose. There is also a risk that the wagon
+                            can suffer damage while DAMAGED and become BROKEN, also
+                            resulting in a game over.
+                            
+                            You can use this item when taking the MEND WAGON daily
+                            action in between your travels. This will consume one set
+                            of wagon tools and one daily action.
+
+                            You have %d spare WAGON TOOLS.
+                            
+                            Type "M" to return to the INVENTORY menu.
+                            """, wagonTools
                     ));
                 }
 
