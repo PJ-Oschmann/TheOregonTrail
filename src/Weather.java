@@ -13,6 +13,7 @@
 public class Weather {
     private final java.util.Random rand = new java.util.Random();
     private String currentWeather;
+    private String weatherCondition;
     private int temperature;
 
     /**
@@ -61,7 +62,7 @@ public class Weather {
      * Greater than or equal to 90: very hot
      */
     public void setRandomWeather() {
-        String weatherCondition;
+
         String extraCondition="";
         String temperatureCondition;
         int selectWeatherType = rand.nextInt(10)+1;
@@ -149,6 +150,10 @@ public class Weather {
          */
 
         System.out.println("Weather.java: Current weather is " + currentWeather);
+    }
+
+    public String getWeatherCondition() {
+        return weatherCondition;
     }
 
 }

@@ -28,11 +28,29 @@ public class Inventory extends JDialog {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 if (invComboBox.getSelectedItem() == "SELECT AN INVENTORY ITEM") {
-                    invInfo.setText("Please select an inventory message using the dropdown menu.\n" +
-                            "Or enter a letter below corresponding the item you would like to view:\n" +
-                            "F: FOOD\nA: AMMUNITION\nM: MEDICINE\n C: CLOTHES\n ");
-                }
+                    invInfo.setText(MessageFormat.format(
+                            """
+                                    Food is used to increase food levels of your party members.\s
+                                    Each unit of food consumed will add 2 to the characters food level.
 
+                                    You currently have {0} Food""", food));
+                }
+                if (invComboBox.getSelectedItem() == "F: FOOD") {
+                    invInfo.setText(MessageFormat.format(
+                            """
+                                    Food is used to increase food levels of your party members.\s
+                                    Each unit of food consumed will add 2 to the characters food level.
+
+                                    You currently have {0} Food""", food));
+                }
+                if (invComboBox.getSelectedItem() == "A: AMMUNITION") {
+                    invInfo.setText(MessageFormat.format(
+                                    """
+                                    ITEM PURPOSE
+                                    ITEM DESCRIPTION/USAGE
+                                    
+                                    ITEM COUNT""", ammunition));
+                }
                 //etc. for rest of inventory
             }
         });

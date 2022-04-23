@@ -9,7 +9,6 @@ public class Player {
     private String name;
     private String role;
     private String currentHealth;
-    private String currentHappiness;
 
     /**
      * Constructor for the Player class. Every player shall have a default health count,
@@ -81,25 +80,6 @@ public class Player {
         return currentHealth;
     }
 
-    /**
-     * Get the current happiness of the player and return a string based on how happy they are
-     * 0-24 implies the player is unhappy.
-     * 25-75 implies the player is content.
-     * 75-100 implies the player is euphoric.
-     * @return the string value of currentHappiness
-     */
-    public String happinessToString() {
-        if (happiness < 25) {
-            currentHappiness = "Unhappy";
-        }
-        else if (happiness >25 && happiness <=75) {
-            currentHappiness = "Content";
-        }
-        else {
-            currentHappiness = "Euphoric";
-        }
-        return currentHappiness;
-    }
 
 
 
