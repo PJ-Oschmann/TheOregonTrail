@@ -24,6 +24,8 @@ public class OregonTrailGUI {
     //game variables
     private int food = 0, ammunition = 0, medicine = 0, clothes = 0, wagonTools = 0, splint = 0, oxen = 0;
     private boolean isGameWon = false, isGameLost = false;
+    private int happiness;
+    private Weather weather = new Weather();
 
     private static OregonTrailGUI game = new OregonTrailGUI();
 
@@ -60,6 +62,21 @@ public class OregonTrailGUI {
 
     public void exitGame() {
         System.exit(0);
+    }
+
+    public int calculateHappiness(String operation, int amount) {
+        if (operation=="ADD") {
+            if (happiness+amount <=100) {return amount;}
+            else {return 100-happiness;}
+        }
+        else { //equals "SUBTRACT"
+            if (happiness-amount >=0) {return amount;}
+            else {return 0+happiness;}
+        }
+    }
+    public void setHappiness() {
+        if (weather.getWeatherCondition().equals("Good")) {happiness+=calculateHappiness("ADD",5);}
+        else if (weather.getWeatherCondition().equals("Bad")) {happiness-=calculateHappiness("SUBTRACT",5);};
     }
 }
 
