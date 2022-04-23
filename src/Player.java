@@ -4,23 +4,12 @@ public class Player {
 
     //Variables
     private int health;
-    private int hunger;
+    private int hunger; //Presumably this is the "food value."
     private String name;
     private String role;
     private String currentHealth;
-
-    //Not included in MVP:
-    /*
-    - Money
-    - Equipped Clothing
-    - Equipped Items
-
-     */
-
-    //We can remove anything that won't be used in the MVP
-    //Also nothing here should be considered "final." Feel free to modify obviously.
-
-    //health: closer to 0 is better
+    private boolean hasClothing = false;
+    private boolean isSick = false;
 
     /**
      * Constructor for the Player class. Every player shall have a default health count,
@@ -41,34 +30,31 @@ public class Player {
 
     /**
      * Get the current health of the player and return a string based on how much they have.
-     * 0-33 is "good" health.
-     * 34-64 is "fair" health.
-     * 65-104 is "poor" health.
-     * 105-139 is "very poor" health.
-     * 140 and greater shows that the player is about to die.
+     * Closer to 100 is better.
      * @return the string value of currentHealth
      */
 
     public String healthToString() {
-        if (health >=0 && health < 34) {
+        if (health <=100 && health >80) {
             currentHealth = "good";
         }
-        else if (health >= 34 && health < 65) {
+        else if (health <= 80 && health >60) {
             currentHealth = "fair";
         }
-        else if (health >=65 && health < 105) {
+        else if (health <= 60 && health >40) {
             currentHealth = "poor";
         }
-        else if (health >= 105 && health < 139) {
+        else if (health <=40 && health > 20) {
             currentHealth = "very poor";
         }
-        else if (health > 140) {
+        else if (health <= 20) {
             currentHealth = "about to die";
-            JOptionPane.showMessageDialog(null,"You died! Game over.");
-            System.exit(0);
         }
         return currentHealth;
     }
+
+
+
 
     /**
      * Consume food from the wagon. Removes 1 consumable from the wagon and restores health
@@ -122,8 +108,9 @@ public class Player {
         return role;
     }
 
-    //Setters
 
+
+    //Setters
     /**
      * Player's health setter
      * @param health - Integer for what the Player's health should be set to.
@@ -155,6 +142,18 @@ public class Player {
     public void setRole(String role) {
         this.role = role;
     }
+
+    public void setHasClothing(boolean hasClothing) {this.hasClothing = hasClothing;}
+    public boolean getHasClothing() {return hasClothing;}
+
+    public boolean isSick() {
+        return isSick;
+    }
+
+    public void setSick(boolean sick) {
+        isSick = sick;
+    }
+
 
 }
 

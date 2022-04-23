@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
 
 public class OregonTrailGUI {
 
@@ -10,53 +11,84 @@ public class OregonTrailGUI {
     private JPanel BottomPanel;
     private JTextField StoryTextField;
     private JPanel GeneralPanel;
-    private JButton InventoryTestButton;
+    private JPanel BenPanel;
+    private JPanel AugustaPanel;
+    private JPanel CharlesPanel;
     private JPanel HattiePanel;
-    private JPanel Char2Panel;
-    private JPanel Char3Panel;
-    private JPanel Char4Panel;
-    private JButton partyInfoTestButton;
+    private JTextArea storyTextArea;
+    private JPanel JakePanel;
     private JPanel InventoryPanel;
     private JLabel InventoryImagePanel;
-    private JButton button2;
-    private JTextField textField1;
+    private final Scene scene = new Scene();
+    private final DebugGUI debug = new DebugGUI();
+    private Random rand = new Random();
+
+    //game variables
+    private int food = 0, ammunition = 0, medicine = 0, clothes = 0, wagonTools = 0, splint = 0, oxen = 0;
+    private boolean isGameWon = false, isGameLost = false;
+    private int happiness;
+    private Weather weather = new Weather();
+
     private static OregonTrailGUI game = new OregonTrailGUI();
 
     public static void main(String[] args) {
+
         JFrame frame = new JFrame();
         frame.setContentPane(game.MainPanel);
         frame.setTitle("The Oregon Trail -- Remake");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
-        frame.setVisible(true);
-
         JMenuBar menuBar = new JMenuBar();
         menuBar.setVisible(true);
         frame.setJMenuBar(menuBar);
 
-        JMenu menu1 = new JMenu("Menu 1");
+        JMenu menu1 = new JMenu("MAIN");
         menuBar.add(menu1);
-        JMenu menu2 = new JMenu("Menu 2");
+        JMenu menu2 = new JMenu("ABOUT");
         menuBar.add(menu2);
 
-        JMenuItem menu1Item1 = new JMenuItem("Item 1");
-        menu1.add(menu1Item1);
-        JMenuItem menu2Item1 = new JMenuItem("Item 1");
-        menu2.add(menu2Item1);
+        JMenuItem mainMenu = new JMenuItem("MAIN MENU . . .");//Prompts are you sure window if game condition is not win/lose
+        menu1.add(mainMenu);                                      //returns to main menu, resets game
+        JMenuItem exitApp = new JMenuItem("EXIT . . .");     //Prompts are you sure window if game condition is not win/lose
+        menu1.add(exitApp);                                      //exits app
+        JMenuItem projectDescription = new JMenuItem("Project Description");
+        menu2.add(projectDescription);
+        frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);   //makes fullscreen
+        frame.setVisible(true);
     }
 
     //Create application
-    public OregonTrailGUI(){
+    public OregonTrailGUI() {
         ImageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/TestImage1.png"));
+    }
 
-        InventoryTestButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Inventory inv = new Inventory();
-                inv.pack();
-                inv.setVisible(true);
+    public void exitGame() {
+        System.exit(0);
+    }
+
+    public int calculateHappiness(String operation, int amount) {
+        if (operation=="ADD") {
+            if (happiness+amount <=100) {return amount;}
+            else {return 100-happiness;}
+        }
+        else { //equals "SUBTRACT"
+            if (happiness-amount >=0) {return amount;}
+            else {return 0+happiness;}
+        }
+    }
+    public void setHappiness() {
+        if (weather.getWeatherCondition().equals("Good")) {happiness+=calculateHappiness("ADD",5);}
+        else if (weather.getWeatherCondition().equals("Bad")) {happiness-=calculateHappiness("SUBTRACT",5);};
+    }
+
+    public void weatherAffectPlayer(Player player) {
+        if (player.getHasClothing() == false) {
+            player.setHealth(player.getHealth()-25);
+            if (rand.nextInt(4)==0) {
+                player.setSick(true);
             }
-        });
+        }
 
     }
 }
+
