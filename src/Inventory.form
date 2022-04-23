@@ -8,7 +8,7 @@
     <properties/>
     <border type="none"/>
     <children>
-      <grid id="e3588" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+      <grid id="e3588" binding="mainPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
           <grid row="0" column="0" row-span="3" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -16,7 +16,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <grid id="1e5fe" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="1e5fe" binding="innerPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="2" hsize-policy="2" anchor="0" fill="3" indent="0" use-parent-layout="false">
@@ -39,7 +39,7 @@
           </grid>
         </children>
       </grid>
-      <grid id="5f577" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+      <grid id="5f577" binding="textPanel" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="100" left="0" bottom="0" right="0"/>
         <constraints>
           <grid row="0" column="1" row-span="3" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false">
@@ -50,14 +50,6 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="5bde" class="javax.swing.JComboBox" binding="invComboBox">
-            <constraints>
-              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="9" fill="1" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <maximumRowCount value="10"/>
-            </properties>
-          </component>
           <component id="6628f" class="javax.swing.JTextArea" binding="invInfo">
             <constraints>
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
@@ -66,6 +58,25 @@
             </constraints>
             <properties>
               <editable value="false"/>
+              <text value="example text about item"/>
+            </properties>
+          </component>
+          <component id="5bde" class="javax.swing.JComboBox" binding="invComboBox">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="9" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <maximumRowCount value="10"/>
+              <model>
+                <item value="SELECT AN INVENTORY ITEM"/>
+                <item value="F: FOOD"/>
+                <item value="A: AMMUNITION"/>
+                <item value="M: MEDICINE"/>
+                <item value="C: CLOTHES SET"/>
+                <item value="W: WAGON TOOLS"/>
+                <item value="S: SPLINTS"/>
+                <item value="O: OXEN"/>
+              </model>
             </properties>
           </component>
         </children>

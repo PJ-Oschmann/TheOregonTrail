@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.event.*;
+import java.text.MessageFormat;
 
 public class Inventory extends JDialog {
     private JPanel contentPane;
@@ -7,45 +8,52 @@ public class Inventory extends JDialog {
     private JButton buttonCancel;
     private JTextArea invInfo;
     private JLabel InventoryImageLabel;
-    private JComboBox invComboBox;
+    private JPanel mainPanel;
+    private JPanel textPanel;
+    private JPanel innerPanel;
     private JButton useButton;
-
-    private int food = 0, ammunition = 0, medicine = 0, clothes = 0, wagonTools = 0, splint = 0, oxen = 0;
+    private JComboBox<String> invComboBox;
 
     public Inventory(int food, int ammunition, int medicine, int clothes, int wagonTools, int splint, int oxen) {
         //instantiating private vars
-        food = this.food; ammunition = this.ammunition; clothes = this.clothes; wagonTools = this.wagonTools;
-        splint = this.splint; oxen = this.oxen;
 
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
+
         //Image goes here
         InventoryImageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/Inventory.png"));
-
-        //Create dropdown menu and item list
-        String[] inventoryItems = {" ", "F: Food" , "A: Ammunition", "M: Medicine", "C: Winter Clothes", "W: Wagon Tools", "S: Splint", "O: Oxen"};
-        for (int i = 0; i < inventoryItems.length; i++){
-            invComboBox.addItem(inventoryItems[i]);
-        }
 
         invComboBox.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
-                if (invComboBox.getSelectedItem() == "F: Food") {
-                    invInfo.setText("Food is used to decrease 'hunger' levels of your party members. \n" +
-                            "Each pound of food consumed will remove 1/4 that member's total hunger.\n\n" +
-                            "You currently have 100 Food");
+                if (invComboBox.getSelectedItem() == "SELECT AN INVENTORY ITEM") {
+                    invInfo.setText(MessageFormat.format(
+                            """
+                                    Food is used to increase food levels of your party members.\s
+                                    Each unit of food consumed will add 2 to the characters food level.
+
+                                    You currently have {0} Food""", food));
                 }
-                if (invComboBox.getSelectedItem() == "A: Ammunition)") {
-                    invInfo.setText("Water is used to decrease 'thirst' levels of your party members.\n" +
-                            "Each canteen of water consumed will remove all of that member's thirst.\n\n" +
-                            "You currently have 50 Water (1 canteen)");
+                if (invComboBox.getSelectedItem() == "F: FOOD") {
+                    invInfo.setText(MessageFormat.format(
+                            """
+                                    Food is used to increase food levels of your party members.\s
+                                    Each unit of food consumed will add 2 to the characters food level.
+
+                                    You currently have {0} Food""", food));
+                }
+                if (invComboBox.getSelectedItem() == "A: AMMUNITION") {
+                    invInfo.setText(MessageFormat.format(
+                                    """
+                                    ITEM PURPOSE
+                                    ITEM DESCRIPTION/USAGE
+                                    
+                                    ITEM COUNT""", ammunition));
                 }
                 //etc. for rest of inventory
             }
         });
-
 
         // call onCancel() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -68,8 +76,10 @@ public class Inventory extends JDialog {
         dispose();
     }
 
+    //example runner
     public static void main(String[] args) {
-        Inventory dialog = new Inventory();
+        int food = 0, ammunition = 0, medicine = 0, clothes = 0, wagonTools = 0, splint = 0, oxen = 0;
+        Inventory dialog = new Inventory(food, ammunition, medicine, clothes, wagonTools, splint, oxen);
         dialog.setTitle("Inventory");
         dialog.pack();
         dialog.setVisible(true);
