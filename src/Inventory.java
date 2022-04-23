@@ -78,9 +78,8 @@ public class Inventory extends JDialog {
                 if (invComboBox.getSelectedItem() == "M: MEDICINE") {
                     invInfo.setText(String.format(
                             """
-                            Food is a resource that prevents your party members
-                            from going hungry. If the party has 0 units of food
-                            for three days in a row, the game will end.
+                            Medicine is a resource that cures your party members
+                            of illness. When a party member is ill, 
                             
                             Each unit of food given to a party member will
                             increase their food level by 2.
@@ -90,6 +89,23 @@ public class Inventory extends JDialog {
                             Type "U" to use this item.
                             Type "M" to return to the inventory menu.    
                             """, medicine
+                    ));
+                }
+                if (invComboBox.getSelectedItem() == "C: CLOTHES") {
+                    invInfo.setText(String.format(
+                            """
+                            Clothes are a resource that prevents your party members
+                            from going hungry. If the party has 0 units of food
+                            for three days in a row, the game will end.
+                            
+                            Each unit of food given to a party member will
+                            increase their food level by 2.
+                            
+                            You have %d clothes.
+                            
+                            Type "U" to use this item.
+                            Type "M" to return to the inventory menu.    
+                            """, clothes
                     ));
                 }
                 //TODO: Finish writing out inventory items and their descriptions
