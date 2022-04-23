@@ -92,6 +92,7 @@ public class Inventory extends JDialog {
                             """, medicine
                     ));
                 }
+                //TODO: Finish writing out inventory items and their descriptions
         }});
 
         // call onCancel() when cross is clicked

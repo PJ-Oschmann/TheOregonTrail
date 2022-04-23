@@ -50,20 +50,25 @@ public class OregonTrailGUI {
         menuBar.setVisible(true);
         frame.setJMenuBar(menuBar);
 
-        JMenu menu1 = new JMenu("MAIN");
-        menuBar.add(menu1);
-        JMenu menu2 = new JMenu("ABOUT");
-        menuBar.add(menu2);
+        JMenu menuMain = new JMenu("MAIN");
+        menuBar.add(menuMain);
+        JMenu menuAbout= new JMenu("ABOUT");
+        menuBar.add(menuAbout);
 
+        //TODO: Make menu buttons do things
         JMenuItem mainMenu = new JMenuItem("MAIN MENU . . .");//Prompts are you sure window if game condition is not win/lose
-        menu1.add(mainMenu);                                      //returns to main menu, resets game
         JMenuItem exitApp = new JMenuItem("EXIT . . .");     //Prompts are you sure window if game condition is not win/lose
-        menu1.add(exitApp);                                      //exits app
-        JMenuItem projectDescription = new JMenuItem("Project Description");
-        menu2.add(projectDescription);
+        menuMain.add(mainMenu);                                      //returns to main menu, resets game
+        menuMain.add(exitApp);                                      //exits app
+        JMenuItem projectDescription = new JMenuItem("Project Description . . .");
+        JMenuItem aboutProject = new JMenuItem("About the Project . . .");
+        JMenuItem aboutHattie = new JMenuItem("About Hattie Campbell . . .");
+        JMenuItem imageCredits = new JMenuItem("Image Credits . . .");
+        menuAbout.add(projectDescription);
+        menuAbout.add(aboutProject);
+        menuAbout.add(aboutHattie);
         frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);   //makes fullscreen
         frame.setVisible(true);
-
     }
 
     //Create application
