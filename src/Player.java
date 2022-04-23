@@ -6,7 +6,6 @@ public class Player {
     private int health;
     private int hunger; //Presumably this is the "food value."
     private String name;
-    private String role;
     private String currentHealth;
     private boolean hasClothing = false;
     private boolean isSick = false;
@@ -16,13 +15,11 @@ public class Player {
      * name, role, and default hunger count.
      * @param health - Amount of health set by default.
      * @param name - Name of the player.
-     * @param role - Role of the player/
      * @param hunger - Amount of hunger set by default.
      */
-    public Player(int health, String name, String role, int hunger) {
+    public Player(String name, int health, int hunger) {
         this.health = health; //We can report a string "good, poor, very poor, etc" based on this number.
         this.name = name;
-        this.role = role; //Perhaps just pass one default value for now
         this.hunger = hunger;
     }
 
@@ -100,13 +97,7 @@ public class Player {
         return name;
     }
 
-    /**
-     * Player's role getter
-     * @return the Player's role as a String
-     */
-    public String getRole() {
-        return role;
-    }
+
 
 
 
@@ -135,13 +126,6 @@ public class Player {
         this.name = name;
     }
 
-    /**
-     * Player's role setter (UNUSED IN THIS MVP)
-     * @param role - String for what the Player's role should be set to.
-     */
-    public void setRole(String role) {
-        this.role = role;
-    }
 
     public void setHasClothing(boolean hasClothing) {this.hasClothing = hasClothing;}
     public boolean getHasClothing() {return hasClothing;}

@@ -23,6 +23,14 @@ public class OregonTrailGUI {
     private final DebugGUI debug = new DebugGUI();
     private Random rand = new Random();
 
+
+    //Our players
+    private Player hattie = new Player("Hattie Campbell", 100, 0);
+    private Player charles = new Player ("Charles",100,0);
+    private Player augusta = new Player("Augusta",100,0);
+    private Player ben = new Player("Ben",100,0);
+    private Player jake = new Player("Jake",100,0);
+
     //game variables
     private int food = 0, ammunition = 0, medicine = 0, clothes = 0, wagonTools = 0, splint = 0, oxen = 0;
     private boolean isGameWon = false, isGameLost = false;
@@ -55,6 +63,7 @@ public class OregonTrailGUI {
         menu2.add(projectDescription);
         frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);   //makes fullscreen
         frame.setVisible(true);
+
     }
 
     //Create application
@@ -77,8 +86,12 @@ public class OregonTrailGUI {
         }
     }
     public void setHappiness() {
+        //Weather
         if (weather.getWeatherCondition().equals("Good")) {happiness+=calculateHappiness("ADD",5);}
-        else if (weather.getWeatherCondition().equals("Bad")) {happiness-=calculateHappiness("SUBTRACT",5);};
+        else if (weather.getWeatherCondition().equals("Bad")) {happiness-=calculateHappiness("SUBTRACT",5);}
+
+        //Player is ill
+        //Code goes here lmao
     }
 
     public void weatherAffectPlayer(Player player) {
