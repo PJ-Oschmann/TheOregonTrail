@@ -8,7 +8,6 @@ public class Item {
     private String type; //Food, Ammunition, Medicine, Clothes, Wagon Tools, Splints, Oxen
 
 
-
     //For now let's assume each food is just a pound.
     /**
      * Constructor for the consumable class, any consumable
