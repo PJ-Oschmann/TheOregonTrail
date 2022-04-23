@@ -96,20 +96,24 @@ public class Inventory extends JDialog {
                 if (invComboBox.getSelectedItem() == "C: CLOTHES") {
                     invInfo.setText(String.format(
                             """
-                            Clothes are a resource that prevents your party members
-                            from going hungry. If the party has 0 units of food
-                            for three days in a row, the game will end.
+                            Clothes are a one-time consumable resource that will
+                            protect your party members from weather for the remainder
+                            of their journey. If a character is not protected from
+                            extreme weather, they may fall victim to illness and lose
+                            health as a consequence.
                             
-                            Each unit of food given to a party member will
-                            increase their food level by 2.
+                            This resource can be produced on the trip using a total of
+                            3 daily actions to produce clothes. This item may only be
+                            used on characters who do not already have a set of clothes.
                             
-                            You have %d clothes.
+                            You have %d sets of clothing.
                             
                             Type "U" to use this item.
-                            Type "M" to return to the inventory menu.    
+                            Type "M" to return to the inventory menu.   
                             """, clothes
                     ));
                 }
+
                 //TODO: Finish writing out inventory items and their descriptions
         }});
 
