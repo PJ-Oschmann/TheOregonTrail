@@ -15,7 +15,6 @@ public class OregonTrailGUI {
     private JPanel Char2Panel;
     private JPanel Char3Panel;
     private JPanel Char4Panel;
-    private JButton partyInfoTestButton;
     private JButton continueButton;
     private JTextArea storyTextArea;
     private JButton sceneGUITestButton;
@@ -26,6 +25,9 @@ public class OregonTrailGUI {
     private JTextField textField1;
     private final Scene scene = new Scene();
     private final DebugGUI debug = new DebugGUI();
+
+    //game variables
+    private int food = 0, ammunition = 0, medicine = 0, clothes = 0, wagonTools = 0, splint = 0, oxen = 0;
 
     private static OregonTrailGUI game = new OregonTrailGUI();
 
@@ -53,9 +55,6 @@ public class OregonTrailGUI {
         menu2.add(menu2Item1);
         frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
         frame.setVisible(true);
-
-
-
     }
 
     //Create application
@@ -66,51 +65,15 @@ public class OregonTrailGUI {
         InventoryTestButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Inventory inv = new Inventory();
+                Inventory inv = new Inventory(food, ammunition, medicine, clothes, wagonTools, splint, oxen);
                 inv.pack();
                 inv.setVisible(true);
             }
         });
 
-        continueButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //sceneMan.continueScene();
-
-
-            }
-        });
-
-
-
-
-
-        sceneGUITestButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //Uncomment whichever you want. (Both cannot be uncommented!)
-
-                //Example of a scene to load:
-                scene.loadScene("1861-3-19");
-                //Example of a chained scene to load:
-                //scene.chainLoadScene(new ArrayList<>(List.of("1861-3-19","TestScene")));
-            }
-        });
-
-
-        debugMenuButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                debug.open();
-            }
-        });
-    }
-
     public void exitGame() {
         System.exit(0);
     }
-
-
 }
 
 

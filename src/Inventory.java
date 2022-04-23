@@ -10,13 +10,21 @@ public class Inventory extends JDialog {
     private JComboBox invComboBox;
     private JButton useButton;
 
-    public Inventory() {
+    private int food = 0, ammunition = 0, medicine = 0, clothes = 0, wagonTools = 0, splint = 0, oxen = 0;
+
+    public Inventory(int food, int ammunition, int medicine, int clothes, int wagonTools, int splint, int oxen) {
+        //instantiating private vars
+        food = this.food; ammunition = this.ammunition; clothes = this.clothes; wagonTools = this.wagonTools;
+        splint = this.splint; oxen = this.oxen;
+
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
-        InventoryImageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/TestImage2.png"));
+        //Image goes here
+        InventoryImageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/Inventory.png"));
 
-        String[] inventoryItems = {" ", "Food (1/4 lb.)", "Water (1 canteen)", "Bandages", "Medicine", "Splints", "Ammo"};
+        //Create dropdown menu and item list
+        String[] inventoryItems = {" ", "F: Food" , "A: Ammunition", "M: Medicine", "C: Winter Clothes", "W: Wagon Tools", "S: Splint", "O: Oxen"};
         for (int i = 0; i < inventoryItems.length; i++){
             invComboBox.addItem(inventoryItems[i]);
         }
@@ -24,12 +32,12 @@ public class Inventory extends JDialog {
         invComboBox.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
-                if (invComboBox.getSelectedItem() == "Food (1/4 lb.)") {
+                if (invComboBox.getSelectedItem() == "F: Food") {
                     invInfo.setText("Food is used to decrease 'hunger' levels of your party members. \n" +
                             "Each pound of food consumed will remove 1/4 that member's total hunger.\n\n" +
-                            "You currently have 100 Food (1/4 lb.)");
+                            "You currently have 100 Food");
                 }
-                if (invComboBox.getSelectedItem() == "Water (1 canteen)") {
+                if (invComboBox.getSelectedItem() == "A: Ammunition)") {
                     invInfo.setText("Water is used to decrease 'thirst' levels of your party members.\n" +
                             "Each canteen of water consumed will remove all of that member's thirst.\n\n" +
                             "You currently have 50 Water (1 canteen)");
@@ -38,18 +46,6 @@ public class Inventory extends JDialog {
             }
         });
 
-        useButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //create dialogue box for using each inventory items
-            }
-        });
-
-        buttonCancel.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        });
 
         // call onCancel() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
