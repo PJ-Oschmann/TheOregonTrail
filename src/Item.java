@@ -1,12 +1,13 @@
 /**
- * Consumable class designed to handle any consumables that are
- * usable by the character/party. Our current consumable class
- * only handles food and the health restoration function.
+ * Item class designed to handle any items that are
+ * usable by the character/party. Our current Item class
+ *  handles food, ammunition, medicine, clothes, wagon tools, splints, and oxen.
  */
-public class Consumable {
+public class Item {
     private String name;
-    private String type; //Raw Food, Cooked Food, Drink, Hard drink [For MVP just Cooked Food]
-    private int restoreHealth;
+    private String type; //Food, Ammunition, Medicine, Clothes, Wagon Tools, Splints, Oxen
+
+
 
     //For now let's assume each food is just a pound.
     /**
@@ -14,13 +15,10 @@ public class Consumable {
      * creation must have a name and type. Since we are only
      * working with food it must also have a restoreHealth
      * function
-     *
-     * IMPLEMENT THIRST/WATER LATER
      */
-    Consumable(String name, String type, int restoreHealth) {
+    Item (String name, String type) {
         this.name = name;
         this.type = type;
-        this.restoreHealth = restoreHealth;
     }
 
     /**
@@ -39,13 +37,6 @@ public class Consumable {
         return type;
     }
 
-    /**
-     * restoreHealth getter
-     * @return int restoreHealth - the quantity of health that the consumable will restore
-     */
-    public int getRestoreHealth() {
-        return restoreHealth;
-    }
 
     /**
      * name setter
@@ -63,11 +54,4 @@ public class Consumable {
         this.type = type;
     }
 
-    /**
-     * restoreHealth setter
-     * @param restoreHealth - the new value for restoreHealth
-     */
-    public void setRestoreHealth(int restoreHealth) {
-        this.restoreHealth = restoreHealth;
-    }
 }
