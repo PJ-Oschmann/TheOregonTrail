@@ -52,7 +52,7 @@ public class Inventory extends JDialog {
                             Each unit of food given to a party member will
                             increase their food level by 2.
                             
-                            You have %d food.
+                            You have %d units of food.
                             
                             Type "U" to use this item.
                             Type "M" to return to the inventory menu.
@@ -69,7 +69,7 @@ public class Inventory extends JDialog {
                             hunting. Hunting yields about double the food for
                             its cost relative to buying food (on average).
                             
-                            You have %d ammunition.
+                            You have %d boxes of ammunition.
                                 
                             Type "M" to return to the inventory menu.
                             """, ammunition
@@ -79,15 +79,17 @@ public class Inventory extends JDialog {
                     invInfo.setText(String.format(
                             """
                             Medicine is a resource that cures your party members
-                            of illness. When a party member is ill, 
+                            of illness. When a party member is ill, their food level
+                            consumption is increased by 2 a day on top of the travel
+                            consumption.
+                                                        
+                            One unit of medicine can cure a single party member, and
+                            can only be used on a sick character.
                             
-                            Each unit of food given to a party member will
-                            increase their food level by 2.
-                            
-                            You have %d medicine.
+                            You have %d units of medicine.
                             
                             Type "U" to use this item.
-                            Type "M" to return to the inventory menu.    
+                            Type "M" to return to the inventory menu.   
                             """, medicine
                     ));
                 }
