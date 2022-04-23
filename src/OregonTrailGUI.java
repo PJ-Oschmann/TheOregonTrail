@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
 
 public class OregonTrailGUI {
 
@@ -20,6 +21,7 @@ public class OregonTrailGUI {
     private JLabel InventoryImagePanel;
     private final Scene scene = new Scene();
     private final DebugGUI debug = new DebugGUI();
+    private Random rand = new Random();
 
     //game variables
     private int food = 0, ammunition = 0, medicine = 0, clothes = 0, wagonTools = 0, splint = 0, oxen = 0;
@@ -77,6 +79,16 @@ public class OregonTrailGUI {
     public void setHappiness() {
         if (weather.getWeatherCondition().equals("Good")) {happiness+=calculateHappiness("ADD",5);}
         else if (weather.getWeatherCondition().equals("Bad")) {happiness-=calculateHappiness("SUBTRACT",5);};
+    }
+
+    public void weatherAffectPlayer(Player player) {
+        if (player.getHasClothing() == false) {
+            player.setHealth(player.getHealth()-25);
+            if (rand.nextInt(4)==0) {
+                player.setSick(true);
+            }
+        }
+
     }
 }
 
