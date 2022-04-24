@@ -1,6 +1,9 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.util.Random;
 
 public class OregonTrailGUI {
@@ -79,6 +82,23 @@ public class OregonTrailGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
 //TODO: CREATE USER INPUT FIELD CODE
+            }
+        });
+        userInput.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (userInput.getText().trim().equals("Enter 'H' to display input options")) {
+                    userInput.setText("");
+                    userInput.setForeground(Color.BLACK);
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (userInput.getText().trim().equals("")) {
+                    userInput.setText("Enter 'H' to display input options");
+                    userInput.setForeground(new Color(147, 147,147));
+                }
             }
         });
     }
