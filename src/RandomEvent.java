@@ -57,7 +57,7 @@ public class RandomEvent {
     String eventName(){
         boolean isGood = eventType(eventChance(happiness));
         int temp;
-        if(isGood == true){
+        if(isGood){
             temp = rand.nextInt(3);
             if(temp == 0){
                 return "encounterTraveler"; //player encounters another traveler
@@ -66,19 +66,22 @@ public class RandomEvent {
                 return "smallStream"; //player encounters
             }
             else{
-                return "wagonFound";
+                return "wagonFound"; //found abandoned wagon
             }
         }
         else{
-            temp = rand.nextInt(3);
+            temp = rand.nextInt(4);
             if(temp == 0){
-                return "injury";
+                return "injury"; //random party member is injured
             }
             else if (temp == 1){
-                return "wagonDamage";
+                return "wagonDamage"; //wagon is damaged during the travels
+            }
+            else if (temp == 2){
+                return "foodSpoiled"; //some food spoils
             }
             else {
-                return "illness";
+                return "illness"; //random party member falls ill
             }
         }
     }
