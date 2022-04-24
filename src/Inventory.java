@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 
 public class Inventory extends JDialog {
@@ -203,6 +204,23 @@ public class Inventory extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
 //TODO: FILL IN TEXT INPUT ACTION LISTENER CODE
+            }
+        });
+        userInput.addFocusListener(new FocusAdapter() { //Grey text for input box when not focused on
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (userInput.getText().trim().equals("Input Option Here")) {
+                    userInput.setText("");
+                    userInput.setForeground(Color.BLACK);
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (userInput.getText().trim().equals("")) {
+                    userInput.setText("Input Option Here");
+                    userInput.setForeground(new Color(147, 147,147));
+                }
             }
         });
     }

@@ -169,7 +169,7 @@
           <component id="57cc9" class="javax.swing.JTextField" binding="userInput">
             <constraints>
               <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false">
-                <preferred-size width="300" height="30"/>
+                <preferred-size width="200" height="30"/>
               </grid>
             </constraints>
             <properties>

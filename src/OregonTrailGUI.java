@@ -84,7 +84,7 @@ public class OregonTrailGUI {
 //TODO: CREATE USER INPUT FIELD CODE
             }
         });
-        userInput.addFocusListener(new FocusAdapter() {
+        userInput.addFocusListener(new FocusAdapter() { //Grey text for input box when not focused on
             @Override
             public void focusGained(FocusEvent e) {
                 if (userInput.getText().trim().equals("Enter 'H' to display input options")) {
