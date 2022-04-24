@@ -62,7 +62,7 @@
               <editable value="false"/>
               <lineWrap value="true"/>
               <margin top="0" left="0" bottom="0" right="0"/>
-              <text value="used on characters who do not already have a set of clothes."/>
+              <text value=""/>
               <wrapStyleWord value="false"/>
             </properties>
           </component>
@@ -77,7 +77,7 @@
                 <item value="F: FOOD"/>
                 <item value="A: AMMUNITION"/>
                 <item value="M: MEDICINE"/>
-                <item value="C: CLOTHES SET"/>
+                <item value="C: CLOTHES"/>
                 <item value="W: WAGON TOOLS"/>
                 <item value="S: SPLINTS"/>
                 <item value="O: OXEN"/>

@@ -37,7 +37,7 @@ public class OregonTrailGUI {
     private Player jake = new Player("Jake",100,0);
 
     //game variables
-    private int food = 0, ammunition = 0, medicine = 0, clothes = 0, wagonTools = 0, splint = 0, oxen = 0;
+    private int food = 0, ammunition = 0, medicine = 0, clothes = 0, wagonTools = 0, splints = 0, oxen = 0;
     private boolean isGameWon = false, isGameLost = false;
     private int happiness;
     private Weather weather = new Weather();
@@ -82,6 +82,11 @@ public class OregonTrailGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
 //TODO: CREATE USER INPUT FIELD CODE
+                if (userInput.getText().toUpperCase().equals("I")) {
+                    Inventory inv = new Inventory(food, ammunition, medicine, clothes, wagonTools, splints, oxen);
+                    inv.pack();
+                    inv.setVisible(true);
+                }
             }
         });
         userInput.addFocusListener(new FocusAdapter() { //Grey text for input box when not focused on
@@ -108,28 +113,28 @@ public class OregonTrailGUI {
     }
 
     public int calculateHappiness(String operation, int amount) {
-        if (operation=="ADD") {
+        if (operation == "ADD") {
             if (happiness+amount <=100) {return amount;}
             else {return 100-happiness;}
         }
         else { //equals "SUBTRACT"
-            if (happiness-amount >=0) {return amount;}
+            if (happiness - amount >= 0) {return amount;}
             else {return 0+happiness;}
         }
     }
     public void setHappiness() {
         //Weather
-        if (weather.getWeatherCondition().equals("Good")) {happiness+=calculateHappiness("ADD",5);}
-        else if (weather.getWeatherCondition().equals("Bad")) {happiness-=calculateHappiness("SUBTRACT",5);}
+        if (weather.getWeatherCondition().equals("Good")) {happiness += calculateHappiness("ADD",5);}
+        else if (weather.getWeatherCondition().equals("Bad")) {happiness -= calculateHappiness("SUBTRACT",5);}
 
         //Player is ill
         //Code goes here lmao
     }
 
     public void weatherAffectPlayer(Player player) {
-        if (player.getHasClothing() == false) {
-            player.setHealth(player.getHealth()-25);
-            if (rand.nextInt(4)==0) {
+        if (!player.getHasClothing()) {
+            player.setHealth(player.getHealth() - 25);
+            if (rand.nextInt(4) == 0) {
                 player.setSick(true);
             }
         }

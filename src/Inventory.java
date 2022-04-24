@@ -26,6 +26,24 @@ public class Inventory extends JDialog {
 
         //Image goes here
         InventoryImageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/Inventory.png"));
+        if (invComboBox.getSelectedItem() == "SELECT AN INVENTORY ITEM") {
+            invInfo.setText("""
+                            Please select an INVENTORY item using the dropdown menu
+                            or enter the letter the letter in the dialogue box
+                            corresponding with the item you would like to view:
+                            
+                            F: FOOD
+                            A: AMMUNITION
+                            M: MEDICINE
+                            C: CLOTHES
+                            W: WAGON TOOLS
+                            S: SPLINTS
+                            O: OXEN
+                            
+                            Press ESC to exit the inventory screen.
+                            """
+            );
+        }
 
         invComboBox.addItemListener(new ItemListener() {
             @Override
@@ -43,6 +61,8 @@ public class Inventory extends JDialog {
                             W: WAGON TOOLS
                             S: SPLINTS
                             O: OXEN
+                            
+                            Press ESC to exit the inventory screen.
                             """
                     );
                 }
