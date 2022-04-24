@@ -107,6 +107,7 @@ public class OregonTrailGUI {
                 else if (userInput.getText().equalsIgnoreCase("P")) {
 //TODO: IMPLEMENT PARTY MENU AND DETAILS DIALOGUE CLASS
                 }
+                userInput.setText("");
             }
         });
         userInput.addFocusListener(new FocusAdapter() { //Grey text for input box when not focused on

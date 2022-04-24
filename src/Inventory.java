@@ -12,7 +12,6 @@ public class Inventory extends JDialog {
     private JComboBox<String> invComboBox;
     private JTextField userInput;
     private JLabel invInputLabel;
-//TODO: Add text input box to make selections/navigate the menu
 
     public Inventory(int food, int ammunition, int medicine, int clothes, int wagonTools, int splints, int oxen) {
         //instantiating private vars
@@ -57,16 +56,101 @@ public class Inventory extends JDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+
+        //Action listener for userInput
         userInput.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (userInput.getText().equalsIgnoreCase("M")) {
-                    displayMenu();
-                    invComboBox.setSelectedIndex(0);
+                String input = userInput.getText().toUpperCase();
+                switch (input) {
+                    case "I": displayMenu(); invComboBox.setSelectedIndex(0); break;
+                    case "F": displayFood(food); invComboBox.setSelectedIndex(1); break;
+                    case "A": displayAmmo(ammunition); invComboBox.setSelectedIndex(2); break;
+                    case "M": displayMed(medicine); invComboBox.setSelectedIndex(3); break;
+                    case "C": displayClothes(clothes); invComboBox.setSelectedIndex(4); break;
+                    case "W": displayWT(wagonTools); invComboBox.setSelectedIndex(5); break;
+                    case "S": displaySplints(splints); invComboBox.setSelectedIndex(6); break;
+                    case "O": displayOxen(oxen); invComboBox.setSelectedIndex(7); break;
+                    default: displayMenu();
                 }
-//TODO: FILL IN TEXT INPUT ACTION LISTENER CODE
+
+                if (userInput.getText().equalsIgnoreCase("U") && invComboBox.getSelectedIndex() == 1) {
+                    //TODO: This is what happens when they "use" a food item
+                    invInfo.setText(
+                            """
+                            Player has chosen to use one unit of food.
+                            Proceed to select which character they want to feed.
+                            Requires the character to not be full or have food level == 10.
+                            
+                            Pop up a mini dialogue box saying that the character
+                            is full and cannot consume food if their food level is at 10.
+                            
+                            Enter "I" to return to the inventory menu.
+                            """);
+                }
+                else if (userInput.getText().equalsIgnoreCase("U") && invComboBox.getSelectedIndex() == 3) {
+                    //TODO: This is what happens when they "use" the medicine item
+                    invInfo.setText(
+                            """
+                            Player has chosen to use one medicine item.
+                            Proceed to select which character they want to treat.
+                            Requires the character to be ILL to use this item.
+                            
+                            Pop up a mini dialogue saying that the character is
+                            not ILL or has been cured depending on what happens.
+                            
+                            Enter "I" to return to the inventory menu.
+                            """);
+                }
+                else if (userInput.getText().equalsIgnoreCase("E") && invComboBox.getSelectedIndex() == 4) {
+                    //TODO: This is what happens when they "equip" the clothes item
+                    invInfo.setText(
+                            """
+                            Player has chosen to equip one set of clothes.
+                            Proceed to select which character they want to equip.
+                            Requires the character to not have a set of clothes
+                            to equip a set of clothes..
+                            
+                            Pop up a mini dialogue saying that the character already
+                            has a set of clothes equipped and that they do not need
+                            another set.
+                            
+                            Enter "I" to return to the inventory menu.
+                            """);
+                }
+                else if (userInput.getText().equalsIgnoreCase("U") && invComboBox.getSelectedIndex() == 6) {
+                    //TODO: This is what happens when they "use" the splints item
+                    invInfo.setText(
+                            """
+                            Player has chosen to use one splint.
+                            Proceed to select which character they want to use the
+                            splint on. Requires the character to be INJURED to use
+                            the splints item.
+                            
+                            Pop up a mini dialogue saying that the character is not
+                            INJURED if they try and use the splints on a healthy
+                            character.
+                            
+                            Enter "I" to return to the inventory menu.
+                            """);
+                }
+                else if (userInput.getText().equalsIgnoreCase("C") && invComboBox.getSelectedIndex() == 7) {
+                    //TODO: This is what happens when they "consume" an OXEN for food
+                    invInfo.setText(
+                            """
+                            Player has chosen to CONSUME one OXEN. Increase total
+                            party food count by 10 units of food.
+                            
+                            Pop up a mini dialogue letting the player know they cannot
+                            consume an OXEN if it will leave them with less than 4 OXEN.
+                            
+                            Enter "I" to return to the inventory menu.
+                            """);
+                }
+                userInput.setText("");
             }
         });
+
         userInput.addFocusListener(new FocusAdapter() { //Grey text for input box when not focused on
             @Override
             public void focusGained(FocusEvent e) {
@@ -86,6 +170,7 @@ public class Inventory extends JDialog {
         });
     }
 
+    //TEXT METHODS and CANCEL METHOD
     private void displayMenu() {
         invInfo.setText(
                 """
@@ -100,8 +185,9 @@ public class Inventory extends JDialog {
                 W: WAGON TOOLS
                 S: SPLINTS
                 O: OXEN
+                I: RETURN TO THIS MENU
                 
-                Press ESC to exit the inventory screen.
+                Press ESC to exit the INVENTORY screen.
                 """);
     }
 
@@ -118,7 +204,7 @@ public class Inventory extends JDialog {
                 You have %d units of FOOD.
                 
                 Type "U" to use this item.
-                Type "M" to return to the INVENTORY menu.
+                Type "I" to return to the INVENTORY menu.
                 """, food
         ));
     }
@@ -135,7 +221,7 @@ public class Inventory extends JDialog {
                 
                 You have %d boxes of AMMUNITION.
                     
-                Type "M" to return to the INVENTORY menu.
+                Type "I" to return to the INVENTORY menu.
                 """, ammo
         ));
     }
@@ -156,7 +242,7 @@ public class Inventory extends JDialog {
                 You have %d units of MEDICINE.
                 
                 Type "U" to use this item.
-                Type "M" to return to the INVENTORY menu.
+                Type "I" to return to the INVENTORY menu.
                 """, med
         ));
     }
@@ -176,8 +262,8 @@ public class Inventory extends JDialog {
                 
                 You have %d sets of CLOTHES.
                 
-                Type "U" to use this item.
-                Type "M" to return to the INVENTORY menu.
+                Type "E" to equip this item onto a character.
+                Type "I" to return to the INVENTORY menu.
                 """, clothes
         ));
     }
@@ -200,7 +286,7 @@ public class Inventory extends JDialog {
 
                 You have %d spare WAGON TOOLS.
                 
-                Type "M" to return to the INVENTORY menu.
+                Type "I" to return to the INVENTORY menu.
                 """, wagonTools
         ));
     }
@@ -223,7 +309,7 @@ public class Inventory extends JDialog {
                 You have %d SPLINTS.
                 
                 Type "U" to use this item.
-                Type "M" to return to the INVENTORY menu.
+                Type "I" to return to the INVENTORY menu.
                 """, splints
         ));
     }
@@ -245,7 +331,7 @@ public class Inventory extends JDialog {
                 You have %d OXEN.
                 
                 Type "C" to slaughter and harvest an OXEN for 10 FOOD.
-                Type "M" to return to the INVENTORY menu.
+                Type "I" to return to the INVENTORY menu.
                 """, oxen
         ));
     }
