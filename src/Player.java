@@ -50,29 +50,6 @@ public class Player {
         return currentHealth;
     }
 
-
-
-
-    /**
-     * Consume food from the wagon. Removes 1 consumable from the wagon and restores health
-     * @param wagon - Object for the Wagon to take consumables from.
-     */
-    public void consume(Wagon wagon) {
-        int counter = wagon.getConsumablePartSize()-1; //Subtract 1 as this function returns the next open spot in array
-        if (counter > 0) {
-            if (health-25>=0) {
-                health-=5; //NOTE: Hard-coded value! This should be associated with the exact consumable object.
-            }
-            else {
-                health = 0;
-            }
-            wagon.destroyConsumable(counter);
-        }
-        else {
-            System.out.println("Player.java: No more consumables!");
-        }
-    }
-
     /**
      * Player's health getter
      * @return the Player's health as an integer

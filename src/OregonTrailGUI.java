@@ -84,8 +84,6 @@ public class OregonTrailGUI {
 //TODO: CREATE USER INPUT FIELD CODE
                 if (userInput.getText().equalsIgnoreCase("I")) {
                     Inventory inv = new Inventory(food, ammunition, medicine, clothes, wagonTools, splints, oxen);
-                    inv.pack();
-                    inv.setVisible(true);
                 }
                 else if (userInput.getText().equalsIgnoreCase("H")) {
                     storyTextArea.setText(
@@ -103,6 +101,9 @@ public class OregonTrailGUI {
                             R: REST AT THE LOCAL INN
                             """
                     );
+                }
+                else if (userInput.getText().equalsIgnoreCase("P")) {
+//TODO: IMPLEMENT PARTY MENU AND DETAILS DIALOGUE CLASS
                 }
             }
         });
