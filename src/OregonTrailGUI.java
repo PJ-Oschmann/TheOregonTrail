@@ -17,12 +17,14 @@ public class OregonTrailGUI {
     private JPanel HattiePanel;
     private JTextArea storyTextArea;
     private JPanel JakePanel;
+    private JTextField userInput;
+    private JLabel mainInputLabel;
     private JPanel InventoryPanel;
     private JLabel InventoryImagePanel;
     private final Scene scene = new Scene();
     private final DebugGUI debug = new DebugGUI();
     private Random rand = new Random();
-
+//TODO: Add text input dialogue box to make selections/navigate forms
 
     //Our players
     private Player hattie = new Player("Hattie Campbell", 100, 0);
@@ -40,7 +42,6 @@ public class OregonTrailGUI {
     private static OregonTrailGUI game = new OregonTrailGUI();
 
     public static void main(String[] args) {
-
         JFrame frame = new JFrame();
         frame.setContentPane(game.MainPanel);
         frame.setTitle("The Oregon Trail -- Remake");
@@ -55,7 +56,7 @@ public class OregonTrailGUI {
         JMenu menuAbout= new JMenu("ABOUT");
         menuBar.add(menuAbout);
 
-        //TODO: Make menu buttons do things
+//TODO: Make menu buttons do things
         JMenuItem mainMenu = new JMenuItem("MAIN MENU . . .");//Prompts are you sure window if game condition is not win/lose
         JMenuItem exitApp = new JMenuItem("EXIT . . .");     //Prompts are you sure window if game condition is not win/lose
         menuMain.add(mainMenu);                                      //returns to main menu, resets game
@@ -74,6 +75,12 @@ public class OregonTrailGUI {
     //Create application
     public OregonTrailGUI() {
         ImageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/TestImage1.png"));
+        userInput.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+//TODO: CREATE USER INPUT FIELD CODE
+            }
+        });
     }
 
     public void exitGame() {

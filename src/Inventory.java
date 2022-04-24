@@ -12,6 +12,9 @@ public class Inventory extends JDialog {
     private JPanel innerPanel;
     private JButton useButton;
     private JComboBox<String> invComboBox;
+    private JTextField userInput;
+    private JLabel invInputLabel;
+//TODO: Add text input box to make selections/navigate the menu
 
     public Inventory(int food, int ammunition, int medicine, int clothes, int wagonTools, int splints, int oxen) {
         //instantiating private vars
@@ -196,6 +199,12 @@ public class Inventory extends JDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        userInput.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+//TODO: FILL IN TEXT INPUT ACTION LISTENER CODE
+            }
+        });
     }
 
     private void onCancel() {
