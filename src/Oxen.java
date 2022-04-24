@@ -1,7 +1,6 @@
 import java.util.Random;
 import java.util.random.*;
 public class Oxen {
-    private int health = 100;
     private boolean isInjured = false;
     private int injuryChance = 20; //0-100. Chance this ox will get injured. Changes to 5% if there are more oxen
     private final Random rand = new Random();
@@ -9,13 +8,6 @@ public class Oxen {
 
     }
 
-    public int getHealth() {
-        return health;
-    }
-
-    public void setHealth(int health) {
-        this.health = health;
-    }
 
     public boolean isInjured() {
         return isInjured;
