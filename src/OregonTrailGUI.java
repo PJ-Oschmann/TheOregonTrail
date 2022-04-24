@@ -82,10 +82,27 @@ public class OregonTrailGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
 //TODO: CREATE USER INPUT FIELD CODE
-                if (userInput.getText().toUpperCase().equals("I")) {
+                if (userInput.getText().equalsIgnoreCase("I")) {
                     Inventory inv = new Inventory(food, ammunition, medicine, clothes, wagonTools, splints, oxen);
                     inv.pack();
                     inv.setVisible(true);
+                }
+                else if (userInput.getText().equalsIgnoreCase("H")) {
+                    storyTextArea.setText(
+                            """
+                            INPUT DIALOGUE BOX HELP MENU
+                            
+                            OPTIONS AVAILABLE FOR INPUT DIALOGUE BOX:
+                            H: HELP
+                            I: INVENTORY
+                            P: PARTY
+                            
+                            IF YOU ARE INSIDE OF A TOWN OR FORT:
+                            W: GO TO THE LOCAL WAGON REPAIR MECHANIC
+                            S: VISIT THE LOCAL SHOP
+                            R: REST AT THE LOCAL INN
+                            """
+                    );
                 }
             }
         });
