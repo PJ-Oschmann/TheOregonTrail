@@ -27,14 +27,13 @@ public class OregonTrailGUI {
     private final Scene scene = new Scene();
     private final DebugGUI debug = new DebugGUI();
     private Random rand = new Random();
-//TODO: Add text input dialogue box to make selections/navigate forms
 
     //Our players
-    private Player hattie = new Player("Hattie Campbell", 100, 0);
-    private Player charles = new Player ("Charles",100,0);
-    private Player augusta = new Player("Augusta",100,0);
-    private Player ben = new Player("Ben",100,0);
-    private Player jake = new Player("Jake",100,0);
+    private Character hattie = new Character("Hattie Campbell", 100, 0);
+    private Character charles = new Character("Charles",100,0);
+    private Character augusta = new Character("Augusta",100,0);
+    private Character ben = new Character("Ben",100,0);
+    private Character jake = new Character("Jake",100,0);
 
     //game variables
     private int food = 0, ammunition = 0, medicine = 0, clothes = 0, wagonTools = 0, splints = 0, oxen = 0;
@@ -71,6 +70,7 @@ public class OregonTrailGUI {
         menuAbout.add(projectDescription);
         menuAbout.add(aboutProject);
         menuAbout.add(aboutHattie);
+        menuAbout.add(imageCredits);
         frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);   //makes fullscreen
         frame.setVisible(true);
     }
@@ -152,7 +152,7 @@ public class OregonTrailGUI {
         //Code goes here lmao
     }
 
-    public void weatherAffectPlayer(Player player) {
+    public void weatherAffectPlayer(Character player) {
         if (!player.getHasClothing()) {
             player.setHealth(player.getHealth() - 25);
             if (rand.nextInt(4) == 0) {

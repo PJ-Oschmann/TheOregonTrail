@@ -189,11 +189,11 @@ public class CheckIfLost {
 
     //Perhaps it can just be moved to the GUI. Maybe it's more appropriate on its own. Idk.
 
-    public Player mainPlayer;
+    public Character mainPlayer;
 
     //We should include any objects that need something checked.
     //The main player is included as an example.
-    public CheckIfLost(Player mainPlayer) {
+    public CheckIfLost(Character mainPlayer) {
         this.mainPlayer = mainPlayer;
     }
 

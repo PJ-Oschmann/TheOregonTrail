@@ -1,6 +1,4 @@
-import javax.swing.*;
-
-public class Player {
+public class Character {
 
     //Variables
     private int health;
@@ -17,7 +15,7 @@ public class Player {
      * @param name - Name of the player.
      * @param hunger - Amount of hunger set by default.
      */
-    public Player(String name, int health, int hunger) {
+    public Character(String name, int health, int hunger) {
         this.health = health; //We can report a string "good, poor, very poor, etc" based on this number.
         this.name = name;
         this.hunger = hunger;
