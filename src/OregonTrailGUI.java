@@ -53,9 +53,9 @@ public class OregonTrailGUI {
         menuBar.setVisible(true);
         frame.setJMenuBar(menuBar);
 
-        JMenu menuMain = new JMenu("MAIN");
+        JMenu menuMain = new JMenu("Main");
         menuBar.add(menuMain);
-        JMenu menuAbout= new JMenu("ABOUT");
+        JMenu menuAbout= new JMenu("About");
         menuBar.add(menuAbout);
 
         //Give the application the System's theme.
@@ -63,14 +63,14 @@ public class OregonTrailGUI {
         setTheme();
 
 //TODO: Make menu buttons do things
-        JMenuItem mainMenu = new JMenuItem("MAIN MENU . . .");//Prompts are you sure window if game condition is not win/lose
-        JMenuItem exitApp = new JMenuItem("EXIT . . .");     //Prompts are you sure window if game condition is not win/lose
+        JMenuItem mainMenu = new JMenuItem("Main Menu");//Prompts are you sure window if game condition is not win/lose
+        JMenuItem exitApp = new JMenuItem("Exit");     //Prompts are you sure window if game condition is not win/lose
         menuMain.add(mainMenu);                                      //returns to main menu, resets game
         menuMain.add(exitApp);                                      //exits app
-        JMenuItem projectDescription = new JMenuItem("Project Description . . .");
-        JMenuItem aboutProject = new JMenuItem("About the Project . . .");
-        JMenuItem aboutHattie = new JMenuItem("About Hattie Campbell . . .");
-        JMenuItem imageCredits = new JMenuItem("Image Credits . . .");
+        JMenuItem projectDescription = new JMenuItem("Project Description");
+        JMenuItem aboutProject = new JMenuItem("About the Project");
+        JMenuItem aboutHattie = new JMenuItem("About Hattie Campbell");
+        JMenuItem imageCredits = new JMenuItem("Image Credits");
         menuAbout.add(projectDescription);
         menuAbout.add(aboutProject);
         menuAbout.add(aboutHattie);
