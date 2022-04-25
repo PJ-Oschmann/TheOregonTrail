@@ -41,6 +41,7 @@ public class OregonTrailGUI {
     private boolean isGameWon = false, isGameLost = false;
     private int happiness;
     private Weather weather = new Weather();
+    private Wagon wagon = new Wagon();
 
     private static OregonTrailGUI game = new OregonTrailGUI();
 
@@ -187,6 +188,12 @@ public class OregonTrailGUI {
         JOptionPane.showMessageDialog(null,"<html><h1>"+title+"</h1><br>"+newMessage,title,JOptionPane.PLAIN_MESSAGE,oregonIcon);
     }
 
+
+
+
+    /**
+     * Constructor for OregonTrailGUI
+     */
     //Create application
     public OregonTrailGUI() {
 
@@ -240,37 +247,93 @@ public class OregonTrailGUI {
                 }
             }
         });
-
     }
 
 
-
-    public int calculateHappiness(String operation, int amount) {
-        if (operation == "ADD") {
-            if (happiness+amount <=100) {return amount;}
-            else {return 100-happiness;}
+    /**
+     * Calculate happiness to add or subtract. This method ensures that
+     * happiness won't exceed 100 or become less than 0.
+     * @param amount - The amount of happienss to add or subtract. (Positive = add; negative = subtract)
+     * @return the amount of happiness to add or subtract.
+     */
+    public int calculateHappiness(int amount) {
+        int newHappiness = 0;
+        if (amount>0) {
+            if (happiness+amount <=100) {newHappiness = amount;}
+            else {newHappiness = 100-happiness;}
         }
-        else { //equals "SUBTRACT"
-            if (happiness - amount >= 0) {return amount;}
-            else {return 0+happiness;}
+        else {
+            if (happiness + amount >= 0) {newHappiness = amount;}
+            else {newHappiness = -happiness;}
         }
+        return happiness+newHappiness;
     }
-    public void setHappiness() {
+
+    /**
+     *Impact happiness based on factors.
+     * Good weather increases happiness by 5; bad weather decreases it by 5.
+     */
+    //Figured "setHappiness" wasn't appropriate. Is there a better name we can use?
+    //Should each factor have its own method?
+    public void impactHappiness() {
         //Weather
-        if (weather.getWeatherCondition().equals("Good")) {happiness += calculateHappiness("ADD",5);}
-        else if (weather.getWeatherCondition().equals("Bad")) {happiness -= calculateHappiness("SUBTRACT",5);}
+        if (weather.getWeatherCondition().equals("Good")) {happiness = calculateHappiness(5);}
+        else if (weather.getWeatherCondition().equals("Bad")) {happiness = calculateHappiness(-5);}
 
         //Player is ill
-        //Code goes here lmao
+            //Code goes here lmao
     }
 
-    public void weatherAffectPlayer(Character player) {
-        if (!player.getHasClothing()) {
-            player.setHealth(player.getHealth() - 25);
+    /**
+     * If a given character is not wearing protective clothing, they will be harmed by
+     * cold weather. Their health will decrease by 25 HP each day, and they have a 1/4
+     * chance of getting ill.
+     * @param character - The character that will be affected.
+     */
+    public void weatherAffectPlayer(Character character) {
+        if (!character.getHasClothing()) {
+            character.setHealth(character.getHealth() - 25);
             if (rand.nextInt(4) == 0) {
-                player.setSick(true);
+                character.setSick(true);
             }
         }
+
+    }
+
+    /**
+     * Check if the game is lost. The game is lost if:
+     * - there are no healthy oxen
+     * - the wagon breaks
+     * - the party's happiness equals 0
+     * - everyone dies
+     * - no one has food available for 3 consecutive days.
+     * @return false if the game is not lost, true if the game is lost
+     */
+
+    //TODO: Implement checks for no healthy oxen and lack of food for 3 days
+    public boolean checkIfLost() {
+        boolean isLost = false;
+        String message = "";
+        //If the wagon breaks
+        if (wagon.getState() == 2) {
+            message= "Your wagon broke. You can't continue";
+            isLost = true;
+        }
+
+        //If party happiness == 0
+        else if (happiness <= 0) { //Using "less than" in case it somehow goes below 0.
+            message = "Everyone is beyond sad. Happiness is but a memory. You can't continue.";
+            isLost = true;
+        }
+
+        //If everyone is dead
+        else if (hattie.getHealth()==0 && charles.getHealth() == 0 && augusta.getHealth() == 0 && ben.getHealth() == 0 && jake.getHealth() == 0) {
+            message = "Everyone literally died. Ghosts don't go to Oregon. You can't continue.";
+            isLost = true;
+        }
+
+        JOptionPane.showMessageDialog(null,message,"Game Over",JOptionPane.PLAIN_MESSAGE);
+        return isLost;
 
     }
 }
