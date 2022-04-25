@@ -58,6 +58,10 @@ public class OregonTrailGUI {
         JMenu menuAbout= new JMenu("ABOUT");
         menuBar.add(menuAbout);
 
+        //Give the application the System's theme.
+        //Delete this line if the app won't start
+        setTheme();
+
 //TODO: Make menu buttons do things
         JMenuItem mainMenu = new JMenuItem("MAIN MENU . . .");//Prompts are you sure window if game condition is not win/lose
         JMenuItem exitApp = new JMenuItem("EXIT . . .");     //Prompts are you sure window if game condition is not win/lose
@@ -73,10 +77,120 @@ public class OregonTrailGUI {
         menuAbout.add(imageCredits);
         frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);   //makes fullscreen
         frame.setVisible(true);
+
+
+        //Action Listeners for menu:
+
+        //Main:
+
+        mainMenu.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Close your eyes and imagine going back to the main menu here...");
+            }
+        });
+        exitApp.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                exitGame();
+            }
+        });
+
+        //About:
+
+        projectDescription.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showAbout("The Oregon Trail is an educational game to teach students about the 1800s trip from Missouri to Oregon. This project aims to recreate this experience using the Java programming language. With incredible high-resolution graphics, the experience is more immersive than ever before","Project Description");
+            }
+        });
+
+        aboutProject.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showAbout("This project was completed by Team Hollenberg Station, consisting of Aleece Al-Olimat, Ken Zhu, and PJ Oschmann","About This Project");
+            }
+        });
+
+        aboutHattie.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showAbout("(Replace me with actual text) Hattie is a young lass who is setting out for a new life in Oregon. Her twin sister died. What a shame.","About Hattie");
+            }
+        });
+        imageCredits.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showAbout("Images created by Aleece Al-Olimat.\nImage of Oregon by Kendra of Clker.com, in the Public Domain.","Image Credits");
+            }
+        });
+
+
+
+    }
+
+
+    public static void setTheme() {
+        //Set the theme to match the system!
+        //On Windows, it should use Win32 elements
+        //On Linux, it uses the GTK2 theme
+        //On MacOS, we will never know i guess
+        try {
+            // Set System L&F
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        }
+        catch (UnsupportedLookAndFeelException e) {
+            // handle exception
+        }
+        catch (ClassNotFoundException e) {
+            // handle exception
+        }
+        catch (InstantiationException e) {
+            // handle exception
+        }
+        catch (IllegalAccessException e) {
+            // handle exception
+        }
+        for (Window window : Window.getWindows()) {
+            SwingUtilities.updateComponentTreeUI(window);
+        }
+    }
+
+    public static void exitGame() {
+        if (JOptionPane.showConfirmDialog(null,"Are you sure you want to quit?","Exit?",JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
+            System.exit(0);
+        }
+
+    }
+
+    /**
+     * Displays a dialog box the screen. Asks as a preset to maintain a common style across all "About" messages.
+     * A cute picture of Oregon is shown for some visual flair, and a new line is created every 15 words.
+     * @param message - The message to display to the user
+     * @param title - The title of the message box.
+     */
+
+    //Oregon image from http://www.clker.com/clipart-oregon-3.html
+    public static void showAbout(String message, String title) {
+        int breakTextAt = 15; //Where to break the text
+        StringBuilder newMessage = new StringBuilder(message);
+        int wordCounter = 0;
+        ImageIcon oregonIcon = new ImageIcon("assets/oregonState.png");
+
+        for (int i=0;i<message.length();i++) {
+            if (message.charAt(i)==' ') {
+                wordCounter++;
+                if (wordCounter==breakTextAt) {newMessage.setCharAt(i,'\n'); wordCounter=0;}
+            }
+
+        }
+
+        JOptionPane.showMessageDialog(null,"<html><h1>"+title+"</h1><br>"+newMessage,title,JOptionPane.PLAIN_MESSAGE,oregonIcon);
     }
 
     //Create application
     public OregonTrailGUI() {
+
         ImageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/TestImage1.png"));
         userInput.addActionListener(new ActionListener() {
             @Override
@@ -127,11 +241,10 @@ public class OregonTrailGUI {
                 }
             }
         });
+
     }
 
-    public void exitGame() {
-        System.exit(0);
-    }
+
 
     public int calculateHappiness(String operation, int amount) {
         if (operation == "ADD") {
