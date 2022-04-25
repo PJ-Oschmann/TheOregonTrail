@@ -43,9 +43,10 @@ public class OregonTrailGUI {
     //game variables
     private int food = 0, ammunition = 0, medicine = 0, clothes = 0, wagonTools = 0, splints = 0, oxen = 0;
     private boolean isGameWon = false, isGameLost = false;
-    private int happiness;
+    private int happiness=100;
     private Weather weather = new Weather();
     private Wagon wagon = new Wagon();
+    private Date date = new Date();
 
     private static OregonTrailGUI game = new OregonTrailGUI();
 
@@ -251,8 +252,55 @@ public class OregonTrailGUI {
                 }
             }
         });
+        writeGameInfo();
     }
 
+    //We can use a method to run any daily methods.
+    //We should plan on allowing it to be called back-to-back.
+    //^This means if anything requires user interaction,
+    //execution should be paused! (Otherwise the days
+    //will continue!) Dialogue boxes should handle
+    //this. I hope.
+    public void progressDay() {
+        writeGameInfo();
+        //anything else that changes on the day.
+    }
+
+    /**
+     * Writes all game info to a text area. It includes:
+     * The player's current location
+     * The current date
+     * The current weather conditions
+     * The party's happiness level
+     * The current pace
+     * The current rations
+     */
+    //TODO: Implement Strings for location, pace, and rations
+    //Call this function whenever the game info is updated.
+    public void writeGameInfo() {
+        String strLocation = "LOCATION FIXME";
+        String strDate = date.toString();
+        String strWeather = weather.toString();
+        String strHappiness = Integer.toString(happiness);
+        String strPace = "PACE FIXME";
+        String strRations = "RATIONS FIXME";
+        String gameInfo = """
+                Location: $location
+                Date: $date
+                -----------------
+                Weather: $weather
+                Party Happiness: $happiness
+                Pace: $pace
+                Rations: $rations
+                """;
+        gameInfo = gameInfo.replace("$location",strLocation);
+        gameInfo = gameInfo.replace("$date",strDate);
+        gameInfo = gameInfo.replace("$weather",strWeather);
+        gameInfo = gameInfo.replace("$happiness",strHappiness);
+        gameInfo = gameInfo.replace("$pace",strPace);
+        gameInfo = gameInfo.replace("$rations",strRations);
+        storyTextArea.setText(gameInfo);
+    }
 
     /**
      * Calculate happiness to add or subtract. This method ensures that
@@ -318,6 +366,7 @@ public class OregonTrailGUI {
     public boolean checkIfLost() {
         boolean isLost = false;
         String message = "";
+
         //If there are no healthy oxen
         if (checkAllOxenInjured() == false) {
             message = "All your oxen are injured. How careless of you. You can't continue.";
@@ -350,7 +399,7 @@ public class OregonTrailGUI {
      * Check the Oxen ArrayList to see if all are injured.
      * @return true if all oxen are injured, false if at least one is not.
      */
-    private boolean checkAllOxenInjured() {
+    public boolean checkAllOxenInjured() {
         boolean healthyOxenExist = true;
         for (int i=0;i<oxenArrayList.size();i++) {
             if (!oxenArrayList.get(i).isInjured()) {

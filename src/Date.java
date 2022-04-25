@@ -14,9 +14,9 @@ public class Date {
      * Empty default constructor for a date object
      */
     public Date() {
-    currentDay = 0;
-    currentMonth = 0;
-    currentYear = 0;
+    currentDay = 22;
+    currentMonth = 5;
+    currentYear = 1843;
     }
 
     /**

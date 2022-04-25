@@ -16,6 +16,7 @@ public class Weather {
      */
     public Weather() {
         currentWeather = "";
+        setRandomWeather();
     }
 
     /**
