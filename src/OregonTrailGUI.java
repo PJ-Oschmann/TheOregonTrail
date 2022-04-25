@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.util.Random;
+import java.util.concurrent.locks.Condition;
 
 public class OregonTrailGUI {
 
@@ -129,33 +130,31 @@ public class OregonTrailGUI {
 
     }
 
-
+    /**
+     * Sets the application's UI to follow the System's look and feel,
+     * instead of using the default Metal theme.
+     * On Windows, native Windows (win32) elements are used.
+     * On Linux, the GTK2 theme is used.
+     * On MacOS, the MacOS theme is used. Probably.
+     */
     public static void setTheme() {
-        //Set the theme to match the system!
-        //On Windows, it should use Win32 elements
-        //On Linux, it uses the GTK2 theme
-        //On MacOS, we will never know i guess
         try {
             // Set System L&F
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         }
-        catch (UnsupportedLookAndFeelException e) {
-            // handle exception
-        }
-        catch (ClassNotFoundException e) {
-            // handle exception
-        }
-        catch (InstantiationException e) {
-            // handle exception
-        }
-        catch (IllegalAccessException e) {
-            // handle exception
+        catch (Exception e) {
+            //Don't set it
+            //(If setting the theme fails, the code simply is not run.)
         }
         for (Window window : Window.getWindows()) {
             SwingUtilities.updateComponentTreeUI(window);
         }
     }
 
+    /**
+     * Shows dialog asking the user if they want to exit. If the user selects "yes," the game
+     * exits gracefully (returns 0).
+     */
     public static void exitGame() {
         if (JOptionPane.showConfirmDialog(null,"Are you sure you want to quit?","Exit?",JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
             System.exit(0);
