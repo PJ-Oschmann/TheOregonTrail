@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.locks.Condition;
 
@@ -35,6 +36,9 @@ public class OregonTrailGUI {
     private Character augusta = new Character("Augusta",100,0);
     private Character ben = new Character("Ben",100,0);
     private Character jake = new Character("Jake",100,0);
+
+    //Array of Oxen
+    private ArrayList<Oxen> oxenArrayList = new ArrayList<>();
 
     //game variables
     private int food = 0, ammunition = 0, medicine = 0, clothes = 0, wagonTools = 0, splints = 0, oxen = 0;
@@ -70,7 +74,7 @@ public class OregonTrailGUI {
         menuMain.add(mainMenu);                                      //returns to main menu, resets game
         menuMain.add(exitApp);                                      //exits app
         JMenuItem projectDescription = new JMenuItem("Project Description");
-        JMenuItem aboutProject = new JMenuItem("About the Project");
+        JMenuItem aboutProject = new JMenuItem("About This Project");
         JMenuItem aboutHattie = new JMenuItem("About Hattie Campbell");
         JMenuItem imageCredits = new JMenuItem("Image Credits");
         menuAbout.add(projectDescription);
@@ -310,12 +314,17 @@ public class OregonTrailGUI {
      * @return false if the game is not lost, true if the game is lost
      */
 
-    //TODO: Implement checks for no healthy oxen and lack of food for 3 days
+    //TODO: Lack of food for 3 days
     public boolean checkIfLost() {
         boolean isLost = false;
         String message = "";
+        //If there are no healthy oxen
+        if (checkAllOxenInjured() == false) {
+            message = "All your oxen are injured. How careless of you. You can't continue.";
+            isLost = true;
+        }
         //If the wagon breaks
-        if (wagon.getState() == 2) {
+        else if (wagon.getState() == 2) {
             message= "Your wagon broke. You can't continue";
             isLost = true;
         }
@@ -335,6 +344,20 @@ public class OregonTrailGUI {
         JOptionPane.showMessageDialog(null,message,"Game Over",JOptionPane.PLAIN_MESSAGE);
         return isLost;
 
+    }
+
+    /**
+     * Check the Oxen ArrayList to see if all are injured.
+     * @return true if all oxen are injured, false if at least one is not.
+     */
+    private boolean checkAllOxenInjured() {
+        boolean healthyOxenExist = true;
+        for (int i=0;i<oxenArrayList.size();i++) {
+            if (!oxenArrayList.get(i).isInjured()) {
+                return false;
+            }
+        }
+        return true;
     }
 }
 
