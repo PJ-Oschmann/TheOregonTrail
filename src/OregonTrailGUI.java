@@ -220,7 +220,6 @@ public class OregonTrailGUI {
      */
     //Create application
     public OregonTrailGUI() {
-        resetGame();
         ImageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/TestImage1.png"));
         userInput.addActionListener(new ActionListener() {
             @Override
@@ -280,7 +279,7 @@ public class OregonTrailGUI {
             }
         });
 
-        oxenArrayList.add(deleteMeOxen); //TODO: Delete this line when we have the shop
+       writeGameInfo();
     }
 
     //We can use a method to run any daily methods.
@@ -347,6 +346,7 @@ public class OregonTrailGUI {
             scene.loadScene("1861-3-19");
         }
 
+        //Journal for 3/20/1861
         if (date.toString().equals("March 20, 1861")) {
             stopContTravel();
             scene.loadScene("1861-3-20");
@@ -480,7 +480,16 @@ public class OregonTrailGUI {
             isLost = true;
         }
 
-        if (isLost){JOptionPane.showMessageDialog(null,message,"Game Over",JOptionPane.PLAIN_MESSAGE);}
+        String[] gameOverChoices = {"Play again","Main Menu"};
+        if (isLost) {
+            if (JOptionPane.showOptionDialog(null,message,"Game Over",JOptionPane.YES_NO_OPTION,JOptionPane.PLAIN_MESSAGE,null,gameOverChoices,null)==JOptionPane.YES_OPTION) {
+                resetGame();
+            }
+            else {
+                JOptionPane.showMessageDialog(null,"FIXME: Main Menu not implemented.");
+            }
+        }
+        //if (isLost){JOptionPane.showMessageDialog(null,message,"Game Over",JOptionPane.PLAIN_MESSAGE);}
         return isLost;
 
     }
@@ -493,12 +502,16 @@ public class OregonTrailGUI {
     public boolean checkAllOxenInjured() {
 
         boolean allInjured = true;
-        for (Oxen oxen : oxenArrayList) {
-            if (!oxen.isInjured()) {
+        if (!oxenArrayList.isEmpty()) {
+            for (Oxen oxen : oxenArrayList) {
+                if (!oxen.isInjured()) {
 
-                allInjured = false;
+                    allInjured = false;
+                }
             }
         }
+        else {allInjured= false;}
+
         return allInjured;
     }
 
@@ -550,6 +563,7 @@ public class OregonTrailGUI {
         weather = new Weather();
         wagon = new Wagon();
         date = new Date();
+        date.setDate(3,17,1861);
         isTraveling = false;
         writeGameInfo();
     }
