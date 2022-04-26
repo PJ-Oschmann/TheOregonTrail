@@ -14,9 +14,9 @@ public class Date {
      * Empty default constructor for a date object
      */
     public Date() {
-    currentDay = 22;
-    currentMonth = 5;
-    currentYear = 1843;
+    currentDay = 18;
+    currentMonth = 3;
+    currentYear = 1861;
     }
 
     /**
@@ -122,7 +122,7 @@ public class Date {
             }
         }
 
-        if (advanceMonth == true) {
+        if (advanceMonth) {
             //Advance the months
             if (currentMonth == 12) {
                 // System.out.println("Date.java: month is " + currentMonth + " and day is " + currentDay);
@@ -133,7 +133,7 @@ public class Date {
             }
         }
 
-        if (advanceYear == true) {
+        if (advanceYear) {
             currentDay=1;
             currentMonth=1;
             currentYear++;

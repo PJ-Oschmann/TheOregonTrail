@@ -22,7 +22,7 @@ public class SceneManager{
     public void loadScene(String sceneName) {
         if (!sceneIsLoaded) {
             sceneToRead = readText.readScene(sceneName);
-            imageLabel.setIcon(new javax.swing.ImageIcon("assets/"+sceneName+".png"));
+            imageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/"+sceneName+".png"));
             sceneIsLoaded = true;
             continueButton.setVisible(true);
             continueScene();

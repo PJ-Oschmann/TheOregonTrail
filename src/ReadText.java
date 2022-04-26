@@ -10,8 +10,8 @@ public class ReadText {
 
     public ArrayList<String> readScene(String scene) {
 
-        ArrayList<String> textStringArray = new ArrayList<String>();
-        scene = "assets/" + scene + ".txt";
+        ArrayList<String> textStringArray = new ArrayList<>();
+        scene = "src/assets/text/" + scene + ".txt";
         File file = new File(scene);
         try {
             Scanner scanner = new Scanner(file);

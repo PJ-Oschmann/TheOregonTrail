@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import javax.swing.Timer;
 
 public class Scene extends JDialog {
     private JPanel contentPane;
@@ -37,6 +38,7 @@ public class Scene extends JDialog {
         this.pack();
         this.setVisible(true);
 
+
     }
 
     public void chainLoadScene(ArrayList<String> arrayOfScenes) {
@@ -49,10 +51,13 @@ public class Scene extends JDialog {
     public void closeSceneWindow() {
         dispose();
     }
+    /*
     public static void main(String[] args) {
         Scene dialog = new Scene();
         dialog.pack();
         dialog.setVisible(true);
         System.exit(0);
     }
+    */
+
 }

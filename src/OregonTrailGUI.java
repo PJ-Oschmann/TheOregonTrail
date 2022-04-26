@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -29,9 +31,11 @@ public class OregonTrailGUI {
     private JLabel mainInputLabel;
     private JPanel InventoryPanel;
     private JLabel InventoryImagePanel;
+
     private final Scene scene = new Scene();
     //private final DebugGUI debug = new DebugGUI();
     private Random rand = new Random();
+
 
     //Our players
     private Character hattie = new Character("Hattie Campbell", 100, 0);
@@ -58,6 +62,7 @@ public class OregonTrailGUI {
             travel();
         }
     });
+
 
     private static OregonTrailGUI game = new OregonTrailGUI();
 
@@ -104,7 +109,7 @@ public class OregonTrailGUI {
         mainMenu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Close your eyes and imagine going back to the main menu here...");
+
             }
         });
         exitApp.addActionListener(new ActionListener() {
@@ -212,7 +217,7 @@ public class OregonTrailGUI {
      */
     //Create application
     public OregonTrailGUI() {
-
+        resetGame();
         ImageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/TestImage1.png"));
         userInput.addActionListener(new ActionListener() {
             @Override
@@ -249,6 +254,7 @@ public class OregonTrailGUI {
                 else if (userInput.getText().equalsIgnoreCase("C")) {
                     continuousTravel();
                 }
+
                 userInput.setText("");
             }
 
@@ -270,8 +276,6 @@ public class OregonTrailGUI {
                 }
             }
         });
-        augusta.setSick(true);
-        writeGameInfo();
     }
 
     //We can use a method to run any daily methods.
@@ -290,12 +294,14 @@ public class OregonTrailGUI {
      * The game info gets updated.
      */
     public void travel() {
+        checkIfLost();
         int sickCharacters = countSickCharacters();
         date.advanceDate();
         weather.setRandomWeather();
         happiness -= 2*sickCharacters;
         if (sickCharacters>0) {handleSickCharacters();}
         writeGameInfo();
+        doStoryLine();
         //anything else that changes on the day.
     }
 
@@ -318,6 +324,28 @@ public class OregonTrailGUI {
         travelClock.stop();
         isTraveling= false;
     }
+
+    //Check for scenarios to continue the story line.
+    //Most things happen based on distance+location
+    //Jounral entries can appear based on the date.
+    //When modifying this code, do so in chronological order
+    //instead of just appending to the end for readability.
+
+    //Important! If loading a scene, remember to stop continuous travel first! (stopContTravel())
+    public void doStoryLine() {
+        //Journal for 3/19/1861
+
+        if (date.toString().equals("March 19, 1861")) {
+            stopContTravel();
+            scene.loadScene("1861-3-19");
+        }
+
+        if (date.toString().equals("March 20, 1861")) {
+            stopContTravel();
+            scene.loadScene("1861-3-20");
+        }
+    }
+
 
 
 
@@ -423,7 +451,7 @@ public class OregonTrailGUI {
         String message = "";
 
         //If there are no healthy oxen
-        if (checkAllOxenInjured() == false) {
+        if (checkAllOxenInjured()) {
             message = "All your oxen are injured. How careless of you. You can't continue.";
             isLost = true;
         }
@@ -445,7 +473,7 @@ public class OregonTrailGUI {
             isLost = true;
         }
 
-        JOptionPane.showMessageDialog(null,message,"Game Over",JOptionPane.PLAIN_MESSAGE);
+        if (isLost){JOptionPane.showMessageDialog(null,message,"Game Over",JOptionPane.PLAIN_MESSAGE);}
         return isLost;
 
     }
@@ -494,5 +522,29 @@ public class OregonTrailGUI {
             }
         }
     }
+
+
+    //Be sure this respects defaults should any be changed during development!
+    public void resetGame() {
+        hattie  = new Character("Hattie Campbell", 100, 0);
+        charles = new Character("Charles",100,0);
+        augusta = new Character("Augusta",100,0);
+        ben = new Character("Ben",100,0);
+        jake = new Character("Jake",100,0);
+        characterArrayList = new ArrayList<>(List.of(hattie,charles,augusta,ben,jake));
+        oxenArrayList = new ArrayList<>();
+        food = 0; ammunition = 0; medicine = 0; clothes = 0; wagonTools = 0; splints = 0; oxen = 0;
+        isGameWon = false; isGameLost = false;
+        happiness=100;
+        weather = new Weather();
+        wagon = new Wagon();
+        date = new Date();
+        isTraveling = false;
+        writeGameInfo();
+    }
+
+
+
+
 }
 
