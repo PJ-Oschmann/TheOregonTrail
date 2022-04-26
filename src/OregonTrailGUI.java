@@ -7,6 +7,8 @@ import java.awt.event.FocusEvent;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.locks.Condition;
+import javax.swing.Timer;
+import java.awt.event.*;
 
 public class OregonTrailGUI {
 
@@ -27,7 +29,7 @@ public class OregonTrailGUI {
     private JPanel InventoryPanel;
     private JLabel InventoryImagePanel;
     private final Scene scene = new Scene();
-    private final DebugGUI debug = new DebugGUI();
+    //private final DebugGUI debug = new DebugGUI();
     private Random rand = new Random();
 
     //Our players
@@ -47,6 +49,13 @@ public class OregonTrailGUI {
     private Weather weather = new Weather();
     private Wagon wagon = new Wagon();
     private Date date = new Date();
+    boolean isTraveling = false;
+    private Timer travelClock = new Timer(1000, new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            travel();
+        }
+    });
 
     private static OregonTrailGUI game = new OregonTrailGUI();
 
@@ -230,10 +239,17 @@ public class OregonTrailGUI {
                     );
                 }
                 else if (userInput.getText().equalsIgnoreCase("P")) {
-//TODO: IMPLEMENT PARTY MENU AND DETAILS DIALOGUE CLASS
+                    //TODO: IMPLEMENT PARTY MENU AND DETAILS DIALOGUE CLASS
+                }
+                else if (userInput.getText().equalsIgnoreCase("T")) {
+                    travel();
+                }
+                else if (userInput.getText().equalsIgnoreCase("C")) {
+                    continuousTravel();
                 }
                 userInput.setText("");
             }
+
         });
         userInput.addFocusListener(new FocusAdapter() { //Grey text for input box when not focused on
             @Override
@@ -261,10 +277,39 @@ public class OregonTrailGUI {
     //execution should be paused! (Otherwise the days
     //will continue!) Dialogue boxes should handle
     //this. I hope.
-    public void progressDay() {
+
+    /**
+     * Progress the game by 1 day. New weather also gets set.
+     * The game info gets updated.
+     */
+    public void travel() {
+        weather.setRandomWeather();
+        date.advanceDate();
         writeGameInfo();
         //anything else that changes on the day.
     }
+
+
+    /**
+     * Travel until the player says otherwise. A day passes every second.
+     */
+    public void continuousTravel() {
+        if (!isTraveling) {travelClock.start(); isTraveling=true;}
+        else {travelClock.stop(); isTraveling=false;}
+
+    }
+
+    /**
+     * Explicitly stop continuous travel. This method is not
+     * used by the player; rather, it is used in-code if the
+     * player must stop travelling.
+     */
+    public void stopContTravel() {
+        travelClock.stop();
+        isTraveling= false;
+    }
+
+
 
     /**
      * Writes all game info to a text area. It includes:
