@@ -3,6 +3,7 @@ public class Character {
     //Variables
     private int health;
     private int hunger; //Presumably this is the "food value."
+    private int daysSick;
     private String name;
     private String currentHealth;
     private boolean hasClothing = false;
@@ -113,6 +114,12 @@ public class Character {
         isSick = sick;
     }
 
+    public int getDaysSick() {
+        return daysSick;
+    }
 
+    public void setDaysSick(int daysSick) {
+        this.daysSick = daysSick;
+    }
 }
 

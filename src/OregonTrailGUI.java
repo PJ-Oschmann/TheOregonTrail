@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.locks.Condition;
 import javax.swing.Timer;
@@ -39,6 +40,7 @@ public class OregonTrailGUI {
     private Character ben = new Character("Ben",100,0);
     private Character jake = new Character("Jake",100,0);
 
+    private ArrayList<Character> characterArrayList = new ArrayList<>(List.of(hattie,charles,augusta,ben,jake));
     //Array of Oxen
     private ArrayList<Oxen> oxenArrayList = new ArrayList<>();
 
@@ -50,7 +52,7 @@ public class OregonTrailGUI {
     private Wagon wagon = new Wagon();
     private Date date = new Date();
     boolean isTraveling = false;
-    private Timer travelClock = new Timer(1000, new ActionListener() {
+    private Timer travelClock = new Timer(5000, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             travel();
@@ -268,6 +270,7 @@ public class OregonTrailGUI {
                 }
             }
         });
+        augusta.setSick(true);
         writeGameInfo();
     }
 
@@ -279,12 +282,19 @@ public class OregonTrailGUI {
     //this. I hope.
 
     /**
-     * Progress the game by 1 day. New weather also gets set.
+     * Progress the game by 1 day. Each day:
+     * - The date advanced by 1 day
+     * - The weather is randomized
+     * - Happiness decreases if any characters are sick
+     * - Any sick characters undergo their ramifications
      * The game info gets updated.
      */
     public void travel() {
-        weather.setRandomWeather();
+        int sickCharacters = countSickCharacters();
         date.advanceDate();
+        weather.setRandomWeather();
+        happiness -= 2*sickCharacters;
+        if (sickCharacters>0) {handleSickCharacters();}
         writeGameInfo();
         //anything else that changes on the day.
     }
@@ -446,12 +456,43 @@ public class OregonTrailGUI {
      */
     public boolean checkAllOxenInjured() {
         boolean healthyOxenExist = true;
-        for (int i=0;i<oxenArrayList.size();i++) {
-            if (!oxenArrayList.get(i).isInjured()) {
+        for (Oxen oxen : oxenArrayList) {
+            if (!oxen.isInjured()) {
                 return false;
             }
         }
         return true;
+    }
+
+    /**
+     * Count the number of sick characters. For each sick character, 2 happiness is lost.
+     * @return
+     */
+    public int countSickCharacters() {
+        int counter = 0;
+        for (Character character : characterArrayList) {
+           if(character.isSick()) {
+               counter++;
+           }
+        }
+        return counter;
+    }
+
+    /**
+     * Handles sickness for all characters. Each day a character is sick, they lose 5 HP.
+     * They are cured naturally after 5 days.
+     */
+    public void handleSickCharacters() {
+        for (Character character : characterArrayList) {
+            if (character.getDaysSick()>=5) {
+                character.setSick(false);
+                JOptionPane.showMessageDialog(null, character.getName()+" has been cured!",character.getName()+"'s Illness",JOptionPane.PLAIN_MESSAGE);
+            }
+            if (character.isSick()) {
+                character.setDaysSick(character.getDaysSick()+1);
+                character.setHealth(character.getHealth() - 5);
+            }
+        }
     }
 }
 
