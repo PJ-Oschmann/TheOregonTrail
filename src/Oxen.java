@@ -17,6 +17,8 @@ public class Oxen {
         isInjured = injured;
     }
 
+    public boolean getInjured() {return isInjured;}
+
     public int getInjuryChance() {
         return injuryChance;
     }
