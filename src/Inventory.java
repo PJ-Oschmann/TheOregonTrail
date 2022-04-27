@@ -63,111 +63,43 @@ public class Inventory extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 String input = userInput.getText().toUpperCase();
                 switch (input) {
-                    case "I": displayMenu(); invComboBox.setSelectedIndex(0); break;
-                    case "F": displayFood(food); invComboBox.setSelectedIndex(1); break;
-                    case "A": displayAmmo(ammunition); invComboBox.setSelectedIndex(2); break;
-                    case "M": displayMed(medicine); invComboBox.setSelectedIndex(3); break;
-                    case "C": displayClothes(clothes); invComboBox.setSelectedIndex(4); break;
-                    case "W": displayWT(wagonTools); invComboBox.setSelectedIndex(5); break;
-                    case "S": displaySplints(splints); invComboBox.setSelectedIndex(6); break;
-                    case "O": displayOxen(oxen); invComboBox.setSelectedIndex(7); break;
-                    default: displayMenu();
+                    case "I" -> { displayMenu(); invComboBox.setSelectedIndex(0); }
+                    case "F" -> { displayFood(food); invComboBox.setSelectedIndex(1); }
+                    case "A" -> { displayAmmo(ammunition); invComboBox.setSelectedIndex(2); }
+                    case "M" -> { displayMed(medicine); invComboBox.setSelectedIndex(3); }
+                    case "C" -> { displayClothes(clothes); invComboBox.setSelectedIndex(4); }
+                    case "W" -> { displayWT(wagonTools); invComboBox.setSelectedIndex(5); }
+                    case "S" -> { displaySplints(splints); invComboBox.setSelectedIndex(6); }
+                    case "O" -> { displayOxen(oxen); invComboBox.setSelectedIndex(7); }
+                    default -> displayMenu();
                 }
 
+                //TODO: Implement party gui and information to be altered in inventory when items are used
                 if (userInput.getText().equalsIgnoreCase("U") && invComboBox.getSelectedIndex() == 1) {
-                    //TODO: This is what happens when they "use" a food item
-                    invInfo.setText(
-                            """
-                            Player has chosen to use one unit of food.
-                            Proceed to select which character they want to feed.
-                            Requires the character to not be full or have food level == 10.
-                            
-                            Pop up a mini dialogue box saying that the character
-                            is full and cannot consume food if their food level is at 10.
-                            
-                            Enter "I" to return to the inventory menu.
-                            """);
+                    useFood();
+                    //This is what happens when they "use" a food item
                 }
                 else if (userInput.getText().equalsIgnoreCase("U") && invComboBox.getSelectedIndex() == 3) {
-                    //TODO: This is what happens when they "use" the medicine item
-                    invInfo.setText(
-                            """
-                            Player has chosen to use one medicine item.
-                            Proceed to select which character they want to treat.
-                            Requires the character to be ILL to use this item.
-                            
-                            Pop up a mini dialogue saying that the character is
-                            not ILL or has been cured depending on what happens.
-                            
-                            Enter "I" to return to the inventory menu.
-                            """);
+                    //This is what happens when they "use" the medicine item
+                    useMedicine();
                 }
                 else if (userInput.getText().equalsIgnoreCase("E") && invComboBox.getSelectedIndex() == 4) {
-                    //TODO: This is what happens when they "equip" the clothes item
-                    invInfo.setText(
-                            """
-                            Player has chosen to equip one set of clothes.
-                            Proceed to select which character they want to equip.
-                            Requires the character to not have a set of clothes
-                            to equip a set of clothes..
-                            
-                            Pop up a mini dialogue saying that the character already
-                            has a set of clothes equipped and that they do not need
-                            another set.
-                            
-                            Enter "I" to return to the inventory menu.
-                            """);
+                    //This is what happens when they "equip" the clothes item
+                    equipClothes();
                 }
                 else if (userInput.getText().equalsIgnoreCase("U") && invComboBox.getSelectedIndex() == 6) {
-                    //TODO: This is what happens when they "use" the splints item
-                    invInfo.setText(
-                            """
-                            Player has chosen to use one splint.
-                            Proceed to select which character they want to use the
-                            splint on. Requires the character to be INJURED to use
-                            the splints item.
-                            
-                            Pop up a mini dialogue saying that the character is not
-                            INJURED if they try and use the splints on a healthy
-                            character.
-                            
-                            Enter "I" to return to the inventory menu.
-                            """);
+                    //This is what happens when they "use" the splints item
+                    useSplints();
                 }
                 else if (userInput.getText().equalsIgnoreCase("C") && invComboBox.getSelectedIndex() == 7) {
-                    //TODO: This is what happens when they "consume" an OXEN for food
-                    invInfo.setText(
-                            """
-                            Player has chosen to CONSUME one OXEN. Increase total
-                            party food count by 10 units of food.
-                            
-                            Pop up a mini dialogue letting the player know they cannot
-                            consume an OXEN if it will leave them with less than 4 OXEN.
-                            
-                            Enter "I" to return to the inventory menu.
-                            """);
+                    //This is what happens when they "consume" an OXEN for food
+                    consumeOxen();
                 }
                 userInput.setText("");
             }
         });
 
-        userInput.addFocusListener(new FocusAdapter() { //Grey text for input box when not focused on
-            @Override
-            public void focusGained(FocusEvent e) {
-                if (userInput.getText().trim().equals("Input Option Here")) {
-                    userInput.setText("");
-                    userInput.setForeground(Color.BLACK);
-                }
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                if (userInput.getText().trim().equals("")) {
-                    userInput.setText("Input Option Here");
-                    userInput.setForeground(new Color(147, 147,147));
-                }
-            }
-        });
+        userInput.addFocusListener(inputHelp);
     }
 
     //TEXT METHODS and CANCEL METHOD
@@ -336,8 +268,98 @@ public class Inventory extends JDialog {
         ));
     }
 
+    private void useFood() {
+        invInfo.setText(
+                """
+                Player has chosen to use one unit of food.
+                Proceed to select which character they want to feed.
+                Requires the character to not be full or have food level == 10.
+                
+                Pop up a mini dialogue box saying that the character
+                is full and cannot consume food if their food level is at 10.
+                
+                Enter "I" to return to the inventory menu.
+                """);
+    }
+
+    private void useMedicine() {
+        invInfo.setText(
+                """
+                Player has chosen to use one medicine item.
+                Proceed to select which character they want to treat.
+                Requires the character to be ILL to use this item.
+                
+                Pop up a mini dialogue saying that the character is
+                not ILL or has been cured depending on what happens.
+                
+                Enter "I" to return to the inventory menu.
+                """);
+    }
+
+    private void equipClothes() {
+        invInfo.setText(
+                """
+                Player has chosen to equip one set of clothes.
+                Proceed to select which character they want to equip.
+                Requires the character to not have a set of clothes
+                to equip a set of clothes..
+                
+                Pop up a mini dialogue saying that the character already
+                has a set of clothes equipped and that they do not need
+                another set.
+                
+                Enter "I" to return to the inventory menu.
+                """);
+    }
+
+    private void useSplints() {
+        invInfo.setText(
+                """
+                Player has chosen to use one splint.
+                Proceed to select which character they want to use the
+                splint on. Requires the character to be INJURED to use
+                the splints item.
+                
+                Pop up a mini dialogue saying that the character is not
+                INJURED if they try and use the splints on a healthy
+                character.
+                
+                Enter "I" to return to the inventory menu.
+                """);
+    }
+
+    private void consumeOxen() {
+        invInfo.setText(
+                """
+                Player has chosen to CONSUME one OXEN. Increase total
+                party food count by 10 units of food.
+                
+                Pop up a mini dialogue letting the player know they cannot
+                consume an OXEN if it will leave them with less than 4 OXEN.
+                
+                Enter "I" to return to the inventory menu.
+                """);
+    }
+
+    private FocusAdapter inputHelp = new FocusAdapter() { //Grey text for input box when not focused on
+        @Override
+        public void focusGained(FocusEvent e) {
+            if (userInput.getText().trim().equals("Input Option Here")) {
+                userInput.setText("");
+                userInput.setForeground(Color.BLACK);
+            }
+        }
+
+        @Override
+        public void focusLost(FocusEvent e) {
+            if (userInput.getText().trim().equals("")) {
+                userInput.setText("Input Option Here");
+                userInput.setForeground(new Color(147, 147,147));
+            }
+        }
+    };
+
     private void onCancel() {
-        // add your code here if necessary
         dispose();
     }
 }

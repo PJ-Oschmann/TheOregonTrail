@@ -81,42 +81,16 @@ public class OregonTrailGUI {
      */
     //Create application
     public OregonTrailGUI() {
-        /*userInput.addActionListener(AL);
-            ImageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/MainMenu.png"));
-        while (inMenu) {
-            storyTextArea.setText(
-                    """
-                            THE OREGON TRAIL -- REMAKE
-                                                
-                            P: PLAY
-                            E: EXIT
-                            """
-            );
-        }
-        if(!inMenu) userInput.removeActionListener(AL);*/
-
         //InGame = true and user is playing the game now:
-//TODO: INTRO SCENE AND DIALOGUE + STORY TEXT BOX
-        ImageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/TestImage1.png"));
-//TODO: SHOP HERE FOR USER STARTING GAME
-        userInput.addActionListener(gameMenu);
-        userInput.addFocusListener(new FocusAdapter() { //Grey text for input box when not focused on
-            @Override
-            public void focusGained(FocusEvent e) {
-                if (userInput.getText().trim().equals("Enter 'H' to display input options")) {
-                    userInput.setText("");
-                    userInput.setForeground(Color.BLACK);
-                }
-            }
+//TODO: MAIN MENU SCREEN
 
-            @Override
-            public void focusLost(FocusEvent e) {
-                if (userInput.getText().trim().equals("")) {
-                    userInput.setText("Enter 'H' to display input options");
-                    userInput.setForeground(new Color(147, 147,147));
-                }
-            }
-        });
+//TODO: INTRO SCENE AND DIALOGUE + STORY TEXT BOX
+
+//TODO: SHOP HERE FOR USER STARTING GAME
+
+//TODO: NOW USER GETS TO START PLAYING GAME
+        userInput.addActionListener(gameMenu);
+        userInput.addFocusListener(inputHelp);
         augusta.setSick(true);
         writeGameInfo();
     }
@@ -527,6 +501,24 @@ public class OregonTrailGUI {
         @Override
         public void actionPerformed(ActionEvent e) {
             showAbout("Images created by Aleece Al-Olimat.\nImage of Oregon by Kendra of Clker.com, in the Public Domain.","Image Credits");
+        }
+    };
+
+    private FocusAdapter inputHelp = new FocusAdapter() { //Grey text for input box when not focused on
+        @Override
+        public void focusGained(FocusEvent e) {
+            if (userInput.getText().trim().equals("Enter 'H' to display input options")) {
+                userInput.setText("");
+                userInput.setForeground(Color.BLACK);
+            }
+        }
+
+        @Override
+        public void focusLost(FocusEvent e) {
+            if (userInput.getText().trim().equals("")) {
+                userInput.setText("Enter 'H' to display input options");
+                userInput.setForeground(new Color(147, 147,147));
+            }
         }
     };
 }
