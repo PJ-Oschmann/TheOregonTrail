@@ -1,122 +1,56 @@
-import java.util.*;
-import java.util.List;
+import javax.swing.*;
+import java.awt.event.*;
 
-public class Shop {
-
-    //private final Game game;
-
+public class Shop extends JDialog {
+    private JPanel shopPane;
+    private JPanel shopMenu;
+    private JComboBox shopComboBox;
+    private JTextArea shopInfo;
+    private JTextField shopInput;
+    private JLabel inputLabel;
+    private JPanel mainPanel;
+    private JLabel shopImage;
     //B = Buy; S = Sell
-    private final int winterCloBPrice = 10;
-    private final int ammunitionBPrice = 4;
-    private final int foodBPrice = 3;
-    private final int medBPrice = 3;
-    private final int splintBPrice = 8;
-    private final int toolsBPrice = 10;
-    private final int oxenBPrice = 10;
+    private final int clothesBuyPrice = 10;
+    private final int ammoBuyPrice = 4;
+    private final int foodBuyPrice = 3; //for 5 units of food
+    private final int medBuyPrice = 3;
+    private final int splintBuyPrice = 8;
+    private final int wagonToolsBuyPrice = 10;
+    private final int oxenBuyPrice = 10;
 
-    private final int winterCloSPrice = 8;
-    private final int ammunitionSPrice = 3;
-    private final int foodSPrice = 2;
-    private final int medSPrice = 2;
-    private final int splintSPrice = 5;
-    private final int toolsSPrice = 8;
-    private final int oxenSPrice = 8;
-    private int money = 0;
+    private final int clothesSellPrice = 8;
+    private final int ammoSellPrice = 3;
+    private final int foodSellPrice = 2; // for 5 units of food
+    private final int medSellPrice = 2;
+    private final int splintSellPrice = 5;
+    private final int toolsSellPrice = 8;
+    private final int oxenSellPrice = 8;
+    private int money;
 
-    private final ArrayList<String> winterCloNames = new ArrayList<>(List.of("winter clothing","w"));
-    private final ArrayList<String> ammunitionNames = new ArrayList<>(List.of("ammunition","a"));
-    private final ArrayList<String> foodNames = new ArrayList<>(List.of("food","f"));
-    private final ArrayList<String> medicineNames = new ArrayList<>(List.of("medicine","m","meds"));
-    private final ArrayList<String> splintNames = new ArrayList<>(List.of("splint","s"));
-    private final ArrayList<String> toolsNames = new ArrayList<>(List.of("tools","t"));
-    private final ArrayList<String> oxenNames = new ArrayList<>(List.of("oxen","o","ox","oxes"));
-
-    private final ArrayList<ArrayList<String>> arrayOfNameArrays = new ArrayList<>(List.of(winterCloNames,ammunitionNames,foodNames,medicineNames,splintNames,toolsNames,oxenNames));
-    public Shop(int money) {
-        //this.game = game;
-    }
+    public Shop(int money, int food, int ammo, int medicine, int clothes, int wagonTools, int splints, int oxen) {
+        setContentPane(shopPane);
+        setModal(true);
 
 
-    //I made a method to quickly check alt-names for items. I was bored. ~PJ
-    public String checkItemName(String itemName) {
-        for (int i=0;i<arrayOfNameArrays.size();i++) {
-            for(int j=0;j<arrayOfNameArrays.get(i).size();j++) {
-                if (arrayOfNameArrays.get(i).get(j).equals(itemName.toLowerCase())) {
-                    System.out.println("Found " + itemName + " as " + arrayOfNameArrays.get(i).get(0));
-                    return arrayOfNameArrays.get(i).get(0);
-                }
+        // call onCancel() when cross is clicked
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                onCancel();
             }
-        }
-        return "item_not_found";
+        });
+
+        // call onCancel() on ESCAPE
+        shopPane.registerKeyboardAction(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                onCancel();
+            }
+        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
-    //                                             !!! CHECKING FOR ITEM NAMES !!!
-    //Item names should include any interpretation the player sees the item as.
-    //This means they should be immune to case, character inputs should be allowed, and common abbreviations don't hurt anybody.
-    //Add alt-names to the array list above.
-    //If at some point we add items with the same first letter, their respective char assignments should
-    //be made clear in the GUI
-
-    public void buyItem(String item, int amount) {
-        if (checkItemName(item).equals("winter clothing") && money >= winterCloBPrice) {
-
-            money -= (winterCloBPrice*amount);
-        }
-        else if (checkItemName(item).equals("ammunition")) {
-            //Add item from player's inventory
-            money -= (ammunitionBPrice*amount);
-        }
-        else if (checkItemName(item).equals("food")) {
-            //Add item from player's inventory
-            money -= (foodBPrice*amount);
-        }
-        else if (checkItemName(item).equals("medicine")) {
-            //Add item from player's inventory
-            money -= (medBPrice*amount);
-        }
-        else if (checkItemName(item).equals("splint")) {
-            //Add item from player's inventory
-            money -= (splintBPrice*amount);
-        }
-        else if (checkItemName(item).equals("tools")) {
-            //Add item from player's inventory
-            money -= (toolsBPrice*amount);
-        }
-        else if (checkItemName(item).equals("oxen")) {
-            //Add item from player's inventory
-            money -= (oxenBPrice*amount);
-        }
-    }
-
-    //TODO: Implement checks for if player has enough of item to sell
-    public void sellItem(String item, int amount) {
-        if (checkItemName(item).equals("winter clothing")) {
-            //Remove item from player's inventory
-           money += (winterCloSPrice*amount);
-        }
-        else if (checkItemName(item).equals("ammunition")) {
-            //Remove item from player's inventory
-            money += (ammunitionSPrice*amount);
-        }
-        else if (checkItemName(item).equals("food")) {
-            //Remove item from player's inventory
-            money += (foodSPrice*amount);
-        }
-        else if (checkItemName(item).equals("medicine")) {
-            //Remove item from player's inventory
-            money += (medSPrice*amount);
-        }
-        else if (checkItemName(item).equals("splint")) {
-            //Remove item from player's inventory
-            money += (splintSPrice*amount);
-        }
-        else if (checkItemName(item).equals("tools")) {
-            //Remove item from player's inventory
-            money += (toolsSPrice*amount);
-        }
-        else if (checkItemName(item).equals("oxen")) {
-            //Remove item from player's inventory
-            money += (oxenSPrice*amount);
-        }
+    private void onCancel() {
+        // add your code here if necessary
+        dispose();
     }
 }

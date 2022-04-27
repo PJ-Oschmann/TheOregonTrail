@@ -45,15 +45,15 @@ public class OregonTrailGUI {
     private ArrayList<Oxen> oxenArrayList = new ArrayList<>();
 
     //game variables
-    private int food = 0, ammunition = 0, medicine = 0, clothes = 0, wagonTools = 0, splints = 0, oxen = 0;
+    private int money = 250, food = 0, ammunition = 0, medicine = 0, clothes = 0, wagonTools = 0, splints = 0, oxen = 0;
     private boolean isGameWon = false, isGameLost = false;
     private int happiness=100;
     private Weather weather = new Weather();
     private Wagon wagon = new Wagon();
     private Date date = new Date();
     private boolean isTraveling = false;
-    private boolean inMenu = true;
-    private boolean inGame = false;
+    private static boolean inMenu = true;
+    private static boolean inGame = false;
     private Timer travelClock = new Timer(5000, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -81,8 +81,13 @@ public class OregonTrailGUI {
      */
     //Create application
     public OregonTrailGUI() {
-        //InGame = true and user is playing the game now:
+
+//InGame = true and user is playing the game now:
 //TODO: MAIN MENU SCREEN
+        if(inMenu) {
+            ImageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/MainMenu.png"));
+            userInput.addActionListener(AL);
+        }
 
 //TODO: INTRO SCENE AND DIALOGUE + STORY TEXT BOX
 
@@ -433,6 +438,11 @@ public class OregonTrailGUI {
             } else if (userInput.getText().equalsIgnoreCase("P")) {
                 inMenu = false;
                 inGame = true;
+                ImageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/MainGame.png"));
+                userInput.removeActionListener(AL);
+                //TODO: Shop menu/GUI opens here
+                Shop shop = new Shop(money, food, ammunition, medicine, clothes, wagonTools, splints, oxen);
+                shop.setVisible(true);
             }
         }
     };
@@ -465,7 +475,9 @@ public class OregonTrailGUI {
     private static ActionListener returnMainMenuItem = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.out.println("Close your eyes and imagine going back to the main menu here...");
+            //TODO: Reset image to main menu, character states to 0, location to 0, date to 0, money to 0, etc.
+            inGame = false;
+            inMenu = true;
         }
     };
 
@@ -493,6 +505,7 @@ public class OregonTrailGUI {
     private static ActionListener aboutHattieMenuItem = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
+            //TODO: fill this out with persona/storyboarding
             showAbout("(Replace me with actual text) Hattie is a young lass who is setting out for a new life in Oregon. Her twin sister died. What a shame.","About Hattie");
         }
     };

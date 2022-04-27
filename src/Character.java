@@ -73,10 +73,6 @@ public class Character {
         return name;
     }
 
-
-
-
-
     //Setters
     /**
      * Player's health setter

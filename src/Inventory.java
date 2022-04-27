@@ -8,7 +8,6 @@ public class Inventory extends JDialog {
     private JLabel InventoryImageLabel;
     private JPanel mainPanel;
     private JPanel textPanel;
-    private JPanel innerPanel;
     private JComboBox<String> invComboBox;
     private JTextField userInput;
     private JLabel invInputLabel;
