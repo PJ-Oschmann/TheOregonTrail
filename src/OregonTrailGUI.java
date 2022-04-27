@@ -128,11 +128,16 @@ public class OregonTrailGUI {
         menuBar.add(menuMain);
         JMenu menuAbout= new JMenu("About");
         menuBar.add(menuAbout);
+        JMenu menuHelp = new JMenu("Help");
+        menuBar.add(menuHelp);
 
-        JMenuItem mainMenu = new JMenuItem("Main Menu");//Prompts are you sure window if game condition is not win/lose
-        JMenuItem exitApp = new JMenuItem("Exit");     //Prompts are you sure window if game condition is not win/lose
-        menuMain.add(mainMenu);                                      //returns to main menu, resets game
-        menuMain.add(exitApp);                                      //exits app
+        //MAIN menu bar items
+        JMenuItem mainMenu = new JMenuItem("Main Menu");
+        JMenuItem exitApp = new JMenuItem("Exit");
+        menuMain.add(mainMenu);
+        menuMain.add(exitApp);
+
+        //ABOUT menu bar items
         JMenuItem projectDescription = new JMenuItem("Project Description");
         JMenuItem aboutProject = new JMenuItem("About This Project");
         JMenuItem aboutHattie = new JMenuItem("About Hattie Campbell");
@@ -141,6 +146,15 @@ public class OregonTrailGUI {
         menuAbout.add(aboutProject);
         menuAbout.add(aboutHattie);
         menuAbout.add(imageCredits);
+
+        //HELP menu bar items
+        JMenuItem howToWin = new JMenuItem("How do I win?");
+        JMenuItem howToPlay = new JMenuItem("How do I play?");
+        JMenuItem howToLose = new JMenuItem("How do I lose?");
+        menuHelp.add(howToWin);
+        menuHelp.add(howToPlay);
+        menuHelp.add(howToLose);
+
         frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);   //makes fullscreen
         frame.setVisible(true);
 
@@ -153,6 +167,11 @@ public class OregonTrailGUI {
         aboutProject.addActionListener(aboutProjMenuItem);
         aboutHattie.addActionListener(aboutHattieMenuItem);
         imageCredits.addActionListener(imgCredMenuItem);
+
+        //Help:
+        howToWin.addActionListener(winMenuItem);
+        howToPlay.addActionListener(playMenuItem);
+        howToLose.addActionListener(loseMenuItem);
         menuBar.setVisible(true);
     }
 
@@ -483,14 +502,18 @@ public class OregonTrailGUI {
     private static ActionListener projDescMenuItem = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            showAbout("The Oregon Trail is an educational game to teach students about the 1800s trip from Missouri to Oregon. This project aims to recreate this experience using the Java programming language. With incredible high-resolution graphics, the experience is more immersive than ever before","Project Description");
+            showAbout("The Oregon Trail is an educational game to teach students about the 1800s trip from " +
+                    "Missouri to Oregon. This project aims to recreate this experience using the Java programming " +
+                    "language. With incredible high-resolution graphics, the experience is more immersive than ever " +
+                    "before","Project Description");
         }
     };
 
     private static ActionListener aboutProjMenuItem = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            showAbout("This project was completed by Team Hollenberg Station, consisting of Aleece Al-Olimat, Ken Zhu, and PJ Oschmann","About This Project");
+            showAbout("This project was completed by Team Hollenberg Station, consisting of Aleece Al-Olimat, " +
+                    "Ken Zhu, and PJ Oschmann","About This Project");
         }
     };
 
@@ -498,14 +521,47 @@ public class OregonTrailGUI {
         @Override
         public void actionPerformed(ActionEvent e) {
             //TODO: fill this out with persona/storyboarding
-            showAbout("(Replace me with actual text) Hattie is a young lass who is setting out for a new life in Oregon. Her twin sister died. What a shame.","About Hattie");
+            showAbout("(Replace me with actual text) Hattie is a young lass who is setting out for a new life " +
+                    "in Oregon. Her twin sister died. What a shame.","About Hattie");
         }
     };
 
     private static ActionListener imgCredMenuItem = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            showAbout("Images created by Aleece Al-Olimat.\nImage of Oregon by Kendra of Clker.com, in the Public Domain.","Image Credits");
+            showAbout("Images created by Aleece Al-Olimat.\nImage of Oregon by Kendra of Clker.com, in the " +
+                    "Public Domain.","Image Credits");
+        }
+    };
+
+    private static ActionListener winMenuItem = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            showAbout("The main goal of The Oregon Trail is to simulate travel across the country from the " +
+                    "Mideast to Oregon City, Oregon. The way you win this game is if you have at least one party member" +
+                    "alive by the time you get to Oregon City.","How do I win in the Oregon Trail Game?");
+        }
+    };
+
+    private static ActionListener playMenuItem = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            showAbout("The Oregon Trail game can be fully played purely with text input. There is an text input " +
+                    "box usually in the bottom right area of the screen where you can type a letter and press enter to" +
+                    "input an action or selection. There are also some dropdown menus in the Shop and Inventory that you " +
+                    "can navigate with your mouse for easier access." , "How do I play The Oregon Trail?");
+        }
+    };
+
+    private static ActionListener loseMenuItem = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            showAbout("The Oregon Trail has many perilous obstacles that can cause you to lose the game. These " +
+                    "obstacles are historically accurate and are difficulties pioneers who traversed the country in the " +
+                    "mid 1800s likely faced when traveling across the country. Ranging from bad weather, starvation, " +
+                    "disease, injury and more, you lose the game if your party can no longer travel. This means running " +
+                    "out of food, all party members dying, your wagon breaking from use and damage, the party giving up, " +
+                    "or having no oxen left to pull your cart.","How do I lose The Oregon Trail?");
         }
     };
 

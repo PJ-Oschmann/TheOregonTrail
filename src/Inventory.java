@@ -41,17 +41,6 @@ public class Inventory extends JDialog {
                 }
         }});
 
-        // call onCancel() when cross is clicked
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        addWindowListener(windowClose);
-
-        // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-
         //Action listener for userInput
         userInput.addActionListener(new ActionListener() {
             @Override
@@ -93,8 +82,18 @@ public class Inventory extends JDialog {
                 userInput.setText("");
             }
         });
-
         userInput.addFocusListener(inputHelp);
+
+        // call onCancel() when cross is clicked
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        addWindowListener(windowClose);
+
+        // call onCancel() on ESCAPE
+        contentPane.registerKeyboardAction(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                onCancel();
+            }
+        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     //TEXT METHODS and CANCEL METHOD
@@ -133,8 +132,8 @@ public class Inventory extends JDialog {
                 
                 You have %d units of FOOD.
                 
-                Type "U" to use this item.
-                Type "I" to return to the INVENTORY menu.
+                Enter "U" to use this item.
+                Enter "I" to return to the INVENTORY menu.
                 """, food
         ));
     }
@@ -151,7 +150,7 @@ public class Inventory extends JDialog {
                 
                 You have %d boxes of AMMUNITION.
                     
-                Type "I" to return to the INVENTORY menu.
+                Enter "I" to return to the INVENTORY menu.
                 """, ammo
         ));
     }
@@ -171,8 +170,8 @@ public class Inventory extends JDialog {
                 
                 You have %d units of MEDICINE.
                 
-                Type "U" to use this item.
-                Type "I" to return to the INVENTORY menu.
+                Enter "U" to use this item.
+                Enter "I" to return to the INVENTORY menu.
                 """, med
         ));
     }
@@ -192,8 +191,8 @@ public class Inventory extends JDialog {
                 
                 You have %d sets of CLOTHES.
                 
-                Type "E" to equip this item onto a character.
-                Type "I" to return to the INVENTORY menu.
+                Enter "E" to equip this item onto a character.
+                Enter "I" to return to the INVENTORY menu.
                 """, clothes
         ));
     }
@@ -216,7 +215,7 @@ public class Inventory extends JDialog {
 
                 You have %d spare WAGON TOOLS.
                 
-                Type "I" to return to the INVENTORY menu.
+                Enter "I" to return to the INVENTORY menu.
                 """, wagonTools
         ));
     }
@@ -238,8 +237,8 @@ public class Inventory extends JDialog {
                  
                 You have %d SPLINTS.
                 
-                Type "U" to use this item.
-                Type "I" to return to the INVENTORY menu.
+                Enter "U" to use this item.
+                Enter "I" to return to the INVENTORY menu.
                 """, splints
         ));
     }
@@ -260,8 +259,8 @@ public class Inventory extends JDialog {
                                             
                 You have %d OXEN.
                 
-                Type "C" to slaughter and harvest an OXEN for 10 FOOD.
-                Type "I" to return to the INVENTORY menu.
+                Enter "C" to slaughter and harvest an OXEN for 10 FOOD.
+                Enter "I" to return to the INVENTORY menu.
                 """, oxen
         ));
     }
@@ -350,10 +349,8 @@ public class Inventory extends JDialog {
 
         @Override
         public void focusLost(FocusEvent e) {
-            if (userInput.getText().trim().equals("")) {
-                userInput.setText("Input Option Here");
-                userInput.setForeground(new Color(147, 147,147));
-            }
+            userInput.setText("Input Option Here");
+            userInput.setForeground(new Color(147, 147,147));
         }
     };
 

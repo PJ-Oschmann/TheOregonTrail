@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 
 public class Shop extends JDialog {
@@ -42,13 +43,13 @@ public class Shop extends JDialog {
                 int input = shopComboBox.getSelectedIndex();
                 switch (input) {
                     case 0 -> displayMenu();
-                    case 1 -> displayFood(food, foodBuyPrice, foodSellPrice);
-                    case 2 -> displayAmmo(ammo, ammoBuyPrice, ammoSellPrice);
-                    case 3 -> displayMed(medicine, medBuyPrice, medSellPrice);
-                    case 4 -> displayClothes(clothes, clothesBuyPrice, clothesSellPrice);
-                    case 5 -> displayWT(wagonTools, toolsBuyPrice, toolsSellPrice);
-                    case 6 -> displaySplints(splints, splintBuyPrice, splintSellPrice);
-                    case 7 -> displayOxen(oxen, oxenBuyPrice, oxenSellPrice);
+                    case 1 -> displayFood(food);
+                    case 2 -> displayAmmo(ammo);
+                    case 3 -> displayMed(medicine);
+                    case 4 -> displayClothes(clothes);
+                    case 5 -> displayWT(wagonTools);
+                    case 6 -> displaySplints(splints);
+                    case 7 -> displayOxen(oxen);
                     default -> shopInfo.setText("ERROR IN SWITCH");
                 }
             }});
@@ -59,13 +60,13 @@ public class Shop extends JDialog {
                 String input = shopInput.getText().toUpperCase();
                 switch (input) {
                     case "I" -> { displayMenu(); shopComboBox.setSelectedIndex(0); }
-                    case "F" -> { displayFood(food, foodBuyPrice, foodSellPrice); shopComboBox.setSelectedIndex(1); }
-                    case "A" -> { displayAmmo(ammo, ammoBuyPrice, ammoSellPrice); shopComboBox.setSelectedIndex(2); }
-                    case "M" -> { displayMed(medicine, medBuyPrice, medSellPrice); shopComboBox.setSelectedIndex(3); }
-                    case "C" -> { displayClothes(clothes, clothesBuyPrice, clothesSellPrice); shopComboBox.setSelectedIndex(4); }
-                    case "W" -> { displayWT(wagonTools, toolsBuyPrice, toolsSellPrice); shopComboBox.setSelectedIndex(5); }
-                    case "S" -> { displaySplints(splints, splintBuyPrice, splintSellPrice); shopComboBox.setSelectedIndex(6); }
-                    case "O" -> { displayOxen(oxen, oxenBuyPrice, oxenSellPrice); shopComboBox.setSelectedIndex(7); }
+                    case "F" -> { displayFood(food); shopComboBox.setSelectedIndex(1); }
+                    case "A" -> { displayAmmo(ammo); shopComboBox.setSelectedIndex(2); }
+                    case "M" -> { displayMed(medicine); shopComboBox.setSelectedIndex(3); }
+                    case "C" -> { displayClothes(clothes); shopComboBox.setSelectedIndex(4); }
+                    case "W" -> { displayWT(wagonTools); shopComboBox.setSelectedIndex(5); }
+                    case "S" -> { displaySplints(splints); shopComboBox.setSelectedIndex(6); }
+                    case "O" -> { displayOxen(oxen); shopComboBox.setSelectedIndex(7); }
                     default -> displayMenu();
                 }
 
@@ -73,6 +74,7 @@ public class Shop extends JDialog {
             }
         });
 
+        shopInput.addFocusListener(inputHelp);
 
         // call onCancel() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -108,65 +110,199 @@ public class Shop extends JDialog {
             
             M: RETURN TO THIS MENU
             
-            Press ESC to exit the SHOP screen.
+            Press ESC to exit the SHOP.
             """
         );
     }
 
-    private void displayFood(int food, int bPrice, int sPrice) {
-        shopInfo.setText(
+    private void displayFood(int food) {
+        shopInfo.setText(String.format(
                 """
+                FOOD is a resource that prevents your party members
+                from going HUNGRY. If the party has 0 units of FOOD
+                for three days in a row, the game will end.
                 
-                """
-        );
+                Each unit of FOOD given to a party member will
+                increase their food level by 2.
+                
+                You may buy FOOD from THE SHOP in bundles of 5 units:
+                BUYING 1 bundle of 5 units of FOOD costs $%d.
+                
+                You may sell FOOD to THE SHOP in bundles of 5 units:
+                SELLING 1 bundle of 5 units of FOOD pays $%d.
+                
+                You currently have %d units of FOOD in your inventory.
+                
+                Enter "B" to buy FOOD.
+                Enter "S" to sell FOOD.
+                Enter "M" to return to the SHOP MENU.
+                """, foodBuyPrice, foodSellPrice, food
+        ));
     }
 
-    private void displayAmmo(int ammo, int bPrice, int sPrice) {
-        shopInfo.setText(
+    private void displayAmmo(int ammo) {
+        shopInfo.setText(String.format(
                 """
+                AMMUNITION is a consumable resource used in
+                combination with one daily action to go HUNTING.
+
+                One AMMUNITION box is consumed when your party goes
+                hunting. HUNTING yields about double the food for
+                its cost relative to buying food (on average).
                 
-                """
-        );
+                You may buy AMMUNITION from THE SHOP:
+                BUYING 1 box of AMMUNITION costs $%d.
+                
+                You may sell AMMUNITION to THE SHOP:
+                SELLING 1 box of AMMUNITION pays $%d.
+                
+                You have %d boxes of AMMUNITION in your INVENTORY.
+                
+                Enter "B" to buy AMMUNITION.
+                Enter "S" to sell AMMUNITION.
+                Enter "M" to return to the SHOP MENU.
+                """, ammoBuyPrice, ammoSellPrice, ammo
+        ));
     }
 
-    private void displayMed(int meds, int bPrice, int sPrice) {
-        shopInfo.setText(
+    private void displayMed(int meds) {
+        shopInfo.setText(String.format(
                 """
+                MEDICINE is a resource that cures your party members
+                of illness. When a party member is ILL, their food level
+                consumption is increased by 2 a day on top of the travel
+                consumption. That party member will also lose 5 HP a day
+                and party happiness is reduced by 2 for each member that is
+                sick each day.
+                                            
+                One unit of MEDICINE can cure a single party member, and
+                can only be used on a character who is ILL.
                 
-                """
-        );
+                You may buy MEDICINE from THE SHOP:
+                BUYING 1 unit of MEDICINE costs $%d.
+                
+                You may sell MEDICINE to THE SHOP:
+                SELLING 1 1 unit of MEDICINE pays $%d.
+                
+                You have %d units if MEDICINE in your INVENTORY.
+                
+                Enter "B" to buy MEDICINE.
+                Enter "S" to sell MEDICINE.
+                Enter "M" to return to the SHOP MENU.
+                """, medBuyPrice, medSellPrice, meds
+        ));
     }
 
-    private void displayClothes(int clothes, int bPrice, int sPrice) {
-        shopInfo.setText(
+    private void displayClothes(int clothes) {
+        shopInfo.setText(String.format(
                 """
+                CLOTHES are a one-time consumable resource that will
+                protect your party members from weather for the remainder
+                of their journey. If a character is not protected from
+                extreme weather, they may fall ILL and lose health as a
+                consequence.
                 
-                """
-        );
+                This resource can be produced on the trip using a total of
+                3 daily actions to produce clothes. This item may only be
+                used on characters who do not already have a set of CLOTHES.
+                
+                You may buy CLOTHES from THE SHOP:
+                BUYING 1 set of CLOTHES costs $%d.
+                
+                You may sell CLOTHES from THE SHOP:
+                SELLING 1 set of CLOTHES pays $%d.
+                
+                You have %d sets of CLOTHES in your INVENTORY.
+                
+                Enter "B" to buy FOOD.
+                Enter "S" to sell FOOD.
+                Enter "M" to return to the SHOP menu.
+                """, clothesBuyPrice, clothesSellPrice, clothes
+        ));
     }
 
-    private void displayWT(int wagonTools, int bPrice, int sPrice) {
-        shopInfo.setText(
+    private void displayWT(int wagonTools) {
+        shopInfo.setText(String.format( //TODO: NEEDS EDITING
                 """
+                CLOTHES are a one-time consumable resource that will
+                protect your party members from weather for the remainder
+                of their journey. If a character is not protected from
+                extreme weather, they may fall ILL and lose health as a
+                consequence.
                 
-                """
-        );
+                This resource can be produced on the trip using a total of
+                3 daily actions to produce clothes. This item may only be
+                used on characters who do not already have a set of CLOTHES.
+                
+                You may buy CLOTHES from THE SHOP:
+                BUYING 1 set of CLOTHES costs $%d.
+                
+                You may sell CLOTHES from THE SHOP:
+                SELLING 1 set of CLOTHES pays $%d.
+                
+                You have %d sets of CLOTHES in your INVENTORY.
+                
+                Enter "B" to buy FOOD.
+                Enter "S" to sell FOOD.
+                Enter "M" to return to the SHOP menu.
+                """, toolsBuyPrice, toolsSellPrice, wagonTools
+        ));
     }
 
-    private void displaySplints(int splints, int bPrice, int sPrice) {
-        shopInfo.setText(
+    private void displaySplints(int splints) {
+        shopInfo.setText(String.format( //TODO: NEEDS EDITING
                 """
+                CLOTHES are a one-time consumable resource that will
+                protect your party members from weather for the remainder
+                of their journey. If a character is not protected from
+                extreme weather, they may fall ILL and lose health as a
+                consequence.
                 
-                """
-        );
+                This resource can be produced on the trip using a total of
+                3 daily actions to produce clothes. This item may only be
+                used on characters who do not already have a set of CLOTHES.
+                
+                You may buy CLOTHES from THE SHOP:
+                BUYING 1 set of CLOTHES costs $%d.
+                
+                You may sell CLOTHES from THE SHOP:
+                SELLING 1 set of CLOTHES pays $%d.
+                
+                You have %d sets of CLOTHES in your INVENTORY.
+                
+                Enter "B" to buy FOOD.
+                Enter "S" to sell FOOD.
+                Enter "M" to return to the SHOP menu.
+                """, splintBuyPrice, splintSellPrice, splints
+        ));
     }
 
-    private void displayOxen(int oxen, int bPrice, int sPrice) {
-        shopInfo.setText(
+    private void displayOxen(int oxen) {
+        shopInfo.setText(String.format( //TODO: NEEDS EDITING
                 """
+                CLOTHES are a one-time consumable resource that will
+                protect your party members from weather for the remainder
+                of their journey. If a character is not protected from
+                extreme weather, they may fall ILL and lose health as a
+                consequence.
                 
-                """
-        );
+                This resource can be produced on the trip using a total of
+                3 daily actions to produce clothes. This item may only be
+                used on characters who do not already have a set of CLOTHES.
+                
+                You may buy CLOTHES from THE SHOP:
+                BUYING 1 set of CLOTHES costs $%d.
+                
+                You may sell CLOTHES from THE SHOP:
+                SELLING 1 set of CLOTHES pays $%d.
+                
+                You have %d sets of CLOTHES in your INVENTORY.
+                
+                Enter "B" to buy FOOD.
+                Enter "S" to sell FOOD.
+                Enter "M" to return to the SHOP menu. 
+                """, oxenBuyPrice, oxenSellPrice, oxen
+        ));
     }
 
 
@@ -178,6 +314,22 @@ public class Shop extends JDialog {
     private WindowAdapter closeWindow = new WindowAdapter() {
         public void windowClosing(WindowEvent e) {
             onCancel();
+        }
+    };
+
+    private FocusAdapter inputHelp = new FocusAdapter() { //Grey text for input box when not focused on
+        @Override
+        public void focusGained(FocusEvent e) {
+            if (shopInput.getText().trim().equals("Input Option Here")) {
+                shopInput.setText("");
+                shopInput.setForeground(Color.BLACK);
+            }
+        }
+
+        @Override
+        public void focusLost(FocusEvent e) {
+            shopInput.setText("Input Option Here");
+            shopInput.setForeground(new Color(147, 147,147));
         }
     };
 }
