@@ -112,6 +112,7 @@ public class Inventory extends JDialog {
                 W: WAGON TOOLS
                 S: SPLINTS
                 O: OXEN
+                
                 I: RETURN TO THIS MENU
                 
                 Press ESC to exit the INVENTORY screen.

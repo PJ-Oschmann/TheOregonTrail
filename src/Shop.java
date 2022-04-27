@@ -48,10 +48,29 @@ public class Shop extends JDialog {
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
+    //Main Shop Menu
     private void displayMenu() {
         shopInfo.setText(
             """
-            u fucking wu
+            WELCOME TO THE SHOP!
+            
+            Here you can buy and sell items during your travels.
+            Use the dropdown box to navigate the different items that
+            can be purchased and sold. You can also input the letter
+            corresponding with the item you would like to view more
+            information on:
+            
+            F: FOOD (5 units)
+            A: AMMUNITION
+            M: MEDICINE
+            C: CLOTHES
+            W: WAGON TOOLS
+            S: SPLINTS
+            O: OXEN
+            
+            M: RETURN TO THIS MENU
+            
+            Press ESC to exit the SHOP screen.
             """
         );
     }
