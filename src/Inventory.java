@@ -101,6 +101,8 @@ public class Inventory extends JDialog {
     private void displayMenu() {
         invInfo.setText(
                 """
+                WELCOME TO THE INVENTORY!
+                
                 Please select an INVENTORY item using the dropdown menu
                 or enter the letter the letter in the dialogue box
                 corresponding with the item you would like to view:

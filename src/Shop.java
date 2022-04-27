@@ -16,7 +16,7 @@ public class Shop extends JDialog {
     private final int foodBuyPrice = 3; //for 5 units of food
     private final int medBuyPrice = 3;
     private final int splintBuyPrice = 8;
-    private final int wagonToolsBuyPrice = 10;
+    private final int toolsBuyPrice = 10;
     private final int oxenBuyPrice = 10;
 
     private final int clothesSellPrice = 8;
@@ -35,6 +35,44 @@ public class Shop extends JDialog {
         if (shopComboBox.getSelectedIndex() == 0) {
             displayMenu();
         }
+
+        shopComboBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                int input = shopComboBox.getSelectedIndex();
+                switch (input) {
+                    case 0 -> displayMenu();
+                    case 1 -> displayFood(food, foodBuyPrice, foodSellPrice);
+                    case 2 -> displayAmmo(ammo, ammoBuyPrice, ammoSellPrice);
+                    case 3 -> displayMed(medicine, medBuyPrice, medSellPrice);
+                    case 4 -> displayClothes(clothes, clothesBuyPrice, clothesSellPrice);
+                    case 5 -> displayWT(wagonTools, toolsBuyPrice, toolsSellPrice);
+                    case 6 -> displaySplints(splints, splintBuyPrice, splintSellPrice);
+                    case 7 -> displayOxen(oxen, oxenBuyPrice, oxenSellPrice);
+                    default -> shopInfo.setText("ERROR IN SWITCH");
+                }
+            }});
+
+        shopInput.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String input = shopInput.getText().toUpperCase();
+                switch (input) {
+                    case "I" -> { displayMenu(); shopComboBox.setSelectedIndex(0); }
+                    case "F" -> { displayFood(food, foodBuyPrice, foodSellPrice); shopComboBox.setSelectedIndex(1); }
+                    case "A" -> { displayAmmo(ammo, ammoBuyPrice, ammoSellPrice); shopComboBox.setSelectedIndex(2); }
+                    case "M" -> { displayMed(medicine, medBuyPrice, medSellPrice); shopComboBox.setSelectedIndex(3); }
+                    case "C" -> { displayClothes(clothes, clothesBuyPrice, clothesSellPrice); shopComboBox.setSelectedIndex(4); }
+                    case "W" -> { displayWT(wagonTools, toolsBuyPrice, toolsSellPrice); shopComboBox.setSelectedIndex(5); }
+                    case "S" -> { displaySplints(splints, splintBuyPrice, splintSellPrice); shopComboBox.setSelectedIndex(6); }
+                    case "O" -> { displayOxen(oxen, oxenBuyPrice, oxenSellPrice); shopComboBox.setSelectedIndex(7); }
+                    default -> displayMenu();
+                }
+
+                shopInput.setText("");
+            }
+        });
+
 
         // call onCancel() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -74,6 +112,63 @@ public class Shop extends JDialog {
             """
         );
     }
+
+    private void displayFood(int food, int bPrice, int sPrice) {
+        shopInfo.setText(
+                """
+                
+                """
+        );
+    }
+
+    private void displayAmmo(int ammo, int bPrice, int sPrice) {
+        shopInfo.setText(
+                """
+                
+                """
+        );
+    }
+
+    private void displayMed(int meds, int bPrice, int sPrice) {
+        shopInfo.setText(
+                """
+                
+                """
+        );
+    }
+
+    private void displayClothes(int clothes, int bPrice, int sPrice) {
+        shopInfo.setText(
+                """
+                
+                """
+        );
+    }
+
+    private void displayWT(int wagonTools, int bPrice, int sPrice) {
+        shopInfo.setText(
+                """
+                
+                """
+        );
+    }
+
+    private void displaySplints(int splints, int bPrice, int sPrice) {
+        shopInfo.setText(
+                """
+                
+                """
+        );
+    }
+
+    private void displayOxen(int oxen, int bPrice, int sPrice) {
+        shopInfo.setText(
+                """
+                
+                """
+        );
+    }
+
 
     private void onCancel() {
         // add your code here if necessary
