@@ -505,6 +505,8 @@ public class OregonTrailGUI {
                 Shop shop = new Shop(money, food, ammunition, medicine, clothes, wagonTools, splints, oxen);
                 shop.pack();
                 shop.setVisible(true);
+                userInput.removeActionListener(AL);
+
             }
             userInput.setText("");
         }
@@ -686,7 +688,6 @@ public class OregonTrailGUI {
         this.currentPace = newPace;
     }
 
-    //We prolly don't need this
     public void killPlayer() {
         ArrayList<Character> toDelete = new ArrayList<>();
         for (Character character : characterArrayList) {
