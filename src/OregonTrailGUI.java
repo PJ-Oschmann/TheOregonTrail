@@ -44,7 +44,7 @@ public class OregonTrailGUI {
     //game variables
     private int money = 250, food = 0, ammunition = 0, medicine = 0, clothes = 0, wagonTools = 0, splints = 0, oxen = 0;
     private boolean isGameWon = false, isGameLost = false;
-    private int happiness=100;
+    private int happiness = 100;
     private Weather weather = new Weather();
     private Wagon wagon = new Wagon();
     private Date date = new Date();
