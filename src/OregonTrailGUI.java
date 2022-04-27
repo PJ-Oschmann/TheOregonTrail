@@ -7,9 +7,7 @@ import java.awt.event.FocusEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.locks.Condition;
 import javax.swing.Timer;
-import java.awt.event.*;
 
 public class OregonTrailGUI {
     private JPanel MainPanel;
@@ -26,6 +24,11 @@ public class OregonTrailGUI {
     private JPanel JakePanel;
     private JTextField userInput;
     private JLabel mainInputLabel;
+    private JTextPane hattieStats;
+    private JTextPane charlesStats;
+    private JTextPane augustaStats;
+    private JTextPane benStats;
+    private JTextPane jakeStats;
     private JPanel InventoryPanel;
     private JLabel InventoryImagePanel;
     private final Scene scene = new Scene();
@@ -40,6 +43,7 @@ public class OregonTrailGUI {
     private Character jake = new Character("Jake",100,0);
 
     private ArrayList<Character> characterArrayList = new ArrayList<>(List.of(hattie,charles,augusta,ben,jake));
+    private ArrayList<Character> allCharacters = new ArrayList<>(List.of(hattie,charles,augusta,ben,jake));
 
     //game variables
     private int money = 250, food = 0, ammunition = 0, medicine = 0, clothes = 0, wagonTools = 0, splints = 0, oxen = 0;
@@ -51,6 +55,8 @@ public class OregonTrailGUI {
     private boolean isTraveling = false;
     private static boolean inMenu = true;
     private static boolean inGame = false;
+    private int currentPace = 0; //0=Steady, 1=Strenuous, 2=Grueling
+    private int sickCharacters = 0;
     private Timer travelClock = new Timer(5000, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -244,12 +250,17 @@ public class OregonTrailGUI {
      * The game info gets updated.
      */
     public void travel() {
-        int sickCharacters = countSickCharacters();
+        sickCharacters = countSickCharacters();
+        weatherAffectPlayer();
+        impactHappiness();
         date.advanceDate();
         weather.setRandomWeather();
-        happiness -= 2*sickCharacters;
+        happiness = calculateHappiness(-2*sickCharacters);
         if (sickCharacters>0) {handleSickCharacters();}
         writeGameInfo();
+        killPlayer();
+        checkIfLost();
+        doStoryLine();
         //anything else that changes on the day.
     }
 
@@ -271,7 +282,27 @@ public class OregonTrailGUI {
         travelClock.stop();
         isTraveling= false;
     }
+    //Check for scenarios to continue the story line.
+    //Most things happen based on distance+location
+    //Journal entries can appear based on the date.
+    //When modifying this code, do so in chronological order
+    //instead of just appending to the end for readability.
 
+    //Important! If loading a scene, remember to stop continuous travel first! (stopContTravel())
+    public void doStoryLine() {
+        //Journal for 3/19/1861
+
+        if (date.toString().equals("March 19, 1861")) {
+            stopContTravel();
+            scene.loadScene("1861-3-19");
+        }
+
+        //Journal for 3/20/1861
+        if (date.toString().equals("March 20, 1861")) {
+            stopContTravel();
+            scene.loadScene("1861-3-20");
+        }
+    }
     /**
      * Writes all game info to a text area. It includes:
      * The player's current location
@@ -284,12 +315,6 @@ public class OregonTrailGUI {
     //TODO: Implement Strings for location, pace, and rations
     //Call this function whenever the game info is updated.
     public void writeGameInfo() {
-        String strLocation = "LOCATION FIXME";
-        String strDate = date.toString();
-        String strWeather = weather.toString();
-        String strHappiness = Integer.toString(happiness);
-        String strPace = "PACE FIXME";
-        String strRations = "RATIONS FIXME";
         String gameInfo = """
                 Location: $location
                 Date: $date
@@ -299,13 +324,14 @@ public class OregonTrailGUI {
                 Pace: $pace
                 Rations: $rations
                 """;
-        gameInfo = gameInfo.replace("$location",strLocation);
-        gameInfo = gameInfo.replace("$date",strDate);
-        gameInfo = gameInfo.replace("$weather",strWeather);
-        gameInfo = gameInfo.replace("$happiness",strHappiness);
-        gameInfo = gameInfo.replace("$pace",strPace);
-        gameInfo = gameInfo.replace("$rations",strRations);
+        gameInfo = gameInfo.replace("$location","LOCATION FIXME");
+        gameInfo = gameInfo.replace("$date",date.toString());
+        gameInfo = gameInfo.replace("$weather",weather.toString());
+        gameInfo = gameInfo.replace("$happiness",Integer.toString(happiness));
+        gameInfo = gameInfo.replace("$pace",currPaceToString());
+        gameInfo = gameInfo.replace("$rations","RATIONS FIXME");
         storyTextArea.setText(gameInfo);
+        updateStats();
     }
 
     /**
@@ -320,9 +346,12 @@ public class OregonTrailGUI {
             if (happiness+amount <=100) {newHappiness = amount;}
             else {newHappiness = 100-happiness;}
         }
-        else {
+        else if (amount < 0){
             if (happiness + amount >= 0) {newHappiness = amount;}
             else {newHappiness = -happiness;}
+        }
+        else {
+            newHappiness = 0;
         }
         return happiness+newHappiness;
     }
@@ -339,22 +368,24 @@ public class OregonTrailGUI {
         else if (weather.getWeatherCondition().equals("Bad")) {happiness = calculateHappiness(-5);}
 
         //Player is ill
-            //Code goes here lmao
+        //Code goes here lmao
     }
 
     /**
      * If a given character is not wearing protective clothing, they will be harmed by
      * cold weather. Their health will decrease by 25 HP each day, and they have a 1/4
      * chance of getting ill.
-     * @param character - The character that will be affected.
      */
-    public void weatherAffectPlayer(Character character) {
-        if (!character.getHasClothing()) {
-            character.setHealth(character.getHealth() - 25);
-            if (rand.nextInt(4) == 0) {
-                character.setSick(true);
+    public void weatherAffectPlayer() {
+        for (Character character : characterArrayList) {
+            if (!character.getHasClothing()) {
+                character.setHealth(character.getHealth() - 25);
+                if (rand.nextInt(4) == 0) {
+                    character.setSick(true);
+                }
             }
         }
+
 
     }
 
@@ -388,12 +419,21 @@ public class OregonTrailGUI {
         }
 
         //If everyone is dead
-        else if (hattie.getHealth()==0 && charles.getHealth() == 0 && augusta.getHealth() == 0 && ben.getHealth() == 0 && jake.getHealth() == 0) {
+        else if (hattie.getHealth()<=0 && charles.getHealth() <= 0 && augusta.getHealth() <= 0 && ben.getHealth() <= 0 && jake.getHealth() <= 0) {
             message = "Everyone literally died. Ghosts don't go to Oregon. You can't continue.";
             isLost = true;
         }
 
-        JOptionPane.showMessageDialog(null,message,"Game Over",JOptionPane.PLAIN_MESSAGE);
+        String[] gameOverChoices = {"Play again","Main Menu"};
+        if (isLost) {
+            if (JOptionPane.showOptionDialog(null,message,"Game Over",JOptionPane.YES_NO_OPTION,JOptionPane.PLAIN_MESSAGE,null,gameOverChoices,null)==JOptionPane.YES_OPTION) {
+                resetGame();
+            }
+            else {
+                JOptionPane.showMessageDialog(null,"FIXME: Main Menu not implemented.");
+            }
+        }
+        //if (isLost){JOptionPane.showMessageDialog(null,message,"Game Over",JOptionPane.PLAIN_MESSAGE);}
         return isLost;
 
     }
@@ -429,6 +469,29 @@ public class OregonTrailGUI {
         }
     }
 
+    /**
+     * Check the Oxen ArrayList to see if all are injured.
+     * @return true if all oxen are injured, false if at least one is not.
+     */
+    /*
+    public boolean checkAllOxenInjured() {
+
+        boolean allInjured = true;
+        if (!oxenArrayList.isEmpty()) {
+            for (Oxen oxen : oxenArrayList) {
+                if (!oxen.isInjured()) {
+
+                    allInjured = false;
+                }
+            }
+        }
+        else {allInjured= false;}
+
+        return allInjured;
+    }
+
+     */
+
     private ActionListener AL = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -442,7 +505,6 @@ public class OregonTrailGUI {
                 Shop shop = new Shop(money, food, ammunition, medicine, clothes, wagonTools, splints, oxen);
                 shop.pack();
                 shop.setVisible(true);
-                userInput.removeActionListener(AL);
             }
             userInput.setText("");
         }
@@ -589,5 +651,83 @@ public class OregonTrailGUI {
             }
         }
     };
+
+
+    //Be sure this respects defaults should any be changed during development!
+    public void resetGame() {
+        hattie  = new Character("Hattie Campbell", 100, 0);
+        charles = new Character("Charles",100,0);
+        augusta = new Character("Augusta",100,0);
+        ben = new Character("Ben",100,0);
+        jake = new Character("Jake",100,0);
+        characterArrayList = new ArrayList<>(List.of(hattie,charles,augusta,ben,jake));
+        allCharacters = new ArrayList<>(List.of(hattie,charles,augusta,ben,jake));
+        food = 0; ammunition = 0; medicine = 0; clothes = 0; wagonTools = 0; splints = 0; oxen = 0;
+        isGameWon = false; isGameLost = false;
+        happiness=100;
+        weather = new Weather();
+        wagon = new Wagon();
+        date = new Date();
+        date.setDate(3,17,1861);
+        isTraveling = false;
+        writeGameInfo();
+
+    }
+
+    public String currPaceToString() {
+        String pace;
+        if (currentPace==0) {pace="Steady";}
+        else if (currentPace==1) {pace="Strenuous";}
+        else {pace="Grueling";}
+        return pace;
+    }
+
+    public void setCurrentPace(int newPace) {
+        this.currentPace = newPace;
+    }
+
+    //We prolly don't need this
+    public void killPlayer() {
+        ArrayList<Character> toDelete = new ArrayList<>();
+        for (Character character : characterArrayList) {
+            if (character.getHealth()<=0) {
+                toDelete.add(character);
+                JOptionPane.showMessageDialog(null,character.getName()+" died.");
+                updateStats();
+            }
+        }
+        for (Character character : toDelete) {
+            characterArrayList.remove(character);
+        }
+    }
+    ArrayList<JTextPane> arrayOfPanes = new ArrayList<>(List.of(hattieStats,charlesStats,augustaStats,benStats,jakeStats));
+
+    /**
+     * Update the status of each player. If the player is dead, their status is marked "DEAD."
+     */
+    public void updateStats() {
+
+        int characterCounter = 0;
+        String statsText = """
+                    HP: $Health
+                    Clothing: $Clothing
+                    """;
+        for (JTextPane stats: arrayOfPanes) {
+            if(allCharacters.get(characterCounter).getHealth()<=0) {
+                stats.setText("DEAD");
+
+            }
+            else {
+                String newText = statsText;
+                newText = newText.replace("$Health", Integer.toString(allCharacters.get(characterCounter).getHealth()));
+                newText = newText.replace("$Clothing", allCharacters.get(characterCounter).hasClothingToString());
+                stats.setText(newText);
+
+            }
+            characterCounter++;
+        }
+
+
+    }
 }
 

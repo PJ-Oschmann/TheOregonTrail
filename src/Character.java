@@ -117,5 +117,13 @@ public class Character {
     public void setDaysSick(int daysSick) {
         this.daysSick = daysSick;
     }
+    public String hasClothingToString() {
+        String clothingString = "Unprotected";
+        if (hasClothing) {
+            clothingString = "Protected";
+        }
+        return clothingString;
+    }
+
 }
 
