@@ -12,7 +12,6 @@ import javax.swing.Timer;
 import java.awt.event.*;
 
 public class OregonTrailGUI {
-
     private JPanel MainPanel;
     private JPanel IMGPanel;
     private JLabel ImageLabel;
@@ -41,8 +40,6 @@ public class OregonTrailGUI {
     private Character jake = new Character("Jake",100,0);
 
     private ArrayList<Character> characterArrayList = new ArrayList<>(List.of(hattie,charles,augusta,ben,jake));
-    //Array of Oxen
-    private ArrayList<Oxen> oxenArrayList = new ArrayList<>();
 
     //game variables
     private int money = 250, food = 0, ammunition = 0, medicine = 0, clothes = 0, wagonTools = 0, splints = 0, oxen = 0;
@@ -81,11 +78,11 @@ public class OregonTrailGUI {
      */
     //Create application
     public OregonTrailGUI() {
-
-//InGame = true and user is playing the game now:
 //TODO: MAIN MENU SCREEN
+        userInput.addFocusListener(inputHelp);
         if(inMenu) {
             ImageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/MainMenu.png"));
+            displayMainMenu();
             userInput.addActionListener(AL);
         }
 
@@ -94,10 +91,11 @@ public class OregonTrailGUI {
 //TODO: SHOP HERE FOR USER STARTING GAME
 
 //TODO: NOW USER GETS TO START PLAYING GAME
-        userInput.addActionListener(gameMenu);
-        userInput.addFocusListener(inputHelp);
-        augusta.setSick(true);
-        writeGameInfo();
+        if(inGame) {
+            userInput.addActionListener(gameMenu);
+            augusta.setSick(true);
+            writeGameInfo();
+        }
     }
 
     /**
@@ -236,7 +234,6 @@ public class OregonTrailGUI {
         //anything else that changes on the day.
     }
 
-
     /**
      * Travel until the player says otherwise. A day passes every second.
      */
@@ -358,12 +355,9 @@ public class OregonTrailGUI {
         String message = "";
 
         //If there are no healthy oxen
-        if (checkAllOxenInjured() == false) {
-            message = "All your oxen are injured. How careless of you. You can't continue.";
-            isLost = true;
-        }
+        //TODO: Re-implement oxen system
         //If the wagon breaks
-        else if (wagon.getState() == 2) {
+        if (wagon.getState() == 2) {
             message= "Your wagon broke. You can't continue";
             isLost = true;
         }
@@ -383,20 +377,6 @@ public class OregonTrailGUI {
         JOptionPane.showMessageDialog(null,message,"Game Over",JOptionPane.PLAIN_MESSAGE);
         return isLost;
 
-    }
-
-    /**
-     * Check the Oxen ArrayList to see if all are injured.
-     * @return true if all oxen are injured, false if at least one is not.
-     */
-    public boolean checkAllOxenInjured() {
-        boolean healthyOxenExist = true;
-        for (Oxen oxen : oxenArrayList) {
-            if (!oxen.isInjured()) {
-                return false;
-            }
-        }
-        return true;
     }
 
     /**
@@ -435,22 +415,34 @@ public class OregonTrailGUI {
         public void actionPerformed(ActionEvent e) {
             if (userInput.getText().equalsIgnoreCase("E")) {
                 exitGame();
-            } else if (userInput.getText().equalsIgnoreCase("P")) {
+            }
+            else if (userInput.getText().equalsIgnoreCase("P")) {
                 inMenu = false;
                 inGame = true;
-                ImageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/MainGame.png"));
-                userInput.removeActionListener(AL);
                 //TODO: Shop menu/GUI opens here
                 Shop shop = new Shop(money, food, ammunition, medicine, clothes, wagonTools, splints, oxen);
+                shop.pack();
                 shop.setVisible(true);
+                userInput.removeActionListener(AL);
             }
+            userInput.setText("");
         }
     };
+
+    private void displayMainMenu() {
+    storyTextArea.setText(
+            """
+            MAIN MENU
+            
+            P: PLAY THE GAME, TRAVEL THE OREGON TRAIL
+            E: EXIT
+            """
+        );
+    }
 
     private ActionListener gameMenu = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-//TODO: CREATE USER INPUT FIELD CODE
             if (userInput.getText().equalsIgnoreCase("I")) {
                 Inventory inv = new Inventory(food, ammunition, medicine, clothes, wagonTools, splints, oxen);
                 inv.pack();

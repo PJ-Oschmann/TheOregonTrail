@@ -31,15 +31,14 @@ public class Shop extends JDialog {
     public Shop(int money, int food, int ammo, int medicine, int clothes, int wagonTools, int splints, int oxen) {
         setContentPane(shopPane);
         setModal(true);
-
+        shopImage.setIcon(new javax.swing.ImageIcon("src/assets/images/Shop.png"));
+        if (shopComboBox.getSelectedIndex() == 0) {
+            displayMenu();
+        }
 
         // call onCancel() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                onCancel();
-            }
-        });
+        addWindowListener(closeWindow);
 
         // call onCancel() on ESCAPE
         shopPane.registerKeyboardAction(new ActionListener() {
@@ -49,8 +48,22 @@ public class Shop extends JDialog {
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
+    private void displayMenu() {
+        shopInfo.setText(
+            """
+            u fucking wu
+            """
+        );
+    }
+
     private void onCancel() {
         // add your code here if necessary
         dispose();
     }
+
+    private WindowAdapter closeWindow = new WindowAdapter() {
+        public void windowClosing(WindowEvent e) {
+            onCancel();
+        }
+    };
 }

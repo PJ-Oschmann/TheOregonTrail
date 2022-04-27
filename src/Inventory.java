@@ -20,7 +20,7 @@ public class Inventory extends JDialog {
 
         //Image goes here
         InventoryImageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/Inventory.png"));
-        if (invComboBox.getSelectedItem() == "SELECT AN INVENTORY ITEM") {
+        if (invComboBox.getSelectedIndex() == 0) {
             displayMenu();
         }
 
@@ -43,11 +43,7 @@ public class Inventory extends JDialog {
 
         // call onCancel() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                onCancel();
-            }
-        });
+        addWindowListener(windowClose);
 
         // call onCancel() on ESCAPE
         contentPane.registerKeyboardAction(new ActionListener() {
@@ -355,6 +351,12 @@ public class Inventory extends JDialog {
                 userInput.setText("Input Option Here");
                 userInput.setForeground(new Color(147, 147,147));
             }
+        }
+    };
+
+    private WindowAdapter windowClose = new WindowAdapter() {
+        public void windowClosing(WindowEvent e) {
+            onCancel();
         }
     };
 
