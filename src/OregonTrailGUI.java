@@ -505,7 +505,8 @@ public class OregonTrailGUI {
             showAbout("The Oregon Trail is an educational game to teach students about the 1800s trip from " +
                     "Missouri to Oregon. This project aims to recreate this experience using the Java programming " +
                     "language. With incredible high-resolution graphics, the experience is more immersive than ever " +
-                    "before","Project Description");
+                    "before",
+                    "Project Description");
         }
     };
 
@@ -513,7 +514,8 @@ public class OregonTrailGUI {
         @Override
         public void actionPerformed(ActionEvent e) {
             showAbout("This project was completed by Team Hollenberg Station, consisting of Aleece Al-Olimat, " +
-                    "Ken Zhu, and PJ Oschmann","About This Project");
+                    "Ken Zhu, and PJ Oschmann",
+                    "About This Project");
         }
     };
 
@@ -522,7 +524,8 @@ public class OregonTrailGUI {
         public void actionPerformed(ActionEvent e) {
             //TODO: fill this out with persona/storyboarding
             showAbout("(Replace me with actual text) Hattie is a young lass who is setting out for a new life " +
-                    "in Oregon. Her twin sister died. What a shame.","About Hattie");
+                    "in Oregon. Her twin sister died. What a shame.",
+                    "About Hattie");
         }
     };
 
@@ -530,7 +533,8 @@ public class OregonTrailGUI {
         @Override
         public void actionPerformed(ActionEvent e) {
             showAbout("Images created by Aleece Al-Olimat.\nImage of Oregon by Kendra of Clker.com, in the " +
-                    "Public Domain.","Image Credits");
+                    "Public Domain.",
+                    "Image Credits");
         }
     };
 
@@ -539,7 +543,8 @@ public class OregonTrailGUI {
         public void actionPerformed(ActionEvent e) {
             showAbout("The main goal of The Oregon Trail is to simulate travel across the country from the " +
                     "Mideast to Oregon City, Oregon. The way you win this game is if you have at least one party member" +
-                    "alive by the time you get to Oregon City.","How do I win in the Oregon Trail Game?");
+                    " alive by the time you get to Oregon City.",
+                    "How do I win in the Oregon Trail Game?");
         }
     };
 
@@ -549,7 +554,9 @@ public class OregonTrailGUI {
             showAbout("The Oregon Trail game can be fully played purely with text input. There is an text input " +
                     "box usually in the bottom right area of the screen where you can type a letter and press enter to" +
                     "input an action or selection. There are also some dropdown menus in the Shop and Inventory that you " +
-                    "can navigate with your mouse for easier access." , "How do I play The Oregon Trail?");
+                    "can navigate with your mouse for easier access. \n Ultimately, you will need to use items to keep" +
+                    " your party members healthy, happy, and alive until you reach your destination.",
+                    "How do I play The Oregon Trail?");
         }
     };
 
