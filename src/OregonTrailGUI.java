@@ -519,6 +519,8 @@ public class OregonTrailGUI {
                 party.pack();
                 party.setVisible(true);
             }
+
+
             userInput.setText("");
         }
     };

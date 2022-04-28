@@ -15,6 +15,7 @@ public class Party extends JDialog {
     private JTextField userInput;
     private JTextPane partyStats;
     private JTextArea partyTextArea;
+    private JLabel questionText;
     public final ArrayList<Character> characterArrayList;
     public Character hattie, charles, augusta, ben, jake;
     public int happiness, money;

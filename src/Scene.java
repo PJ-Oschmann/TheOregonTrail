@@ -37,7 +37,8 @@ public class Scene extends JDialog {
         storyTextArea.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                if(e.getKeyChar()=='C') {
+                System.out.println(e);
+                if(e.getKeyChar()=='c') {
                     sceneMan.continueScene();
                 };
             }
@@ -45,7 +46,7 @@ public class Scene extends JDialog {
         continueButton.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                if (e.getKeyChar()=='C') {
+                if (e.getKeyChar()=='c') {
                     sceneMan.continueScene();
                 }
             }
