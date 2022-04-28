@@ -15,13 +15,6 @@ public class Party extends JDialog {
     private JTextPane jakeStats;
     private JTextField userInput;
     private JTextPane partyStats;
-    private Character hattie;
-    private Character charles;
-    private Character augusta;
-    private Character ben;
-    private Character jake;
-    private int happiness;
-    private int money;
     private final ArrayList<Character> characterArrayList;
 
     public Party(Character hattie, Character charles, Character augusta, Character ben, Character jake, int happiness, int money) {
@@ -30,7 +23,6 @@ public class Party extends JDialog {
         //this.setUndecorated(true);
         setContentPane(contentPane);
         setModal(true);
-
 
         characterArrayList =new ArrayList<>(List.of(hattie, charles, augusta, ben, jake));
         setContentPane(contentPane);
@@ -43,14 +35,7 @@ public class Party extends JDialog {
                 dispose();
             }
         });
-        updateStats();
-
-
-    }
-    public static void main(String[] args) {
-        JFrame frame = new JFrame();
-        frame.pack();
-        frame.setVisible(true);
+        updateStats(money, happiness);
     }
 
     /**
@@ -80,7 +65,7 @@ public class Party extends JDialog {
     /**
      * Update the status of each player. If the player is dead, their status is marked "DEAD."
      */
-    public void updateStats() {
+    public void updateStats(int money, int happiness) {
         String partyStatsText= """
                 Money: $Money
                 Happiness: $Happiness
