@@ -106,6 +106,12 @@ public class Character {
         return isSick;
     }
 
+    public String isSickToString() {
+        String sickString = "Healthy";
+        if (isSick) {sickString="Sick, day "+daysSick;}
+        return sickString;
+    }
+
     public void setSick(boolean sick) {
         isSick = sick;
     }

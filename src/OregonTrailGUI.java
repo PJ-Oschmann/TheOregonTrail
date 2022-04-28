@@ -70,12 +70,13 @@ public class OregonTrailGUI {
         frame.setContentPane(game.MainPanel);
         frame.setTitle("The Oregon Trail -- Remake");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        addUIMenuBar(frame);
-
         //Give the application the System's theme.
         //Delete this line if the app won't start
         setTheme();
+        frame.pack();
+        addUIMenuBar(frame);
+
+
         frame.setVisible(true);
     }
 
@@ -84,6 +85,7 @@ public class OregonTrailGUI {
      */
     //Create application
     public OregonTrailGUI() {
+
 //TODO: MAIN MENU SCREEN
         userInput.addFocusListener(inputHelp);
         if(inMenu) {
@@ -102,6 +104,7 @@ public class OregonTrailGUI {
             augusta.setSick(true);
             writeGameInfo();
         }
+
     }
 
     /**
@@ -508,6 +511,11 @@ public class OregonTrailGUI {
                 userInput.removeActionListener(AL);
 
             }
+            else if (userInput.getText().equalsIgnoreCase("T")) {
+                Party party = new Party(hattie,charles,augusta,ben,jake,happiness,money);
+                party.pack();
+                party.setVisible(true);
+            }
             userInput.setText("");
         }
     };
@@ -710,18 +718,19 @@ public class OregonTrailGUI {
 
         int characterCounter = 0;
         String statsText = """
-                    HP: $Health
-                    Clothing: $Clothing
-                    """;
-        for (JTextPane stats: arrayOfPanes) {
-            if(allCharacters.get(characterCounter).getHealth()<=0) {
+                HP: $HP
+                Clothing: $Clothing
+                Healthiness: $Healthiness
+                """;
+        for (JTextPane stats : arrayOfPanes) {
+            if (characterArrayList.get(characterCounter).getHealth() <= 0) {
                 stats.setText("DEAD");
 
-            }
-            else {
+            } else {
                 String newText = statsText;
-                newText = newText.replace("$Health", Integer.toString(allCharacters.get(characterCounter).getHealth()));
-                newText = newText.replace("$Clothing", allCharacters.get(characterCounter).hasClothingToString());
+                newText = newText.replace("$HP", Integer.toString(characterArrayList.get(characterCounter).getHealth()));
+                newText = newText.replace("$Clothing", characterArrayList.get(characterCounter).hasClothingToString());
+                newText = newText.replace("$Healthiness",characterArrayList.get(characterCounter).isSickToString());
                 stats.setText(newText);
 
             }
