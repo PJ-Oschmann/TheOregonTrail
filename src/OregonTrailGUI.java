@@ -36,19 +36,19 @@ public class OregonTrailGUI {
     private Random rand = new Random();
 
     //Our players
-    private Character hattie = new Character("Hattie Campbell", 100, 0);
-    private Character charles = new Character("Charles",100,0);
-    private Character augusta = new Character("Augusta",100,0);
-    private Character ben = new Character("Ben",100,0);
+    public Character hattie = new Character("Hattie Campbell", 100, 0);
+    public Character charles = new Character("Charles",100,0);
+    public Character augusta = new Character("Augusta",100,0);
+    public Character ben = new Character("Ben",100,0);
     private Character jake = new Character("Jake",100,0);
 
-    private ArrayList<Character> characterArrayList = new ArrayList<>(List.of(hattie,charles,augusta,ben,jake));
+    public ArrayList<Character> characterArrayList = new ArrayList<>(List.of(hattie,charles,augusta,ben,jake));
     //private ArrayList<Character> allCharacters = new ArrayList<>(List.of(hattie,charles,augusta,ben,jake));
 
     //game variables
-    private int money = 200, food = 0, ammunition = 0, medicine = 0, clothes = 0, wagonTools = 0, splints = 0, oxen = 0;
+    public int money = 200, food = 0, ammunition = 0, medicine = 0, clothes = 0, wagonTools = 0, splints = 0, oxen = 0;
     private boolean isGameWon = false, isGameLost = false;
-    private int happiness = 75;
+    public int happiness = 75;
     private Weather weather = new Weather();
     private Wagon wagon = new Wagon();
     private Date date = new Date();
@@ -93,17 +93,9 @@ public class OregonTrailGUI {
             userInput.addActionListener(AL);
         }
 //TODO: INTRO SCENE AND DIALOGUE + STORY TEXT BOX
-        if (!inMenu && !inGame) { //first dialogue box will open here when they press or enter play
-            //open dialogue box
+        if (!inMenu && !inGame) {
+            introScene();
         }
-//TODO: SHOP HERE FOR USER STARTING GAME
-        /*
-        //For when user exits initial scene, set it to open a shop window in the dispose of that scene
-        Shop shop = new Shop(money, food, ammunition, medicine, clothes, wagonTools, splints, oxen);
-        shop.pack();
-        shop.setVisible(true);
-        */
-        // set inGame to true once the shop is closed
 //TODO: NOW USER GETS TO START PLAYING GAME
         if (inGame) {
             userInput.addActionListener(gameMenu);
@@ -204,7 +196,10 @@ public class OregonTrailGUI {
     public void introScene() {
         stopContTravel();
         scene.loadScene("intro");
-        inGame=true;
+        inGame = true;
+        Shop shop = new Shop(money, food, ammunition, medicine, clothes, wagonTools, splints, oxen);
+        shop.pack();
+        shop.setVisible(true);
     }
 
     /**
@@ -676,7 +671,6 @@ public class OregonTrailGUI {
         }
     };
 
-
     //Be sure this respects defaults should any be changed during development!
     public void resetGame() {
         hattie  = new Character("Hattie Campbell", 100, 0);
@@ -725,29 +719,26 @@ public class OregonTrailGUI {
      * Update the status of each player. If the player is dead, their status is marked "DEAD."
      */
     public void updateStats() {
-
-        int characterCounter = 0;
+        int characterIndex = 0;
         String statsText = """
                 HP: $HP
                 Clothing: $Clothing
                 Healthiness: $Healthiness
                 """;
         for (JTextPane stats : arrayOfPanes) {
-            if (characterArrayList.get(characterCounter).getHealth() <= 0) {
+            if (characterArrayList.get(characterIndex).getHealth() <= 0) {
                 stats.setText("DEAD");
 
             } else {
                 String newText = statsText;
-                newText = newText.replace("$HP", Integer.toString(characterArrayList.get(characterCounter).getHealth()));
-                newText = newText.replace("$Clothing", characterArrayList.get(characterCounter).hasClothingToString());
-                newText = newText.replace("$Healthiness",characterArrayList.get(characterCounter).isSickToString());
+                newText = newText.replace("$HP", Integer.toString(characterArrayList.get(characterIndex).getHealth()));
+                newText = newText.replace("$Clothing", characterArrayList.get(characterIndex).hasClothingToString());
+                newText = newText.replace("$Healthiness",characterArrayList.get(characterIndex).isSickToString());
                 stats.setText(newText);
 
             }
-            characterCounter++;
+            characterIndex++;
         }
-
-
     }
 }
 
