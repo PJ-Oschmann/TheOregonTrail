@@ -196,6 +196,8 @@ public class OregonTrailGUI {
         Shop shop = new Shop(money, food, ammunition, medicine, clothes, wagonTools, splints, oxen);
         shop.pack();
         shop.setVisible(true);
+        userInput.addActionListener(gameMenu);
+        weather.setRandomWeather();
     }
 
     /**
