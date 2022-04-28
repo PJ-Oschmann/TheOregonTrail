@@ -564,14 +564,13 @@ public class OregonTrailGUI {
     };
 
     //check broke
-    //TODO: Set correct pace if the user types in an invalid string (currently defaults to steady)
     private int setPace() {
         int newPaceInt = 0;
         String newPace = JOptionPane.showInputDialog("Please set a new pace:\n1 - Steady\n2 - Strenuous\n3 - Grueling");
         if (newPace.equals("1") || newPace.equals("2") || newPace.equals("3")) {
             newPaceInt = Integer.parseInt(newPace)-1;
         }
-        else {setPace();}
+        else {newPaceInt = setPace();}
         return newPaceInt;
     }
 
