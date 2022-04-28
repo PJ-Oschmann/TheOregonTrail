@@ -97,11 +97,13 @@ public class OregonTrailGUI {
             //open dialogue box
         }
 //TODO: SHOP HERE FOR USER STARTING GAME
-        /* //For when user exits initial scene, set it to open a shop window in the dispose of that scene
+        /*
+        //For when user exits initial scene, set it to open a shop window in the dispose of that scene
         Shop shop = new Shop(money, food, ammunition, medicine, clothes, wagonTools, splints, oxen);
         shop.pack();
         shop.setVisible(true);
         */
+        // set inGame to true once the shop is closed
 //TODO: NOW USER GETS TO START PLAYING GAME
         if (inGame) {
             userInput.addActionListener(gameMenu);

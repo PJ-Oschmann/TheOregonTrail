@@ -368,4 +368,8 @@ public class Inventory extends JDialog {
     private void onCancel() {
         dispose();
     }
+
+    private void openParty() {
+
+    }
 }
