@@ -27,7 +27,8 @@ public class Shop extends JDialog {
     private final int splintSellPrice = 5;
     private final int toolsSellPrice = 8;
     private final int oxenSellPrice = 8;
-    private int money;
+
+    public int money;
 
     public Shop(int money, int food, int ammo, int medicine, int clothes, int wagonTools, int splints, int oxen) {
         setContentPane(shopPane);

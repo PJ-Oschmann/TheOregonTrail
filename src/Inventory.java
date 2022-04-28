@@ -15,11 +15,17 @@ public class Inventory extends JDialog {
     private JLabel invInputLabel;
     private final ArrayList<Character> characterArrayList;
 
+    public int food, ammunition, medicine, clothes, wagonTools, splints, oxen, happiness, money;
+    private Character hattie, charles, augusta, ben, jake;
+
     public Inventory(int food, int ammunition, int medicine, int clothes, int wagonTools, int splints, int oxen,
                      int happiness, int money, Character hattie, Character charles, Character augusta, Character ben,
                      Character jake) {
         //instantiating private vars
-        characterArrayList = new ArrayList<>(List.of(hattie, charles, augusta, ben, jake));
+        setGlobalVar(food, ammunition, medicine, clothes, wagonTools, splints, oxen, happiness, money, hattie, charles,
+                augusta, ben, jake);
+
+        characterArrayList = new ArrayList<>(List.of(this.hattie, this.charles, this. augusta, this.ben, this.jake));
         this.setTitle("INVENTORY");
         setContentPane(contentPane);
         setModal(true);
@@ -85,6 +91,8 @@ public class Inventory extends JDialog {
                     //updateInv(food, ammunition, medicine, clothes, wagonTools, splints, oxen);
                 }
                 userInput.setText("");
+                setGlobalVar(food, ammunition, medicine, clothes, wagonTools, splints, oxen, happiness, money, hattie, charles,
+                        augusta, ben, jake);
             }
         });
         userInput.addFocusListener(inputHelp);
@@ -99,6 +107,25 @@ public class Inventory extends JDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    }
+
+    private void setGlobalVar(int food, int ammunition, int medicine, int clothes, int wagonTools, int splints,
+                              int oxen, int happiness, int money, Character hattie, Character charles, Character augusta,
+                              Character ben, Character jake) {
+        this.food = food;
+        this.ammunition = ammunition;
+        this.medicine = medicine;
+        this.clothes = clothes;
+        this.wagonTools = wagonTools;
+        this.splints = splints;
+        this.oxen = oxen;
+        this.happiness = happiness;
+        this.money = money;
+        this.hattie = hattie;
+        this.charles = charles;
+        this.augusta = augusta;
+        this.ben = ben;
+        this.jake = jake;
     }
 
     //TEXT METHODS and CANCEL METHOD
@@ -345,20 +372,21 @@ public class Inventory extends JDialog {
         int reply = JOptionPane.showConfirmDialog(null, "Would you like to consume an oxen?\nYou " +
                 "must have at least 5 oxen to consume 1.", "Consume an Oxen", JOptionPane.YES_NO_OPTION);
         if (reply == JOptionPane.YES_OPTION) {
-            oxen -=1;
-        } else {
-            food += 10;
-        }
+            this.oxen = oxen - 1;
+            this.food = food + 10;
             invInfo.setText(
-                """
-                Player has chosen to CONSUME one OXEN. Increase total
-                party food count by 10 units of food.
-                
-                Pop up a mini dialogue letting the player know they cannot
-                consume an OXEN if it will leave them with less than 4 OXEN.
-                
-                Enter "I" to return to the inventory menu.
-                """);
+                    """
+                    You have chosen to CONSUME one OXEN. You have gained 10 FOOD.
+                    
+                    Enter "I" to return to the inventory menu.
+                    """);
+        }
+        else {
+            invInfo.setText(
+                    """
+                    You did not consume an OXEN. Good for you.
+                    """);
+        }
     }
 
     private FocusAdapter inputHelp = new FocusAdapter() { //Grey text for input box when not focused on
@@ -384,6 +412,8 @@ public class Inventory extends JDialog {
     };
 
     private void onCancel() {
+        setGlobalVar(food, ammunition, medicine, clothes, wagonTools, splints, oxen, happiness, money, hattie, charles,
+                augusta, ben, jake);
         dispose();
     }
 
