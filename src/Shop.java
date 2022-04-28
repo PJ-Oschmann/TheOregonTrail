@@ -182,7 +182,7 @@ public class Shop extends JDialog {
                 BUYING 1 unit of MEDICINE costs $%d.
                 
                 You may sell MEDICINE to THE SHOP:
-                SELLING 1 1 unit of MEDICINE pays $%d.
+                SELLING 1 unit of MEDICINE pays $%d.
                 
                 You have %d units if MEDICINE in your INVENTORY.
                 
@@ -209,14 +209,14 @@ public class Shop extends JDialog {
                 You may buy CLOTHES from THE SHOP:
                 BUYING 1 set of CLOTHES costs $%d.
                 
-                You may sell CLOTHES from THE SHOP:
+                You may sell CLOTHES to THE SHOP:
                 SELLING 1 set of CLOTHES pays $%d.
                 
                 You have %d sets of CLOTHES in your INVENTORY.
                 
-                Enter "B" to buy FOOD.
-                Enter "S" to sell FOOD.
-                Enter "M" to return to the SHOP menu.
+                Enter "B" to buy CLOTHES.
+                Enter "S" to sell CLOTHES.
+                Enter "M" to return to the SHOP MENU.
                 """, clothesBuyPrice, clothesSellPrice, clothes
         ));
     }
@@ -224,27 +224,30 @@ public class Shop extends JDialog {
     private void displayWT(int wagonTools) {
         shopInfo.setText(String.format( //TODO: NEEDS EDITING
                 """
-                CLOTHES are a one-time consumable resource that will
-                protect your party members from weather for the remainder
-                of their journey. If a character is not protected from
-                extreme weather, they may fall ILL and lose health as a
-                consequence.
+                WAGON TOOLS are a consumable resource used to repair the
+                wagon when it suffers damage along the journey. If your
+                wagon is in a DAMAGED state, your party is forced to
+                travel at the slowest pace. If it is left DAMAGED without
+                repair for 7 consecutive days, the wagon will become BROKEN
+                and the party will lose. There is also a risk that the wagon
+                can suffer damage while DAMAGED and become BROKEN, also
+                resulting in a game over.
                 
-                This resource can be produced on the trip using a total of
-                3 daily actions to produce clothes. This item may only be
-                used on characters who do not already have a set of CLOTHES.
+                You can use this item when taking the MEND WAGON daily
+                action in between your travels. This will consume one set
+                of WAGON TOOLS and one daily action.
                 
-                You may buy CLOTHES from THE SHOP:
-                BUYING 1 set of CLOTHES costs $%d.
+                You may buy WAGON TOOLS from THE SHOP:
+                BUYING 1 set of WAGON TOOLS costs $%d.
                 
-                You may sell CLOTHES from THE SHOP:
-                SELLING 1 set of CLOTHES pays $%d.
+                You may sell WAGON TOOLS to THE SHOP:
+                SELLING 1 set of WAGON TOOLS pays $%d.
                 
-                You have %d sets of CLOTHES in your INVENTORY.
+                You have %d sets of WAGON TOOLS in your INVENTORY.
                 
-                Enter "B" to buy FOOD.
-                Enter "S" to sell FOOD.
-                Enter "M" to return to the SHOP menu.
+                Enter "B" to buy WAGON TOOLS.
+                Enter "S" to sell WAGON TOOLS.
+                Enter "M" to return to the SHOP MENU.
                 """, toolsBuyPrice, toolsSellPrice, wagonTools
         ));
     }
@@ -252,27 +255,29 @@ public class Shop extends JDialog {
     private void displaySplints(int splints) {
         shopInfo.setText(String.format( //TODO: NEEDS EDITING
                 """
-                CLOTHES are a one-time consumable resource that will
-                protect your party members from weather for the remainder
-                of their journey. If a character is not protected from
-                extreme weather, they may fall ILL and lose health as a
-                consequence.
+                SPLINTS are used to cure a party member of the INJURED
+                condition. When someone is injured, it takes one week to
+                naturally recover. While they are recovering, your party
+                is forced to travel at the lowest speed. They lose 5 HP
+                a day and party happiness decreases by 1 per day for each
+                injured party member. Additionally, you will only have one
+                daily action available until no one is injured.
+                                             
+                You can use one SPLINT to cure one party member from the
+                INJURED status. This item may only be used on characters
+                who are INJURED.
                 
-                This resource can be produced on the trip using a total of
-                3 daily actions to produce clothes. This item may only be
-                used on characters who do not already have a set of CLOTHES.
+                You may buy SPLINTS from THE SHOP:
+                BUYING 1 SPLINT costs $%d.
                 
-                You may buy CLOTHES from THE SHOP:
-                BUYING 1 set of CLOTHES costs $%d.
+                You may sell SPLINTS to THE SHOP:
+                SELLING 1 SPLINT pays $%d.
                 
-                You may sell CLOTHES from THE SHOP:
-                SELLING 1 set of CLOTHES pays $%d.
+                You have %d SPLINTS in your INVENTORY.
                 
-                You have %d sets of CLOTHES in your INVENTORY.
-                
-                Enter "B" to buy FOOD.
-                Enter "S" to sell FOOD.
-                Enter "M" to return to the SHOP menu.
+                Enter "B" to buy SPLINTS.
+                Enter "S" to sell SPLINTS.
+                Enter "M" to return to the SHOP MENU.
                 """, splintBuyPrice, splintSellPrice, splints
         ));
     }
@@ -280,27 +285,28 @@ public class Shop extends JDialog {
     private void displayOxen(int oxen) {
         shopInfo.setText(String.format( //TODO: NEEDS EDITING
                 """
-                CLOTHES are a one-time consumable resource that will
-                protect your party members from weather for the remainder
-                of their journey. If a character is not protected from
-                extreme weather, they may fall ILL and lose health as a
-                consequence.
+                OXEN are used to drive your wagon in your journey. You need
+                a minimum of two OXEN to drive your cart at all available
+                speeds, and one OXEN to be able to travel at all. There is
+                an increased risk of injury to your OXEN if you have less
+                than 4 OXEN pulling your wagon. If your OXEN becomes injured,
+                you have the choice of harvesting 10 FOOD from it, or
+                abandoning the OXEN.
                 
-                This resource can be produced on the trip using a total of
-                3 daily actions to produce clothes. This item may only be
-                used on characters who do not already have a set of CLOTHES.
+                You may choose to kill an OXEN if you are low on food and
+                in dire straits.
                 
-                You may buy CLOTHES from THE SHOP:
-                BUYING 1 set of CLOTHES costs $%d.
+                You may buy OXEN from THE SHOP:
+                BUYING 1 OXEN costs $%d.
                 
-                You may sell CLOTHES from THE SHOP:
-                SELLING 1 set of CLOTHES pays $%d.
+                You may sell OXEN to THE SHOP:
+                SELLING 1 OXEN pays $%d.
                 
-                You have %d sets of CLOTHES in your INVENTORY.
+                You have %d OXEN in your INVENTORY.
                 
-                Enter "B" to buy FOOD.
-                Enter "S" to sell FOOD.
-                Enter "M" to return to the SHOP menu. 
+                Enter "B" to buy OXEN.
+                Enter "S" to sell OXEN.
+                Enter "M" to return to the OXEN.
                 """, oxenBuyPrice, oxenSellPrice, oxen
         ));
     }

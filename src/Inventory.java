@@ -326,6 +326,7 @@ public class Inventory extends JDialog {
     }
 
     private void consumeOxen() {
+        //TODO: ARE YOU SURE YOU WANT TO CONSUME AN OXEN DIALOGUE Y/N
         invInfo.setText(
                 """
                 Player has chosen to CONSUME one OXEN. Increase total
