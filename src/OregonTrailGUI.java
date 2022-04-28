@@ -687,6 +687,7 @@ public class OregonTrailGUI {
         date = new Date();
         date.setDate(3,17,1861);
         isTraveling = false;
+        introScene();
         writeGameInfo();
 
     }
