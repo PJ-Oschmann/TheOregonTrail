@@ -112,7 +112,10 @@
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
-            <properties/>
+            <properties>
+              <foreground color="-7105645"/>
+              <text value="Input Selection Here"/>
+            </properties>
           </component>
           <component id="ab215" class="javax.swing.JLabel">
             <constraints>

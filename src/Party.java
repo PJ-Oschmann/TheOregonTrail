@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,12 +15,17 @@ public class Party extends JDialog {
     private JTextField userInput;
     private JTextPane partyStats;
     private JTextArea partyTextArea;
-    private final ArrayList<Character> characterArrayList;
+    public final ArrayList<Character> characterArrayList;
+    public Character hattie, charles, augusta, ben, jake;
+    public int happiness, money;
 
     public Party(Character hattie, Character charles, Character augusta, Character ben, Character jake, int happiness, int money) {
+        //instantiating variables
+        setGlobalVar(hattie, charles, augusta, ben, jake, happiness, money);
+
         this.setTitle("Party");
         this.setMinimumSize(new Dimension(1000,300));
-        characterArrayList = new ArrayList<>(List.of(hattie, charles, augusta, ben, jake));
+        this.characterArrayList = new ArrayList<>(List.of(hattie, charles, augusta, ben, jake));
         //this.setUndecorated(true);
         setContentPane(contentPane);
         setModal(true);
@@ -34,6 +38,18 @@ public class Party extends JDialog {
             }
         });
         updateStats(money, happiness);
+        userInput.addFocusListener(inputHelp);
+
+        // call onCancel() when cross is clicked
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        addWindowListener(windowClose);
+
+        // call onCancel() on ESCAPE
+        contentPane.registerKeyboardAction(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                onCancel();
+            }
+        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     /**
@@ -92,6 +108,36 @@ public class Party extends JDialog {
         }
     }
 
+    private void setGlobalVar(Character hattie, Character charles, Character augusta, Character ben, Character jake, int happiness,
+                 int money) {
+        this.hattie = hattie; this.charles = charles; this.augusta = augusta; this.jake = jake;
+        this.happiness = happiness; this.money = money;
+    }
 
+    private FocusAdapter inputHelp = new FocusAdapter() { //Grey text for input box when not focused on
+        @Override
+        public void focusGained(FocusEvent e) {
+            if (userInput.getText().trim().equals("Input Selection Here")) {
+                userInput.setText("");
+                userInput.setForeground(Color.BLACK);
+            }
+        }
 
+        @Override
+        public void focusLost(FocusEvent e) {
+            userInput.setText("Input Selection Here");
+            userInput.setForeground(new Color(147, 147,147));
+        }
+    };
+
+    private void onCancel() {
+        setGlobalVar(hattie, charles, augusta, ben, jake, happiness, money);
+        dispose();
+    }
+
+    private WindowAdapter windowClose = new WindowAdapter() {
+        public void windowClosing(WindowEvent e) {
+            onCancel();
+        }
+    };
 }

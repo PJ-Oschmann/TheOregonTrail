@@ -13,10 +13,10 @@ public class Inventory extends JDialog {
     private JComboBox<String> invComboBox;
     private JTextField userInput;
     private JLabel invInputLabel;
-    private final ArrayList<Character> characterArrayList;
+    public final ArrayList<Character> characterArrayList;
 
     public int food, ammunition, medicine, clothes, wagonTools, splints, oxen, happiness, money;
-    private Character hattie, charles, augusta, ben, jake;
+    public Character hattie, charles, augusta, ben, jake;
 
     public Inventory(int food, int ammunition, int medicine, int clothes, int wagonTools, int splints, int oxen,
                      int happiness, int money, Character hattie, Character charles, Character augusta, Character ben,
@@ -25,7 +25,7 @@ public class Inventory extends JDialog {
         setGlobalVar(food, ammunition, medicine, clothes, wagonTools, splints, oxen, happiness, money, hattie, charles,
                 augusta, ben, jake);
 
-        characterArrayList = new ArrayList<>(List.of(this.hattie, this.charles, this. augusta, this.ben, this.jake));
+        this.characterArrayList = new ArrayList<>(List.of(this.hattie, this.charles, this. augusta, this.ben, this.jake));
         this.setTitle("INVENTORY");
         setContentPane(contentPane);
         setModal(true);
