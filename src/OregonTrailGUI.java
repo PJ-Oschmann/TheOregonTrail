@@ -198,6 +198,7 @@ public class OregonTrailGUI {
         shop.setVisible(true);
         userInput.addActionListener(gameMenu);
         weather.setRandomWeather();
+        writeGameInfo();
     }
 
     /**
@@ -516,11 +517,6 @@ public class OregonTrailGUI {
                 userInput.removeActionListener(menuListener);
 
             }
-            else if (userInput.getText().equalsIgnoreCase("T")) {
-                Party party = new Party(hattie,charles,augusta,ben,jake,happiness,money);
-                party.pack();
-                party.setVisible(true);
-            }
 
 
             userInput.setText("");
@@ -559,9 +555,25 @@ public class OregonTrailGUI {
             else if (userInput.getText().equalsIgnoreCase("C")) {
                 continuousTravel();
             }
+            else if (userInput.getText().equalsIgnoreCase("S")) {
+                currentPace = setPace();
+                writeGameInfo();
+            }
             userInput.setText("");
         }
     };
+
+    //check broke
+    //TODO: Set correct pace if the user types in an invalid string (currently defaults to steady)
+    private int setPace() {
+        int newPaceInt = 0;
+        String newPace = JOptionPane.showInputDialog("Please set a new pace:\n1 - Steady\n2 - Strenuous\n3 - Grueling");
+        if (newPace.equals("1") || newPace.equals("2") || newPace.equals("3")) {
+            newPaceInt = Integer.parseInt(newPace)-1;
+        }
+        else {setPace();}
+        return newPaceInt;
+    }
 
     private static ActionListener returnMainMenuItem = new ActionListener() {
         @Override
@@ -685,7 +697,7 @@ public class OregonTrailGUI {
         weather = new Weather();
         wagon = new Wagon();
         date = new Date();
-        date.setDate(3,17,1861);
+        date.setDate(3,18,1861);
         isTraveling = false;
         introScene();
         writeGameInfo();
