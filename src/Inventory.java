@@ -1,6 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.Calendar;
 
 public class Inventory extends JDialog {
     private JPanel contentPane;
@@ -11,8 +13,21 @@ public class Inventory extends JDialog {
     private JComboBox<String> invComboBox;
     private JTextField userInput;
     private JLabel invInputLabel;
+    private Party party;
+    private Character hattie;
+    private Character charles;
+    private Character augusta;
+    private Character ben;
+    private Character jake;
 
-    public Inventory(int food, int ammunition, int medicine, int clothes, int wagonTools, int splints, int oxen) {
+    public Inventory(int food, int ammunition, int medicine, int clothes, int wagonTools, int splints, int oxen, ArrayList<Character> characterArrayList,int happiness, int money) {
+        this.hattie = characterArrayList.get(0);
+        this.charles = characterArrayList.get(1);
+        this.augusta = characterArrayList.get(2);
+        this.ben = characterArrayList.get(3);
+        this.jake = characterArrayList.get(4);
+        party = new Party(hattie,charles,augusta,ben,jake,happiness,money);
+        party.pack();
         //instantiating private vars
 
         setContentPane(contentPane);
@@ -265,6 +280,17 @@ public class Inventory extends JDialog {
         ));
     }
 
+    public String selectCharacter(String prompt) {
+        party.clearSelectedCharacter();
+        party.setQuestion(prompt);
+        String selectedCharacter;
+        party.setVisible(true);
+        selectedCharacter = party.getSelectedCharacter();
+        if (selectedCharacter=="INVALID") {
+            selectedCharacter = selectCharacter(prompt);
+        }
+        return selectedCharacter;
+    }
 
 //TODO: THESE ALL NEED IMPLEMENTATION AND EDITING
     private void useFood() {
@@ -279,6 +305,8 @@ public class Inventory extends JDialog {
                 
                 Enter "I" to return to the inventory menu.
                 """);
+                System.out.println(selectCharacter("Select a character to feed."));
+
     }
 
     private void useMedicine() {

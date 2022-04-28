@@ -15,6 +15,8 @@ public class Party extends JDialog {
     private JTextPane jakeStats;
     private JTextField userInput;
     private JTextPane partyStats;
+    private JLabel questionText;
+    private String selectedCharacter = "INVALID";
     private final ArrayList<Character> characterArrayList;
 
     public Party(Character hattie, Character charles, Character augusta, Character ben, Character jake, int happiness, int money) {
@@ -43,8 +45,8 @@ public class Party extends JDialog {
      * @param character - The character being selected
      * @return A string of the character selected. If the selection was invalid, "INVALID" is returned.
      */
-    public String selectCharacter(String character) {
-        String selectedCharacter = "INVALID"; //This should be handled
+    public void selectCharacter(String character) {
+
         if (character.equalsIgnoreCase("H")) {
             selectedCharacter = "HATTIE";
         } else if (character.equalsIgnoreCase("C")) {
@@ -56,8 +58,17 @@ public class Party extends JDialog {
         } else if (character.equalsIgnoreCase("J")) {
             selectedCharacter = "JAKE";
         }
+    }
+
+    public String getSelectedCharacter() {
         return selectedCharacter;
     }
+
+    public void clearSelectedCharacter() {
+        selectedCharacter = "INVALID";
+    }
+
+
 
 
 
@@ -93,6 +104,9 @@ public class Party extends JDialog {
             }
             characterCounter++;
         }
+    }
+    public void setQuestion(String q) {
+        questionText.setText(q);
     }
 
 
