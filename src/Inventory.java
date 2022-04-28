@@ -25,7 +25,7 @@ public class Inventory extends JDialog {
         setGlobalVar(food, ammunition, medicine, clothes, wagonTools, splints, oxen, happiness, money, hattie, charles,
                 augusta, ben, jake);
 
-        this.characterArrayList = new ArrayList<>(List.of(this.hattie, this.charles, this. augusta, this.ben, this.jake));
+        characterArrayList = new ArrayList<>(List.of(this.hattie, this.charles, this. augusta, this.ben, this.jake));
         this.setTitle("INVENTORY");
         setContentPane(contentPane);
         setModal(true);
