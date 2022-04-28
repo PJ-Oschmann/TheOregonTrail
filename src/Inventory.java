@@ -265,6 +265,8 @@ public class Inventory extends JDialog {
         ));
     }
 
+
+//TODO: THESE ALL NEED IMPLEMENTATION AND EDITING
     private void useFood() {
         invInfo.setText(
                 """

@@ -48,27 +48,16 @@ public class Scene extends JDialog {
         sceneMan.loadScene(scene);
         this.pack();
         this.setVisible(true);
-
-
     }
 
     public void chainLoadScene(ArrayList<String> arrayOfScenes) {
         sceneMan.chainLoadScene(arrayOfScenes);
         this.pack();
         this.setVisible(true);
-
     }
 
     public void closeSceneWindow() {
         dispose();
     }
-    /*
-    public static void main(String[] args) {
-        Scene dialog = new Scene();
-        dialog.pack();
-        dialog.setVisible(true);
-        System.exit(0);
-    }
-    */
 
 }

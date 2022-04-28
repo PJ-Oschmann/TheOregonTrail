@@ -76,7 +76,6 @@ public class OregonTrailGUI {
         frame.pack();
         addUIMenuBar(frame);
 
-
         frame.setVisible(true);
     }
 
@@ -93,14 +92,20 @@ public class OregonTrailGUI {
             displayMainMenu();
             userInput.addActionListener(AL);
         }
-
 //TODO: INTRO SCENE AND DIALOGUE + STORY TEXT BOX
-
+        if (!inMenu && !inGame) { //first dialogue box will open here when they press or enter play
+            //open dialogue box
+        }
 //TODO: SHOP HERE FOR USER STARTING GAME
-
+        /* //For when user exits initial scene, set it to open a shop window in the dispose of that scene
+        Shop shop = new Shop(money, food, ammunition, medicine, clothes, wagonTools, splints, oxen);
+        shop.pack();
+        shop.setVisible(true);
+        */
 //TODO: NOW USER GETS TO START PLAYING GAME
-        if(inGame) {
+        if (inGame) {
             userInput.addActionListener(gameMenu);
+            ImageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/MainGame.png"));
             augusta.setSick(true);
             writeGameInfo();
         }
@@ -216,7 +221,8 @@ public class OregonTrailGUI {
 
         }
 
-        JOptionPane.showMessageDialog(null,"<html><h1>"+title+"</h1><br>"+newMessage,title,JOptionPane.PLAIN_MESSAGE,oregonIcon);
+        JOptionPane.showMessageDialog(null,"<html><h1>"+title+"</h1><br>"+newMessage,title,
+                JOptionPane.PLAIN_MESSAGE,oregonIcon);
     }
 
     public void displayHelpMenu() {
@@ -422,14 +428,17 @@ public class OregonTrailGUI {
         }
 
         //If everyone is dead
-        else if (hattie.getHealth()<=0 && charles.getHealth() <= 0 && augusta.getHealth() <= 0 && ben.getHealth() <= 0 && jake.getHealth() <= 0) {
+        else if (hattie.getHealth()<=0 && charles.getHealth() <= 0 && augusta.getHealth() <= 0 && ben.getHealth() <= 0
+                && jake.getHealth() <= 0) {
             message = "Everyone literally died. Ghosts don't go to Oregon. You can't continue.";
             isLost = true;
         }
 
         String[] gameOverChoices = {"Play again","Main Menu"};
         if (isLost) {
-            if (JOptionPane.showOptionDialog(null,message,"Game Over",JOptionPane.YES_NO_OPTION,JOptionPane.PLAIN_MESSAGE,null,gameOverChoices,null)==JOptionPane.YES_OPTION) {
+            if (JOptionPane.showOptionDialog(null,message,"Game Over",
+                    JOptionPane.YES_NO_OPTION,JOptionPane.PLAIN_MESSAGE,null,gameOverChoices,
+                    null)==JOptionPane.YES_OPTION) {
                 resetGame();
             }
             else {
@@ -503,11 +512,8 @@ public class OregonTrailGUI {
             }
             else if (userInput.getText().equalsIgnoreCase("P")) {
                 inMenu = false;
-                inGame = true;
-                //TODO: Shop menu/GUI opens here
-                Shop shop = new Shop(money, food, ammunition, medicine, clothes, wagonTools, splints, oxen);
-                shop.pack();
-                shop.setVisible(true);
+                //TODO: INTRO SCENE/DIALOGUE OPENS HERE
+
                 userInput.removeActionListener(AL);
 
             }
