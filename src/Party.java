@@ -24,9 +24,6 @@ public class Party extends JDialog {
     private int money;
     private final ArrayList<Character> characterArrayList;
 
-
-
-
     public Party(Character hattie, Character charles, Character augusta, Character ben, Character jake, int happiness, int money) {
         this.setTitle("Party");
         this.setMinimumSize(new Dimension(1000,300));
@@ -34,14 +31,8 @@ public class Party extends JDialog {
         setContentPane(contentPane);
         setModal(true);
 
-        this.hattie = hattie;
-        this.charles = charles;
-        this.augusta = augusta;
-        this.ben = ben;
-        this.jake = jake;
-        this.happiness = happiness;
-        this.money = money;
-        this.characterArrayList =new ArrayList<>(List.of(hattie, charles, augusta, ben, jake));
+
+        characterArrayList =new ArrayList<>(List.of(hattie, charles, augusta, ben, jake));
         setContentPane(contentPane);
         setModal(true);
         userInput.addActionListener(new ActionListener() {
