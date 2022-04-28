@@ -201,6 +201,12 @@ public class OregonTrailGUI {
         }
     }
 
+    public void introScene() {
+        stopContTravel();
+        scene.loadScene("intro");
+        inGame=true;
+    }
+
     /**
      * Displays a dialog box the screen. Asks as a preset to maintain a common style across all "About" messages.
      * A cute picture of Oregon is shown for some visual flair, and a new line is created every 15 words.
@@ -302,7 +308,6 @@ public class OregonTrailGUI {
     //Important! If loading a scene, remember to stop continuous travel first! (stopContTravel())
     public void doStoryLine() {
         //Journal for 3/19/1861
-
         if (date.toString().equals("March 19, 1861")) {
             stopContTravel();
             scene.loadScene("1861-3-19");
