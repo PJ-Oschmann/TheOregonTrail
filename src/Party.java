@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,29 +14,42 @@ public class Party extends JDialog {
     private JTextPane jakeStats;
     private JTextField userInput;
     private JTextPane partyStats;
-    private JLabel questionText;
-    private String selectedCharacter = "INVALID";
-    private final ArrayList<Character> characterArrayList;
+    private JTextArea partyTextArea;
+    public final ArrayList<Character> characterArrayList;
+    public Character hattie, charles, augusta, ben, jake;
+    public int happiness, money;
 
     public Party(Character hattie, Character charles, Character augusta, Character ben, Character jake, int happiness, int money) {
+        //instantiating variables
+        setGlobalVar(hattie, charles, augusta, ben, jake, happiness, money);
+
         this.setTitle("Party");
         this.setMinimumSize(new Dimension(1000,300));
+        this.characterArrayList = new ArrayList<>(List.of(hattie, charles, augusta, ben, jake));
         //this.setUndecorated(true);
         setContentPane(contentPane);
         setModal(true);
 
-        characterArrayList =new ArrayList<>(List.of(hattie, charles, augusta, ben, jake));
-        setContentPane(contentPane);
-        setModal(true);
         userInput.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 selectCharacter(userInput.getText());
                 userInput.setText("");
-                dispose();
             }
         });
         updateStats(money, happiness);
+        userInput.addFocusListener(inputHelp);
+
+        // call onCancel() when cross is clicked
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        addWindowListener(windowClose);
+
+        // call onCancel() on ESCAPE
+        contentPane.registerKeyboardAction(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                onCancel();
+            }
+        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     /**
@@ -45,8 +57,8 @@ public class Party extends JDialog {
      * @param character - The character being selected
      * @return A string of the character selected. If the selection was invalid, "INVALID" is returned.
      */
-    public void selectCharacter(String character) {
-
+    public String selectCharacter(String character) {
+        String selectedCharacter = "INVALID"; //This should be handled
         if (character.equalsIgnoreCase("H")) {
             selectedCharacter = "HATTIE";
         } else if (character.equalsIgnoreCase("C")) {
@@ -58,18 +70,8 @@ public class Party extends JDialog {
         } else if (character.equalsIgnoreCase("J")) {
             selectedCharacter = "JAKE";
         }
-    }
-
-    public String getSelectedCharacter() {
         return selectedCharacter;
     }
-
-    public void clearSelectedCharacter() {
-        selectedCharacter = "INVALID";
-    }
-
-
-
 
 
     ArrayList<JTextPane> arrayOfPanes = new ArrayList<>(List.of(hattieStats, charlesStats, augustaStats, benStats, jakeStats));
@@ -84,30 +86,58 @@ public class Party extends JDialog {
         partyStatsText = partyStatsText.replace("$Money","$"+money);
         partyStatsText = partyStatsText.replace("$Happiness",Integer.toString(happiness));
         partyStats.setText(partyStatsText);
-        int characterCounter = 0;
+        int characterIndex = 0;
         String statsText = """
                 HP: $HP
                 Clothing: $Clothing
                 Healthiness: $Healthiness
                 """;
         for (JTextPane stats : arrayOfPanes) {
-            if (characterArrayList.get(characterCounter).getHealth() <= 0) {
+            if (characterArrayList.get(characterIndex).getHealth() <= 0) {
                 stats.setText("DEAD");
 
             } else {
                 String newText = statsText;
-                newText = newText.replace("$HP", Integer.toString(characterArrayList.get(characterCounter).getHealth()));
-                newText = newText.replace("$Clothing", characterArrayList.get(characterCounter).hasClothingToString());
-                newText = newText.replace("$Healthiness",characterArrayList.get(characterCounter).isSickToString());
+                newText = newText.replace("$HP", Integer.toString(characterArrayList.get(characterIndex).getHealth()));
+                newText = newText.replace("$Clothing", characterArrayList.get(characterIndex).hasClothingToString());
+                newText = newText.replace("$Healthiness",characterArrayList.get(characterIndex).isSickToString());
                 stats.setText(newText);
 
             }
-            characterCounter++;
+            characterIndex++;
         }
     }
-    public void setQuestion(String q) {
-        questionText.setText(q);
+
+    private void setGlobalVar(Character hattie, Character charles, Character augusta, Character ben, Character jake, int happiness,
+                 int money) {
+        this.hattie = hattie; this.charles = charles; this.augusta = augusta; this.jake = jake;
+        this.happiness = happiness; this.money = money;
     }
 
+    private FocusAdapter inputHelp = new FocusAdapter() { //Grey text for input box when not focused on
+        @Override
+        public void focusGained(FocusEvent e) {
+            if (userInput.getText().trim().equals("Input Selection Here")) {
+                userInput.setText("");
+                userInput.setForeground(Color.BLACK);
+            }
+        }
 
+        @Override
+        public void focusLost(FocusEvent e) {
+            userInput.setText("Input Selection Here");
+            userInput.setForeground(new Color(147, 147,147));
+        }
+    };
+
+    private void onCancel() {
+        setGlobalVar(hattie, charles, augusta, ben, jake, happiness, money);
+        dispose();
+    }
+
+    private WindowAdapter windowClose = new WindowAdapter() {
+        public void windowClosing(WindowEvent e) {
+            onCancel();
+        }
+    };
 }

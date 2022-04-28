@@ -524,15 +524,10 @@ public class OregonTrailGUI {
                 userInput.removeActionListener(AL);
 
             }
-            else if (userInput.getText().equalsIgnoreCase("/testParty")) {
+            else if (userInput.getText().equalsIgnoreCase("T")) {
                 Party party = new Party(hattie,charles,augusta,ben,jake,happiness,money);
                 party.pack();
                 party.setVisible(true);
-            }
-            else if (userInput.getText().equalsIgnoreCase("/testInventory")) {
-                Inventory inv = new Inventory(food,ammunition,medicine,clothes,wagonTools,splints,oxen,characterArrayList,happiness,money);
-                inv.pack();
-                inv.setVisible(true);
             }
             userInput.setText("");
         }
@@ -553,7 +548,8 @@ public class OregonTrailGUI {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (userInput.getText().equalsIgnoreCase("I")) {
-                Inventory inv = new Inventory(food,ammunition,medicine,clothes,wagonTools,splints,oxen,characterArrayList,happiness,money);
+                Inventory inv = new Inventory(food, ammunition, medicine, clothes, wagonTools, splints, oxen, happiness,
+                        money, hattie, augusta, charles, ben, jake);
                 inv.pack();
                 inv.setVisible(true);
             }
@@ -753,6 +749,5 @@ public class OregonTrailGUI {
 
 
     }
-
 }
 
