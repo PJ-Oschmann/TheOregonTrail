@@ -84,18 +84,14 @@ public class OregonTrailGUI {
      */
     //Create application
     public OregonTrailGUI() {
-
-//TODO: MAIN MENU SCREEN
+        //MAIN MENU
         userInput.addFocusListener(inputHelp);
         if(inMenu) {
             ImageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/MainMenu.png"));
             displayMainMenu();
-            userInput.addActionListener(AL);
+            userInput.addActionListener(menuListener);
         }
-//TODO: INTRO SCENE AND DIALOGUE + STORY TEXT BOX
-        if (!inMenu && !inGame) {
-            introScene();
-        }
+
 //TODO: NOW USER GETS TO START PLAYING GAME
         if (inGame) {
             userInput.addActionListener(gameMenu);
@@ -506,7 +502,7 @@ public class OregonTrailGUI {
 
      */
 
-    private ActionListener AL = new ActionListener() {
+    private ActionListener menuListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (userInput.getText().equalsIgnoreCase("E")) {
@@ -514,9 +510,8 @@ public class OregonTrailGUI {
             }
             else if (userInput.getText().equalsIgnoreCase("P")) {
                 inMenu = false;
-                //TODO: INTRO SCENE/DIALOGUE OPENS HERE
-
-                userInput.removeActionListener(AL);
+                introScene();
+                userInput.removeActionListener(menuListener);
 
             }
             else if (userInput.getText().equalsIgnoreCase("T")) {
