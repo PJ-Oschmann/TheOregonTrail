@@ -15,24 +15,22 @@ public class Party extends JDialog {
     private JTextPane jakeStats;
     private JTextField userInput;
     private JTextPane partyStats;
+    private JTextArea partyTextArea;
     private final ArrayList<Character> characterArrayList;
 
     public Party(Character hattie, Character charles, Character augusta, Character ben, Character jake, int happiness, int money) {
         this.setTitle("Party");
         this.setMinimumSize(new Dimension(1000,300));
+        characterArrayList = new ArrayList<>(List.of(hattie, charles, augusta, ben, jake));
         //this.setUndecorated(true);
         setContentPane(contentPane);
         setModal(true);
 
-        characterArrayList =new ArrayList<>(List.of(hattie, charles, augusta, ben, jake));
-        setContentPane(contentPane);
-        setModal(true);
         userInput.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 selectCharacter(userInput.getText());
                 userInput.setText("");
-                dispose();
             }
         });
         updateStats(money, happiness);
@@ -60,7 +58,6 @@ public class Party extends JDialog {
     }
 
 
-
     ArrayList<JTextPane> arrayOfPanes = new ArrayList<>(List.of(hattieStats, charlesStats, augustaStats, benStats, jakeStats));
     /**
      * Update the status of each player. If the player is dead, their status is marked "DEAD."
@@ -73,27 +70,28 @@ public class Party extends JDialog {
         partyStatsText = partyStatsText.replace("$Money","$"+money);
         partyStatsText = partyStatsText.replace("$Happiness",Integer.toString(happiness));
         partyStats.setText(partyStatsText);
-        int characterCounter = 0;
+        int characterIndex = 0;
         String statsText = """
                 HP: $HP
                 Clothing: $Clothing
                 Healthiness: $Healthiness
                 """;
         for (JTextPane stats : arrayOfPanes) {
-            if (characterArrayList.get(characterCounter).getHealth() <= 0) {
+            if (characterArrayList.get(characterIndex).getHealth() <= 0) {
                 stats.setText("DEAD");
 
             } else {
                 String newText = statsText;
-                newText = newText.replace("$HP", Integer.toString(characterArrayList.get(characterCounter).getHealth()));
-                newText = newText.replace("$Clothing", characterArrayList.get(characterCounter).hasClothingToString());
-                newText = newText.replace("$Healthiness",characterArrayList.get(characterCounter).isSickToString());
+                newText = newText.replace("$HP", Integer.toString(characterArrayList.get(characterIndex).getHealth()));
+                newText = newText.replace("$Clothing", characterArrayList.get(characterIndex).hasClothingToString());
+                newText = newText.replace("$Healthiness",characterArrayList.get(characterIndex).isSickToString());
                 stats.setText(newText);
 
             }
-            characterCounter++;
+            characterIndex++;
         }
     }
+
 
 
 }

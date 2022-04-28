@@ -32,6 +32,7 @@ public class Shop extends JDialog {
     public Shop(int money, int food, int ammo, int medicine, int clothes, int wagonTools, int splints, int oxen) {
         setContentPane(shopPane);
         setModal(true);
+        this.setTitle("THE SHOP");
         shopImage.setIcon(new javax.swing.ImageIcon("src/assets/images/Shop.png"));
         if (shopComboBox.getSelectedIndex() == 0) {
             displayMenu();

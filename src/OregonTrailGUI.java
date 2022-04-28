@@ -543,7 +543,8 @@ public class OregonTrailGUI {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (userInput.getText().equalsIgnoreCase("I")) {
-                Inventory inv = new Inventory(food, ammunition, medicine, clothes, wagonTools, splints, oxen);
+                Inventory inv = new Inventory(food, ammunition, medicine, clothes, wagonTools, splints, oxen, happiness,
+                        money, hattie, augusta, charles, ben, jake);
                 inv.pack();
                 inv.setVisible(true);
             }

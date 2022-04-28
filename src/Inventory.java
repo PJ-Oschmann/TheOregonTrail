@@ -1,6 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Inventory extends JDialog {
     private JPanel contentPane;
@@ -11,10 +13,14 @@ public class Inventory extends JDialog {
     private JComboBox<String> invComboBox;
     private JTextField userInput;
     private JLabel invInputLabel;
+    private final ArrayList<Character> characterArrayList;
 
-    public Inventory(int food, int ammunition, int medicine, int clothes, int wagonTools, int splints, int oxen) {
+    public Inventory(int food, int ammunition, int medicine, int clothes, int wagonTools, int splints, int oxen,
+                     int happiness, int money, Character hattie, Character charles, Character augusta, Character ben,
+                     Character jake) {
         //instantiating private vars
-
+        characterArrayList = new ArrayList<>(List.of(hattie, charles, augusta, ben, jake));
+        this.setTitle("INVENTORY");
         setContentPane(contentPane);
         setModal(true);
 
@@ -58,26 +64,25 @@ public class Inventory extends JDialog {
                     default -> displayMenu();
                 }
 
-                //TODO: Implement party gui and information to be altered in inventory when items are used
                 if (userInput.getText().equalsIgnoreCase("U") && invComboBox.getSelectedIndex() == 1) {
-                    useFood();
-                    //This is what happens when they "use" a food item
+                    useFood(hattie, augusta, charles, ben, jake, happiness, money);
+                    //updateInv(food, ammunition, medicine, clothes, wagonTools, splints, oxen);
                 }
                 else if (userInput.getText().equalsIgnoreCase("U") && invComboBox.getSelectedIndex() == 3) {
-                    //This is what happens when they "use" the medicine item
-                    useMedicine();
+                    useMedicine(hattie, augusta, charles, ben, jake, happiness, money);
+                    //updateInv(food, ammunition, medicine, clothes, wagonTools, splints, oxen);
                 }
                 else if (userInput.getText().equalsIgnoreCase("E") && invComboBox.getSelectedIndex() == 4) {
-                    //This is what happens when they "equip" the clothes item
-                    equipClothes();
+                    equipClothes(hattie, augusta, charles, ben, jake, happiness, money);
+                    //updateInv(food, ammunition, medicine, clothes, wagonTools, splints, oxen);
                 }
                 else if (userInput.getText().equalsIgnoreCase("U") && invComboBox.getSelectedIndex() == 6) {
-                    //This is what happens when they "use" the splints item
-                    useSplints();
+                    useSplints(hattie, augusta, charles, ben, jake, happiness, money);
+                    //updateInv(food, ammunition, medicine, clothes, wagonTools, splints, oxen);
                 }
                 else if (userInput.getText().equalsIgnoreCase("C") && invComboBox.getSelectedIndex() == 7) {
-                    //This is what happens when they "consume" an OXEN for food
-                    consumeOxen();
+                    consumeOxen(oxen, food);
+                    //updateInv(food, ammunition, medicine, clothes, wagonTools, splints, oxen);
                 }
                 userInput.setText("");
             }
@@ -267,7 +272,9 @@ public class Inventory extends JDialog {
 
 
 //TODO: THESE ALL NEED IMPLEMENTATION AND EDITING
-    private void useFood() {
+    private void useFood(Character hattie, Character charles, Character augusta, Character ben, Character jake,
+                         int happiness, int money) {
+        openParty(hattie, charles, augusta, ben, jake, happiness, money, "FOOD");
         invInfo.setText(
                 """
                 Player has chosen to use one unit of food.
@@ -281,7 +288,9 @@ public class Inventory extends JDialog {
                 """);
     }
 
-    private void useMedicine() {
+    private void useMedicine(Character hattie, Character charles, Character augusta, Character ben, Character jake,
+                             int happiness, int money) {
+        openParty(hattie, charles, augusta, ben, jake, happiness, money, "MEDICINE");
         invInfo.setText(
                 """
                 Player has chosen to use one medicine item.
@@ -295,7 +304,9 @@ public class Inventory extends JDialog {
                 """);
     }
 
-    private void equipClothes() {
+    private void equipClothes(Character hattie, Character charles, Character augusta, Character ben, Character jake,
+                              int happiness, int money) {
+        openParty(hattie, charles, augusta, ben, jake, happiness, money, "CLOTHES");
         invInfo.setText(
                 """
                 Player has chosen to equip one set of clothes.
@@ -311,7 +322,9 @@ public class Inventory extends JDialog {
                 """);
     }
 
-    private void useSplints() {
+    private void useSplints(Character hattie, Character charles, Character augusta, Character ben, Character jake,
+                            int happiness, int money) {
+        openParty(hattie, charles, augusta, ben, jake, happiness, money, "SPLINTS");
         invInfo.setText(
                 """
                 Player has chosen to use one splint.
@@ -327,10 +340,15 @@ public class Inventory extends JDialog {
                 """);
     }
 
-    private void consumeOxen() {
+    private void consumeOxen(int oxen, int food) {
         //TODO: ARE YOU SURE YOU WANT TO CONSUME AN OXEN DIALOGUE Y/N
-       // if(JOptionPane.showConfirmDialog(null,"Are you sure you want to consume an Oxen?"))
-
+        int reply = JOptionPane.showConfirmDialog(null, "Would you like to consume an oxen?\nYou " +
+                "must have at least 5 oxen to consume 1.", "Consume an Oxen", JOptionPane.YES_NO_OPTION);
+        if (reply == JOptionPane.YES_OPTION) {
+            oxen -=1;
+        } else {
+            food += 10;
+        }
             invInfo.setText(
                 """
                 Player has chosen to CONSUME one OXEN. Increase total
@@ -369,7 +387,12 @@ public class Inventory extends JDialog {
         dispose();
     }
 
-    private void openParty() {
-
+    private void openParty(Character hattie, Character charles, Character augusta, Character ben, Character jake,
+                           int happiness, int money, String item) {
+        Party party = new Party(hattie, charles, augusta, ben, jake, happiness, money);
+        party.pack();
+        party.setVisible(true);
     }
+
+    // private void updateInv(int food, int ammo, int medicine, int clothes, int wagonTools, int splints, int oxen) { }
 }
