@@ -43,7 +43,7 @@ public class OregonTrailGUI {
     private Character jake = new Character("Jake",100,0);
 
     private ArrayList<Character> characterArrayList = new ArrayList<>(List.of(hattie,charles,augusta,ben,jake));
-    private ArrayList<Character> allCharacters = new ArrayList<>(List.of(hattie,charles,augusta,ben,jake));
+    //private ArrayList<Character> allCharacters = new ArrayList<>(List.of(hattie,charles,augusta,ben,jake));
 
     //game variables
     private int money = 250, food = 0, ammunition = 0, medicine = 0, clothes = 0, wagonTools = 0, splints = 0, oxen = 0;
@@ -671,7 +671,7 @@ public class OregonTrailGUI {
         ben = new Character("Ben",100,0);
         jake = new Character("Jake",100,0);
         characterArrayList = new ArrayList<>(List.of(hattie,charles,augusta,ben,jake));
-        allCharacters = new ArrayList<>(List.of(hattie,charles,augusta,ben,jake));
+        //allCharacters = new ArrayList<>(List.of(hattie,charles,augusta,ben,jake));
         food = 0; ammunition = 0; medicine = 0; clothes = 0; wagonTools = 0; splints = 0; oxen = 0;
         isGameWon = false; isGameLost = false;
         happiness=100;
@@ -697,17 +697,13 @@ public class OregonTrailGUI {
     }
 
     public void killPlayer() {
-        ArrayList<Character> toDelete = new ArrayList<>();
         for (Character character : characterArrayList) {
             if (character.getHealth()<=0) {
-                toDelete.add(character);
                 JOptionPane.showMessageDialog(null,character.getName()+" died.");
                 updateStats();
             }
         }
-        for (Character character : toDelete) {
-            characterArrayList.remove(character);
-        }
+
     }
     ArrayList<JTextPane> arrayOfPanes = new ArrayList<>(List.of(hattieStats,charlesStats,augustaStats,benStats,jakeStats));
 
