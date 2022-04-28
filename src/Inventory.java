@@ -327,7 +327,9 @@ public class Inventory extends JDialog {
 
     private void consumeOxen() {
         //TODO: ARE YOU SURE YOU WANT TO CONSUME AN OXEN DIALOGUE Y/N
-        invInfo.setText(
+       // if(JOptionPane.showConfirmDialog(null,"Are you sure you want to consume an Oxen?"))
+
+            invInfo.setText(
                 """
                 Player has chosen to CONSUME one OXEN. Increase total
                 party food count by 10 units of food.

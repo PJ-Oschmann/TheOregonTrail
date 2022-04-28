@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import javax.swing.Timer;
 
@@ -30,6 +32,15 @@ public class Scene extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 sceneMan.continueScene();
+            }
+        });
+        storyTextArea.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if(e.getKeyChar()=='C') {
+
+
+                };
             }
         });
     }
