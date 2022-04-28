@@ -38,9 +38,16 @@ public class Scene extends JDialog {
             @Override
             public void keyPressed(KeyEvent e) {
                 if(e.getKeyChar()=='C') {
-
-
+                    sceneMan.continueScene();
                 };
+            }
+        });
+        continueButton.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyChar()=='C') {
+                    sceneMan.continueScene();
+                }
             }
         });
     }
