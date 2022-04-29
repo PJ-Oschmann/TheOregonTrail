@@ -235,8 +235,7 @@ public class OregonTrailGUI {
                 Options available for input dialog box:
                 H: HELP
                 I: INVENTORY
-                P: PARTY
-                S: SET PACE
+                P: SET PACE
                 
                 If you're inside a town or fort:
                 W: GO TO THE LOCAL WAGON REPAIR MECHANIC
@@ -548,17 +547,14 @@ public class OregonTrailGUI {
                 displayHelpMenu();
             }
             else if (userInput.getText().equalsIgnoreCase("P")) {
-                //TODO: IMPLEMENT PARTY MENU AND DETAILS DIALOGUE CLASS
+                currentPace = setPace();
+                writeGameInfo();
             }
             else if (userInput.getText().equalsIgnoreCase("T")) {
                 travel();
             }
             else if (userInput.getText().equalsIgnoreCase("C")) {
                 continuousTravel();
-            }
-            else if (userInput.getText().equalsIgnoreCase("S")) {
-                currentPace = setPace();
-                writeGameInfo();
             }
             userInput.setText("");
         }
