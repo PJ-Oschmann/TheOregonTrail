@@ -232,12 +232,13 @@ public class OregonTrailGUI {
                 """
                 INPUT DIALOGUE BOX HELP MENU
                 
-                OPTIONS AVAILABLE FOR INPUT DIALOGUE BOX:
+                Options available for input dialog box:
                 H: HELP
                 I: INVENTORY
                 P: PARTY
+                S: SET PACE
                 
-                IF YOU ARE INSIDE OF A TOWN OR FORT:
+                If you're inside a town or fort:
                 W: GO TO THE LOCAL WAGON REPAIR MECHANIC
                 S: VISIT THE LOCAL SHOP
                 R: REST AT THE LOCAL INN
