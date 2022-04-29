@@ -736,6 +736,7 @@ public class OregonTrailGUI {
                 HP: $HP
                 Clothing: $Clothing
                 Healthiness: $Healthiness
+                Injured: $Injured
                 """;
         for (JTextPane stats : arrayOfPanes) {
             if (characterArrayList.get(characterIndex).getHealth() <= 0) {
@@ -746,6 +747,7 @@ public class OregonTrailGUI {
                 newText = newText.replace("$HP", Integer.toString(characterArrayList.get(characterIndex).getHealth()));
                 newText = newText.replace("$Clothing", characterArrayList.get(characterIndex).hasClothingToString());
                 newText = newText.replace("$Healthiness",characterArrayList.get(characterIndex).isSickToString());
+                newText = newText.replace("$Injured",characterArrayList.get(characterIndex).isInjuredToString());
                 stats.setText(newText);
 
             }

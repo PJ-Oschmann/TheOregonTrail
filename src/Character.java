@@ -8,6 +8,7 @@ public class Character {
     private String currentHealth;
     private boolean hasClothing = false;
     private boolean isSick = false;
+    private boolean isInjured = false;
 
     /**
      * Constructor for the Player class. Every player shall have a default health count,
@@ -131,5 +132,19 @@ public class Character {
         return clothingString;
     }
 
+    public boolean isInjured() {
+        return isInjured;
+    }
+
+    public void setInjured(boolean injured) {
+        isInjured = injured;
+    }
+    public String isInjuredToString() {
+        String injured = "Not injured";
+        if (isInjured) {
+            injured = "Injured";
+        }
+        return injured;
+    }
 }
 
