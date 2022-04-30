@@ -39,7 +39,7 @@ public class Scene extends JDialog {
             public void keyPressed(KeyEvent e) {
                 if(e.getKeyChar()=='c') {
                     sceneMan.continueScene();
-                };
+                }
             }
         });
         continueButton.addKeyListener(new KeyAdapter() {

@@ -1,6 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.UncheckedIOException;
+import java.util.InputMismatchException;
 
 public class Shop extends JDialog {
     private JPanel shopPane;
@@ -28,6 +30,8 @@ public class Shop extends JDialog {
     private static final int splintSellPrice = 5;
     private static final int toolsSellPrice = 8;
     private static final int oxenSellPrice = 8;
+    private boolean itemShowing = false;
+    private boolean menuShowing = true;
     private final OregonTrailGUI game;
 
     public int money; int food; int ammunition; int medicine; int clothes; int wagonTools; int splints; int oxen;
@@ -41,6 +45,7 @@ public class Shop extends JDialog {
         shopImage.setIcon(new javax.swing.ImageIcon("src/assets/images/Shop.png"));
         if (shopComboBox.getSelectedIndex() == 0) {
             displayMenu();
+            menuSelected();
         }
 
         shopComboBox.addItemListener(new ItemListener() {
@@ -48,15 +53,21 @@ public class Shop extends JDialog {
             public void itemStateChanged(ItemEvent e) {
                 int input = shopComboBox.getSelectedIndex();
                 switch (input) {
-                    case 0 -> displayMenu();
-                    case 1 -> displayFood(food);
-                    case 2 -> displayAmmo(ammunition);
-                    case 3 -> displayMed(medicine);
-                    case 4 -> displayClothes(clothes);
-                    case 5 -> displayWT(wagonTools);
-                    case 6 -> displaySplints(splints);
-                    case 7 -> displayOxen(oxen);
-                    default -> shopInfo.setText("ERROR IN SWITCH");
+                    case 0 -> { displayMenu(); inMenu(); }
+                    case 1 -> { displayFood(food); inItem(); }
+                    case 2 -> { displayAmmo(ammunition); inItem(); }
+                    case 3 -> { displayMed(medicine); inItem(); }
+                    case 4 -> { displayClothes(clothes); inItem(); }
+                    case 5 -> { displayWT(wagonTools); inItem(); }
+                    case 6 -> { displaySplints(splints); inItem(); }
+                    case 7 -> { displayOxen(oxen); inItem(); }
+                    default -> { notValidInput(); displayMenu(); inMenu();}
+                }
+                if (menuShowing) {
+                    menuSelected();
+                }
+                else if (itemShowing) {
+                    itemSelected();
                 }
             }});
 
@@ -74,6 +85,16 @@ public class Shop extends JDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    }
+
+    private void inMenu() {
+        menuShowing = true;
+        itemShowing = false;
+    }
+
+    private void inItem() {
+        menuShowing = false;
+        itemShowing = true;
     }
 
     //Main Shop Menu
@@ -336,15 +357,21 @@ public class Shop extends JDialog {
         public void actionPerformed(ActionEvent e) {
             String input = shopInput.getText().toUpperCase();
             switch (input) {
-                case "R" -> { displayMenu(); shopComboBox.setSelectedIndex(0); itemSelected(); }
-                case "F" -> { displayFood(food); shopComboBox.setSelectedIndex(1); itemSelected(); }
-                case "A" -> { displayAmmo(ammunition); shopComboBox.setSelectedIndex(2); itemSelected(); }
-                case "M" -> { displayMed(medicine); shopComboBox.setSelectedIndex(3); itemSelected(); }
-                case "C" -> { displayClothes(clothes); shopComboBox.setSelectedIndex(4); itemSelected(); }
-                case "W" -> { displayWT(wagonTools); shopComboBox.setSelectedIndex(5); itemSelected(); }
-                case "S" -> { displaySplints(splints); shopComboBox.setSelectedIndex(6); itemSelected(); }
-                case "O" -> { displayOxen(oxen); shopComboBox.setSelectedIndex(7); itemSelected(); }
-                default -> { notValidInput(); displayMenu(); }
+                case "R" -> { displayMenu(); shopComboBox.setSelectedIndex(0); inMenu(); }
+                case "F" -> { displayFood(food); shopComboBox.setSelectedIndex(1); inItem(); }
+                case "A" -> { displayAmmo(ammunition); shopComboBox.setSelectedIndex(2); inItem(); }
+                case "M" -> { displayMed(medicine); shopComboBox.setSelectedIndex(3); inItem(); }
+                case "C" -> { displayClothes(clothes); shopComboBox.setSelectedIndex(4); inItem(); }
+                case "W" -> { displayWT(wagonTools); shopComboBox.setSelectedIndex(5); inItem(); }
+                case "S" -> { displaySplints(splints); shopComboBox.setSelectedIndex(6); inItem(); }
+                case "O" -> { displayOxen(oxen); shopComboBox.setSelectedIndex(7); inItem(); }
+                default -> { notValidInput(); displayMenu(); inMenu(); }
+            }
+            if (menuShowing) {
+                menuSelected();
+            }
+            else if (itemShowing) {
+                itemSelected();
             }
             shopInput.setText("");
         }
@@ -354,22 +381,19 @@ public class Shop extends JDialog {
         @Override
         public void actionPerformed(ActionEvent e) {
             String input = shopInput.getText().toUpperCase();
-            switch(input) {
-                case "B" -> { buyItem(game); displayMenu(); backToMenu(); }
-                case "S" -> { sellItem(game); displayMenu(); backToMenu(); }
-                case "R" -> { displayMenu(); backToMenu(); }
-                default -> { displayMenu(); shopInput.addActionListener(shopMenuListener); notValidInput(); }
+            switch (input) {
+                case "B" -> { buyItem(); displayMenu(); inMenu(); }
+                case "S" -> { sellItem(); displayMenu(); inMenu(); }
+                case "R" -> { displayMenu(); inMenu(); }
+                default -> { displayMenu(); notValidInput(); inMenu(); }
+            }
+            if (menuShowing) {
+                menuSelected();
+            } else {
+                throw new IllegalArgumentException("Shop didn't function correctly in shopItemListener.");
             }
         }
     };
-
-    private void buyItem(OregonTrailGUI game) {
-
-    }
-
-    private void sellItem(OregonTrailGUI game) {
-
-    }
 
     private void setGlobalVar() {
         this.food = game.getFood();
@@ -398,7 +422,7 @@ public class Shop extends JDialog {
         shopInput.addActionListener(shopItemListener);
     }
 
-    private void backToMenu() {
+    private void menuSelected() {
         shopInput.addActionListener(shopMenuListener);
         shopInput.removeActionListener(shopItemListener);
     }
@@ -406,5 +430,109 @@ public class Shop extends JDialog {
     private void notValidInput() {
         JOptionPane.showMessageDialog(null, "That is not a valid input",
                 "ERROR", JOptionPane.ERROR_MESSAGE);
+    }
+
+    private int enterQuantity() {
+        int quantity = -1;
+        do {
+            try {
+                quantity = Integer.parseInt(JOptionPane.showInputDialog("Please enter the quantity as an INTEGER:"));
+            }
+            catch (InputMismatchException e) {
+                e.printStackTrace();
+                notValidInput();
+            }
+        } while (quantity == -1);
+        return quantity;
+    }
+
+    private void buyItem() {
+        int index = shopComboBox.getSelectedIndex();
+        switch (index) {
+            case 1 -> { String itemName = "FOOD"; checkBuy(itemName); } //food
+            case 2 -> { String itemName = "AMMUNITION"; checkBuy(itemName);} //ammo
+            case 3 -> { String itemName = "MEDICINE"; checkBuy(itemName); } //meds
+            case 4 -> { String itemName = "CLOTHES"; checkBuy(itemName); } //clothes
+            case 5 -> { String itemName = "WAGON TOOLS"; checkBuy(itemName); } //wagonTools
+            case 6 -> { String itemName = "SPLINTS"; checkBuy(itemName); } //splints
+            case 7 -> { String itemName = "OXEN"; checkBuy(itemName); } //oxen
+            default -> {notValidInput();}
+        }
+    }
+
+    private void sellItem() {
+
+    }
+
+    private void checkBuy(String item) {
+        int quantity = enterQuantity();
+        int buyPrice;
+        switch (item) {
+            case "FOOD" -> { buyPrice = foodBuyPrice; }
+            case "AMMUNITION" -> { buyPrice = ammoBuyPrice; }
+            case "MEDICINE" -> { buyPrice = medBuyPrice; }
+            case "CLOTHES" -> { buyPrice = clothesBuyPrice; }
+            case "WAGON TOOLS" -> { buyPrice = toolsBuyPrice; }
+            case "SPLINTS" -> { buyPrice = splintBuyPrice; }
+            case "OXEN" -> { buyPrice = oxenBuyPrice; }
+            default -> { }
+        }
+        int costOfPurchase = quantity * buyPrice;
+        if (money < costOfPurchase) {
+            notEnoughMoney();
+        }
+        else if (money > costOfPurchase) {
+            boolean yn = confirmBuy(item, costOfPurchase, quantity);
+            if (yn) {
+                money -= costOfPurchase;
+                food += quantity;
+                buyDialogue(item, costOfPurchase, quantity);
+            }
+            else {
+                transactionCancelled();
+            }
+        }
+    }
+
+    private void checkSell(String item) {
+        int quantity = enterQuantity();
+        int moneyEarned = quantity *
+    }
+
+    private void buyDialogue(String name, int cost, int amount) {
+        if (name.equals("FOOD")) {
+            amount *= 5;
+        }
+        JOptionPane.showMessageDialog(null,
+                String.format("You've purchased %d units of %s for %d dollars.", amount, name, cost));
+    }
+
+    private void sellDialogue(String name, int cost, int amount) {
+
+    }
+
+    private boolean confirmBuy(String name, int cost, int amount) {
+        boolean confirmed;
+        if (name.equals("FOOD")) {
+            amount *= 5;
+        }
+        confirmed = JOptionPane.showConfirmDialog(null,
+                String.format("Are you sure you want to buy %d units of %s for %d dollars?", amount, name, cost),
+                "ARE YOU SURE?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+        return confirmed;
+    }
+
+    private void sellDialogue(String item, int quantity, int profit) {
+
+    }
+
+    private void notEnoughMoney() {
+        JOptionPane.showMessageDialog(null, "You don't have enough money to do this.","",
+                JOptionPane.ERROR_MESSAGE);
+    }
+
+    private void transactionCancelled() {
+        JOptionPane.showMessageDialog(null, "The transaction was cancelled.","",
+                JOptionPane.PLAIN_MESSAGE);
     }
 }
