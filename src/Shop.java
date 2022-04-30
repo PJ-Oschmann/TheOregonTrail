@@ -432,15 +432,16 @@ public class Shop extends JDialog {
                 "ERROR", JOptionPane.ERROR_MESSAGE);
     }
 
-    private int enterBuyQuantity(String item) {
+    private int enterBuyQuantity(String item, int itemCost) {
         int quantity = 0;
             try {
-                while(true) {
+                do {
                     quantity = Integer.parseInt(JOptionPane.showInputDialog(
-                            String.format("How many %s would you like to purchase?\n(Enter 0 to cancel):", item)
-                    ));
-                    if (quantity == 0 ) { break; }
-                }
+                            String.format("""
+                                    You have $%d available to spend. This item costs $%d.
+                                    How many %s would you like to purchase?
+                                    (Enter 0 to cancel):""", game.getMoney(), itemCost, item)));
+                } while (quantity * itemCost > game.getMoney());
             }
             catch (InputMismatchException e) {
                 e.printStackTrace();
@@ -452,33 +453,37 @@ public class Shop extends JDialog {
     private int enterSellQuantity(String itemName, int item) {
         int quantity = 0;
         try {
-            while(true) {
+            do {
                 quantity = Integer.parseInt(JOptionPane.showInputDialog(
-                        String.format("How many %s would you like to sell?\n(Enter 0 to cancel):", itemName)
+                        String.format("""
+                                You have %d %s in your INVENTORY.
+                                How many %s would you like to sell?
+                                (Enter 0 to cancel):""", item, itemName, itemName)
                 ));
-                if (quantity == 0) {break; }
+                if (quantity == 0) { break; }
                 else if (quantity > item) {
                     notEnoughQuantity(itemName);
                 }
-            }
+            } while (quantity > item);
         }
         catch (InputMismatchException e) {
             e.printStackTrace();
             notValidInput();
         }
+        return quantity;
     }
 
     private void buyItem() {
         int index = shopComboBox.getSelectedIndex();
         String itemName = "";
         switch (index) {
-            case 1 -> { itemName = "FOOD"; checkBuy(itemName, food); } //food
-            case 2 -> { itemName = "AMMUNITION"; checkBuy(itemName, ammunition);} //ammo
-            case 3 -> { itemName = "MEDICINE"; checkBuy(itemName, medicine); } //meds
-            case 4 -> { itemName = "CLOTHES"; checkBuy(itemName, clothes); } //clothes
-            case 5 -> { itemName = "WAGON TOOLS"; checkBuy(itemName, wagonTools); } //wagonTools
-            case 6 -> { itemName = "SPLINTS"; checkBuy(itemName, splints); } //splints
-            case 7 -> { itemName = "OXEN"; checkBuy(itemName, oxen); } //oxen
+            case 1 -> { itemName = "FOOD"; food = checkBuy(itemName, food, foodBuyPrice); } //food
+            case 2 -> { itemName = "AMMUNITION"; ammunition = checkBuy(itemName, ammunition, ammoBuyPrice);} //ammo
+            case 3 -> { itemName = "MEDICINE"; medicine = checkBuy(itemName, medicine, medBuyPrice); } //meds
+            case 4 -> { itemName = "CLOTHES"; clothes = checkBuy(itemName, clothes, clothesBuyPrice); } //clothes
+            case 5 -> { itemName = "WAGON TOOLS"; wagonTools = checkBuy(itemName, wagonTools, toolsBuyPrice); } //wagonTools
+            case 6 -> { itemName = "SPLINTS"; splints = checkBuy(itemName, splints, splintBuyPrice); } //splints
+            case 7 -> { itemName = "OXEN"; oxen = checkBuy(itemName, oxen, oxenBuyPrice); } //oxen
             default -> {notValidInput();}
         }
     }
@@ -487,19 +492,19 @@ public class Shop extends JDialog {
         int index = shopComboBox.getSelectedIndex();
         String itemName = "";
         switch (index) {
-            case 1 -> { itemName = "FOOD"; checkSell(itemName, food); } //food
-            case 2 -> { itemName = "AMMUNITION"; checkSell(itemName, ammunition);} //ammo
-            case 3 -> { itemName = "MEDICINE"; checkSell(itemName, medicine); } //meds
-            case 4 -> { itemName = "CLOTHES"; checkSell(itemName, clothes); } //clothes
-            case 5 -> { itemName = "WAGON TOOLS"; checkSell(itemName, wagonTools); } //wagonTools
-            case 6 -> { itemName = "SPLINTS"; checkSell(itemName, splints); } //splints
-            case 7 -> { itemName = "OXEN"; checkSell(itemName, oxen); } //oxen
+            case 1 -> { itemName = "FOOD"; food = checkSell(itemName, food); } //food
+            case 2 -> { itemName = "AMMUNITION"; ammunition = checkSell(itemName, ammunition);} //ammo
+            case 3 -> { itemName = "MEDICINE"; medicine = checkSell(itemName, medicine); } //meds
+            case 4 -> { itemName = "CLOTHES"; clothes = checkSell(itemName, clothes); } //clothes
+            case 5 -> { itemName = "WAGON TOOLS"; wagonTools = checkSell(itemName, wagonTools); } //wagonTools
+            case 6 -> { itemName = "SPLINTS"; splints = checkSell(itemName, splints); } //splints
+            case 7 -> { itemName = "OXEN"; oxen = checkSell(itemName, oxen); } //oxen
             default -> {notValidInput();}
         }
     }
 
-    private void checkBuy(String itemName, int item) {
-        int quantity = enterBuyQuantity(itemName);
+    private int checkBuy(String itemName, int item, int itemCost) {
+        int quantity = enterBuyQuantity(itemName, itemCost);
         if ( quantity == 0 ) {
             transactionCancelled();
         }
@@ -524,7 +529,7 @@ public class Shop extends JDialog {
                 boolean yn = confirmBuy(itemName, costOfPurchase, quantity);
                 if (yn) {
                     money -= costOfPurchase;
-                    item += quantity;
+                    item = item + quantity;
                     buyDialogue(itemName, costOfPurchase, quantity);
                 }
                 else {
@@ -532,9 +537,10 @@ public class Shop extends JDialog {
                 }
             }
         }
+        return item;
     }
 
-    private void checkSell(String itemName, int item) {
+    private int checkSell(String itemName, int item) {
         int quantity = enterSellQuantity(itemName, item);
         if (quantity == 0) {
             transactionCancelled();
@@ -552,7 +558,10 @@ public class Shop extends JDialog {
                 default -> { throw new RuntimeException("error in selling item");}
             }
             int moneyEarned = quantity * sellPrice;
+            item -= quantity;
+            game.setMoney(game.getMoney() + moneyEarned);
         }
+        return item;
     }
 
     private void buyDialogue(String name, int cost, int amount) {
