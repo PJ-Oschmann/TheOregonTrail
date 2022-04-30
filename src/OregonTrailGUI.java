@@ -617,7 +617,7 @@ public class OregonTrailGUI {
     private static ActionListener aboutTrailMenuItem = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            showAbout(""); //Insert text here for about trail menu item
+            showAbout("",""); //Insert text here for about trail menu item
         }
     };
 

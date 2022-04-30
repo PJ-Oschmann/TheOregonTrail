@@ -20,7 +20,7 @@ public class Party extends JDialog {
     private int happiness, money, food, ammo, medicine, clothes, tools, splints, oxen;
     private final OregonTrailGUI game;
     private  String item;
-    private int selectedCharacter = 99;
+    private Character selectedCharacter;
 
     public Party(OregonTrailGUI game, String item) {
         //instantiating variables
@@ -62,17 +62,20 @@ public class Party extends JDialog {
      * @return A string of the character selected. If the selection was invalid, "INVALID" is returned.
      */
     public void selectCharacter(String character) {
+        int characterInt=99;
         if (character.equalsIgnoreCase("H")) {
-            selectedCharacter = 0;
+            characterInt = 0;
         } else if (character.equalsIgnoreCase("C")) {
-            selectedCharacter = 1;
+            characterInt = 1;
         } else if (character.equalsIgnoreCase("A")) {
-            selectedCharacter = 2;
+            characterInt = 2;
         } else if (character.equalsIgnoreCase("B")) {
-            selectedCharacter = 3;
+            characterInt = 3;
         } else if (character.equalsIgnoreCase("J")) {
-            selectedCharacter = 4;
+            characterInt = 4;
         }
+
+        selectedCharacter = characterArrayList.get(characterInt);
 
     }
 
@@ -160,9 +163,6 @@ public class Party extends JDialog {
         dispose();
     }
 
-    private void doAction(String action) {
-        if (action=="FOOD") {eatFood(characterArrayList.get(selectedCharacter));}
-    }
 
     private int calculateHunger(Character character, int hungerVal) {
         int newHunger;
@@ -174,9 +174,49 @@ public class Party extends JDialog {
         }
         return newHunger;
     }
-    private void eatFood(Character character) {
-        character.setHunger(calculateHunger(character,2));
+
+    private void doAction(String item) {
+        if (item.equals("FOOD")) {eatFood();}
+        else if (item.equals("MEDICINE")) {takeMeds();}
+        else if (item.equals("CLOTHES")) {equipClothes();}
+        else if (item.equals("SPLINTS")) {useSplints();}
+        dispose();
     }
+    private void eatFood() {
+        selectedCharacter.setHunger(calculateHunger(selectedCharacter,2));
+    }
+
+    private void takeMeds() {
+        if(selectedCharacter.isSick()) {
+            JOptionPane.showMessageDialog(null,selectedCharacter.getName()+" is not sick. Please pick another character.",selectedCharacter.getName()+"'s Lack of Illness",JOptionPane.PLAIN_MESSAGE);
+        }
+        else {
+            selectedCharacter.setSick(false);
+            JOptionPane.showMessageDialog(null,selectedCharacter.getName()+" has been cured!",selectedCharacter.getName()+"'s Illness",JOptionPane.PLAIN_MESSAGE);
+        }
+    }
+
+    private void equipClothes() {
+        if (selectedCharacter.getHasClothing()) {
+            JOptionPane.showMessageDialog(null,selectedCharacter.getName()+" already has protective clothing.",selectedCharacter.getName()+"'s Clothing",JOptionPane.PLAIN_MESSAGE);
+        }
+        else {
+            selectedCharacter.setHasClothing(true);
+            JOptionPane.showMessageDialog(null,selectedCharacter.getName()+" now has protective clothing.",selectedCharacter.getName()+"'s Clothing",JOptionPane.PLAIN_MESSAGE);
+        }
+    }
+
+    private void useSplints() {
+        if (!selectedCharacter.isInjured()) {
+            JOptionPane.showMessageDialog(null,selectedCharacter.getName()+" is not injured. Please select another character.",selectedCharacter.getName()+"'s Lack of Injury",JOptionPane.PLAIN_MESSAGE);
+        }
+        else {
+            selectedCharacter.setInjured(false);
+            JOptionPane.showMessageDialog(null,selectedCharacter.getName()+" now has protective clothing.",selectedCharacter.getName()+"'s Clothing",JOptionPane.PLAIN_MESSAGE);
+        }
+
+    }
+
 
     private final WindowAdapter windowClose = new WindowAdapter() {
         public void windowClosing(WindowEvent e) {
