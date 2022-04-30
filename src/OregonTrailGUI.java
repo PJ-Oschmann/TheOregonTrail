@@ -135,10 +135,12 @@ public class OregonTrailGUI {
         //ABOUT menu bar items
         JMenuItem projectDescription = new JMenuItem("Project Description");
         JMenuItem aboutProject = new JMenuItem("About This Project");
+        JMenuItem aboutOregonTrail = new JMenuItem("About The Oregon Trail");
         JMenuItem aboutHattie = new JMenuItem("About Hattie Campbell");
         JMenuItem imageCredits = new JMenuItem("Image Credits");
         menuAbout.add(projectDescription);
         menuAbout.add(aboutProject);
+        menuAbout.add(aboutOregonTrail);
         menuAbout.add(aboutHattie);
         menuAbout.add(imageCredits);
 
@@ -160,6 +162,7 @@ public class OregonTrailGUI {
         //About:
         projectDescription.addActionListener(projDescMenuItem);
         aboutProject.addActionListener(aboutProjMenuItem);
+        aboutOregonTrail.addActionListener(aboutTrailMenuItem);
         aboutHattie.addActionListener(aboutHattieMenuItem);
         imageCredits.addActionListener(imgCredMenuItem);
 
@@ -608,6 +611,13 @@ public class OregonTrailGUI {
             showAbout("This project was completed by Team Hollenberg Station, consisting of Aleece Al-Olimat, " +
                     "Ken Zhu, and PJ Oschmann",
                     "About This Project");
+        }
+    };
+
+    private static ActionListener aboutTrailMenuItem = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            showAbout(""); //Insert text here for about trail menu item
         }
     };
 

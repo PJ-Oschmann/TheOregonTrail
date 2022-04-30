@@ -91,14 +91,10 @@ public class Weather {
 
         }
         currentWeather = temperatureCondition+extraCondition;
-
-
-        System.out.println("Weather.java: Current weather is " + currentWeather);
     }
 
     public String getWeatherCondition() {
         return weatherCondition;
     }
-
 }
 

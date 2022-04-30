@@ -475,7 +475,7 @@ public class Shop extends JDialog {
             case "WAGON TOOLS" -> { buyPrice = toolsBuyPrice; }
             case "SPLINTS" -> { buyPrice = splintBuyPrice; }
             case "OXEN" -> { buyPrice = oxenBuyPrice; }
-            default -> { }
+            default -> { throw new RuntimeException("error in buying item");}
         }
         int costOfPurchase = quantity * buyPrice;
         if (money < costOfPurchase) {
