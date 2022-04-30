@@ -15,7 +15,7 @@ public class Party extends JDialog {
     private JTextField userInput;
     private JTextPane partyStats;
     private JTextArea partyTextArea;
-    private JLabel questionText;
+    private JLabel partyImage;
     public ArrayList<Character> characterArrayList;
     private int happiness, money, food, ammo, medicine, clothes, tools, splints, oxen;
     private final OregonTrailGUI game;

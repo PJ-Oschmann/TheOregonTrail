@@ -14,7 +14,7 @@ public class Inventory extends JDialog {
     private JTextField userInput;
     private JLabel invInputLabel;
     private ArrayList<Character> characterArrayList;
-    private int food, ammunition, medicine, clothes, wagonTools, splints, oxen, money;
+    private int food, ammunition, medicine, clothes, wagonTools, splints, oxen, money, happiness;
     private final OregonTrailGUI game;
 
     public Inventory(OregonTrailGUI game) {
@@ -113,6 +113,7 @@ public class Inventory extends JDialog {
         this.oxen = game.getOxen();
         this.money = game.getMoney();
         this.characterArrayList = game.getCharacterArrayList();
+        this.happiness = game.getHappiness();
     }
 
     private void passBackVar() {
@@ -125,6 +126,7 @@ public class Inventory extends JDialog {
         game.setOxen(this.oxen);
         game.setMoney(this.money);
         game.setCharacterArrayList(this.game.getCharacterArrayList());
+        game.setHappiness(this.happiness);
     }
 
     //TEXT METHODS and CANCEL METHOD
@@ -367,15 +369,22 @@ public class Inventory extends JDialog {
         int reply = JOptionPane.showConfirmDialog(null, "Would you like to consume an oxen?\nYou " +
                 "must have at least 5 oxen to consume 1.", "Consume an Oxen", JOptionPane.YES_NO_OPTION);
         if (reply == JOptionPane.YES_OPTION) {
-            this.oxen = oxen - 1;
-            this.food = food + 10;
+            int happinessLost;
+            oxen -= 1;
+            food += 10;
+            if(happiness >= 7) { happinessLost = 7; happiness -= 7; }
+            else { happinessLost = happiness; happiness = 0; }
+
+            String oxenName = generateOxenName();
             invInfo.setText(String.format(
                     """
                     You have chosen to CONSUME one OXEN. You have gained 10 FOOD.
                     Rest in peace(s of food), %s.
                     
+                    %s will be missed dearly, and your party lose %d happiness.
+                    
                     Enter "I" to return to the inventory menu.
-                    """, generateOxenName()
+                    """, oxenName, oxenName, happinessLost
             ));
         }
         else {

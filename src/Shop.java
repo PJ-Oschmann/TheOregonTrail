@@ -432,71 +432,106 @@ public class Shop extends JDialog {
                 "ERROR", JOptionPane.ERROR_MESSAGE);
     }
 
-    private int enterQuantity() {
-        int quantity = -1;
-        do {
+    private int enterBuyQuantity(String item) {
+        int quantity = 0;
             try {
-                quantity = Integer.parseInt(JOptionPane.showInputDialog("Please enter the quantity as an INTEGER:"));
+                while(true) {
+                    quantity = Integer.parseInt(JOptionPane.showInputDialog("Please enter the quantity as an INTEGER " +
+                            "(Enter 0 to Cancel):"));
+                    if (quantity == 0 ) { break; }
+                }
             }
             catch (InputMismatchException e) {
                 e.printStackTrace();
                 notValidInput();
             }
-        } while (quantity == -1);
         return quantity;
+    }
+
+    private int enterSellQuantity(String item) {
+        int quantity = -1;
     }
 
     private void buyItem() {
         int index = shopComboBox.getSelectedIndex();
+        String itemName = "";
         switch (index) {
-            case 1 -> { String itemName = "FOOD"; checkBuy(itemName); } //food
-            case 2 -> { String itemName = "AMMUNITION"; checkBuy(itemName);} //ammo
-            case 3 -> { String itemName = "MEDICINE"; checkBuy(itemName); } //meds
-            case 4 -> { String itemName = "CLOTHES"; checkBuy(itemName); } //clothes
-            case 5 -> { String itemName = "WAGON TOOLS"; checkBuy(itemName); } //wagonTools
-            case 6 -> { String itemName = "SPLINTS"; checkBuy(itemName); } //splints
-            case 7 -> { String itemName = "OXEN"; checkBuy(itemName); } //oxen
+            case 1 -> { itemName = "FOOD"; checkBuy(itemName); } //food
+            case 2 -> { itemName = "AMMUNITION"; checkBuy(itemName);} //ammo
+            case 3 -> { itemName = "MEDICINE"; checkBuy(itemName); } //meds
+            case 4 -> { itemName = "CLOTHES"; checkBuy(itemName); } //clothes
+            case 5 -> { itemName = "WAGON TOOLS"; checkBuy(itemName); } //wagonTools
+            case 6 -> { itemName = "SPLINTS"; checkBuy(itemName); } //splints
+            case 7 -> { itemName = "OXEN"; checkBuy(itemName); } //oxen
             default -> {notValidInput();}
         }
     }
 
     private void sellItem() {
-
+        int index = shopComboBox.getSelectedIndex();
+        String itemName = "";
+        switch (index) {
+            case 1 -> { itemName = "FOOD"; checkSell(itemName); } //food
+            case 2 -> { itemName = "AMMUNITION"; checkSell(itemName);} //ammo
+            case 3 -> { itemName = "MEDICINE"; checkSell(itemName); } //meds
+            case 4 -> { itemName = "CLOTHES"; checkSell(itemName); } //clothes
+            case 5 -> { itemName = "WAGON TOOLS"; checkSell(itemName); } //wagonTools
+            case 6 -> { itemName = "SPLINTS"; checkSell(itemName); } //splints
+            case 7 -> { itemName = "OXEN"; checkSell(itemName); } //oxen
+            default -> {notValidInput();}
+        }
     }
 
     private void checkBuy(String item) {
-        int quantity = enterQuantity();
-        int buyPrice;
-        switch (item) {
-            case "FOOD" -> { buyPrice = foodBuyPrice; }
-            case "AMMUNITION" -> { buyPrice = ammoBuyPrice; }
-            case "MEDICINE" -> { buyPrice = medBuyPrice; }
-            case "CLOTHES" -> { buyPrice = clothesBuyPrice; }
-            case "WAGON TOOLS" -> { buyPrice = toolsBuyPrice; }
-            case "SPLINTS" -> { buyPrice = splintBuyPrice; }
-            case "OXEN" -> { buyPrice = oxenBuyPrice; }
-            default -> { throw new RuntimeException("error in buying item");}
+        int quantity = enterBuyQuantity(item);
+        if ( quantity == 0 ) {
+            transactionCancelled();
         }
-        int costOfPurchase = quantity * buyPrice;
-        if (money < costOfPurchase) {
-            notEnoughMoney();
-        }
-        else if (money > costOfPurchase) {
-            boolean yn = confirmBuy(item, costOfPurchase, quantity);
-            if (yn) {
-                money -= costOfPurchase;
-                food += quantity;
-                buyDialogue(item, costOfPurchase, quantity);
+        else {
+            int buyPrice;
+            switch (item) {
+                case "FOOD" -> { buyPrice = foodBuyPrice; }
+                case "AMMUNITION" -> { buyPrice = ammoBuyPrice; }
+                case "MEDICINE" -> { buyPrice = medBuyPrice; }
+                case "CLOTHES" -> { buyPrice = clothesBuyPrice; }
+                case "WAGON TOOLS" -> { buyPrice = toolsBuyPrice; }
+                case "SPLINTS" -> { buyPrice = splintBuyPrice; }
+                case "OXEN" -> { buyPrice = oxenBuyPrice; }
+                default -> { throw new RuntimeException("error in buying item"); }
             }
-            else {
+            int costOfPurchase = quantity * buyPrice;
+            if (money < costOfPurchase) {
+                notEnoughMoney();
                 transactionCancelled();
+            }
+            else if (money > costOfPurchase) {
+                boolean yn = confirmBuy(item, costOfPurchase, quantity);
+                if (yn) {
+                    money -= costOfPurchase;
+                    food += quantity;
+                    buyDialogue(item, costOfPurchase, quantity);
+                }
+                else {
+                    transactionCancelled();
+                }
             }
         }
     }
 
     private void checkSell(String item) {
-        int quantity = enterQuantity();
-        int moneyEarned = quantity *
+        int quantity = enterSellQuantity(item);
+        int sellPrice;
+        switch (item) {
+            case "FOOD" -> { sellPrice = foodSellPrice; }
+            case "AMMUNITION" -> { sellPrice = ammoSellPrice; }
+            case "MEDICINE" -> { sellPrice = medSellPrice; }
+            case "CLOTHES" -> { sellPrice = clothesSellPrice; }
+            case "WAGON TOOLS" -> { sellPrice = toolsSellPrice; }
+            case "SPLINTS" -> { sellPrice = splintSellPrice; }
+            case "OXEN" -> { sellPrice = oxenSellPrice; }
+            default -> { throw new RuntimeException("error in selling item");}
+        }
+        int moneyEarned = quantity * sellPrice;
     }
 
     private void buyDialogue(String name, int cost, int amount) {
