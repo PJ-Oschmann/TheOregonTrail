@@ -97,7 +97,7 @@ public class OregonTrailGUI {
      * Sets the application's UI to follow the System's look and feel,
      * instead of using the default Metal theme.
      * On Windows, native Windows (win32) elements are used.
-     * On Linux, the GTK2 theme is used.
+     * On Linux, the GTK theme is used.
      * On MacOS, the MacOS theme is used. Probably.
      */
     public static void setTheme() {
