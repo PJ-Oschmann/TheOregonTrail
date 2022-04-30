@@ -101,6 +101,7 @@ public class Character {
 
 
     public void setHasClothing(boolean hasClothing) {this.hasClothing = hasClothing;}
+
     public boolean getHasClothing() {return hasClothing;}
 
     public boolean isSick() {

@@ -14,12 +14,13 @@ public class Party extends JDialog {
     private JTextPane jakeStats;
     private JTextField userInput;
     private JTextPane partyStats;
-    private JTextArea partyTextArea;
     private JLabel questionText;
+    private JTextPane promptTextPane;
     public ArrayList<Character> characterArrayList;
     private int happiness, money, food, ammo, medicine, clothes, tools, splints, oxen;
     private final OregonTrailGUI game;
     private  String item;
+    private int selectedCharacter = 99;
 
     public Party(OregonTrailGUI game, String item) {
         //instantiating variables
@@ -60,22 +61,20 @@ public class Party extends JDialog {
      * @param character - The character being selected
      * @return A string of the character selected. If the selection was invalid, "INVALID" is returned.
      */
-    public String selectCharacter(String character) {
-        String selectedCharacter = "INVALID"; //This should be handled
+    public void selectCharacter(String character) {
         if (character.equalsIgnoreCase("H")) {
-            selectedCharacter = "HATTIE";
+            selectedCharacter = 0;
         } else if (character.equalsIgnoreCase("C")) {
-            selectedCharacter = "CHARLES";
+            selectedCharacter = 1;
         } else if (character.equalsIgnoreCase("A")) {
-            selectedCharacter = "AUGUSTA";
+            selectedCharacter = 2;
         } else if (character.equalsIgnoreCase("B")) {
-            selectedCharacter = "BEN";
+            selectedCharacter = 3;
         } else if (character.equalsIgnoreCase("J")) {
-            selectedCharacter = "JAKE";
+            selectedCharacter = 4;
         }
-        return selectedCharacter;
-    }
 
+    }
 
     ArrayList<JTextPane> arrayOfPanes = new ArrayList<>(List.of(hattieStats, charlesStats, augustaStats, benStats, jakeStats));
     /**
@@ -159,6 +158,24 @@ public class Party extends JDialog {
     private void onCancel() {
         passBackVar();
         dispose();
+    }
+
+    private void doAction(String action) {
+        if (action=="FOOD") {eatFood(characterArrayList.get(selectedCharacter));}
+    }
+
+    private int calculateHunger(Character character, int hungerVal) {
+        int newHunger;
+        if (character.getHunger()-hungerVal < 0) {
+            newHunger = 0;
+        }
+        else {
+            newHunger = character.getHunger()-hungerVal;
+        }
+        return newHunger;
+    }
+    private void eatFood(Character character) {
+        character.setHunger(calculateHunger(character,2));
     }
 
     private final WindowAdapter windowClose = new WindowAdapter() {
