@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class Inventory extends JDialog {
@@ -17,8 +16,6 @@ public class Inventory extends JDialog {
     private ArrayList<Character> characterArrayList;
     private int food, ammunition, medicine, clothes, wagonTools, splints, oxen, money;
     private final OregonTrailGUI game;
-
-
 
     public Inventory(OregonTrailGUI game) {
         //instantiating private vars
@@ -416,8 +413,8 @@ public class Inventory extends JDialog {
         dispose();
     }
 
-    private void openParty() {
-        Party party = new Party(game);
+    private void openParty(String item) {
+        Party party = new Party(game, item);
         party.pack();
         party.setVisible(true);
     }

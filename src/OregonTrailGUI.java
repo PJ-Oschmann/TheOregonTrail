@@ -85,7 +85,7 @@ public class OregonTrailGUI {
      */
     //Create application
     public OregonTrailGUI() {
-        userInput.addFocusListener(inputHelp);
+        userInput.addFocusListener(playHelp);
         if(inMenu) {
             ImageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/MainMenu.png"));
             displayMainMenu();
@@ -188,7 +188,9 @@ public class OregonTrailGUI {
         loadStatusPanels();
         openShop();
         userInput.addActionListener(gameMenu);
-        ImageLabel.setIcon(new javax.swing.ImageIcon(""));
+        userInput.removeFocusListener(playHelp);
+        userInput.addFocusListener(gameHelp);
+        ImageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/MainGame.png"));
         weather.setRandomWeather();
         writeGameInfo();
     }
@@ -236,6 +238,16 @@ public class OregonTrailGUI {
                 H: HELP
                 I: INVENTORY
                 P: SET PACE
+                T: TRAVEL ONE DAY
+                C: CONTINUOUSLY TRAVEL
+                
+                ABOUT PACE:
+                Hunger is increased respectively by travel speed (not including
+                status ailment effects) on characters. 1, 2, or 3 hunger is added
+                depending on the speed you are traveling.
+                
+                ABOUT CONTINUOUS TRAVEL:
+                FIXME
                 
                 More information can be found in the menu bars at the top of this window.
                 """
@@ -501,7 +513,6 @@ public class OregonTrailGUI {
                 inMenu = false;
                 introScene();
                 userInput.removeActionListener(menuListener);
-
             }
             userInput.setText("");
         }
@@ -653,7 +664,7 @@ public class OregonTrailGUI {
         }
     };
 
-    private FocusAdapter inputHelp = new FocusAdapter() { //Grey text for input box when not focused on
+    private FocusAdapter gameHelp = new FocusAdapter() { //Grey text for input box when not focused on
         @Override
         public void focusGained(FocusEvent e) {
             if (userInput.getText().trim().equals("Enter 'H' to display input options")) {
@@ -666,6 +677,24 @@ public class OregonTrailGUI {
         public void focusLost(FocusEvent e) {
             if (userInput.getText().trim().equals("")) {
                 userInput.setText("Enter 'H' to display input options");
+                userInput.setForeground(new Color(147, 147,147));
+            }
+        }
+    };
+
+    private FocusAdapter playHelp = new FocusAdapter() { //Grey text for input box when not focused on
+        @Override
+        public void focusGained(FocusEvent e) {
+            if (userInput.getText().trim().equals("Enter 'P' to Travel the Trail!")) {
+                userInput.setText("");
+                userInput.setForeground(Color.BLACK);
+            }
+        }
+
+        @Override
+        public void focusLost(FocusEvent e) {
+            if (userInput.getText().trim().equals("")) {
+                userInput.setText("Enter 'P' to Travel the Trail!");
                 userInput.setForeground(new Color(147, 147,147));
             }
         }

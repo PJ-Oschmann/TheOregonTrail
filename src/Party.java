@@ -17,12 +17,14 @@ public class Party extends JDialog {
     private JTextArea partyTextArea;
     private JLabel questionText;
     public ArrayList<Character> characterArrayList;
-    public int happiness, money;
+    private int happiness, money, food, ammo, medicine, clothes, tools, splints, oxen;
     private final OregonTrailGUI game;
+    private  String item;
 
-    public Party(OregonTrailGUI game) {
+    public Party(OregonTrailGUI game, String item) {
         //instantiating variables
         this.game = game;
+        this.item = item;
         setGlobalVar();
         this.setTitle("Party");
         this.setMinimumSize(new Dimension(1000,300));
@@ -116,10 +118,26 @@ public class Party extends JDialog {
         this.happiness = game.getHappiness();
         this.money = game.getMoney();
         this.characterArrayList = game.getCharacterArrayList();
+        this.food = game.getFood();
+        this.ammo = game.getAmmunition();
+        this.medicine = game.getMedicine();
+        this.clothes = game.getClothes();
+        this.tools = game.getWagonTools();
+        this.splints = game.getSplints();
+        this.oxen = game.getOxen();
     }
 
     private void passBackVar() {
         game.setHappiness(this.happiness);
+        game.setMoney(this.money);
+        game.setCharacterArrayList(this.characterArrayList);
+        game.setFood(this.food);
+        game.setAmmunition(this.ammo);
+        game.setMedicine(this.medicine);
+        game.setClothes(this.clothes);
+        game.setWagonTools(this.tools);
+        game.setSplints(this.splints);
+        game.setOxen(this.oxen);
     }
 
     private final FocusAdapter inputHelp = new FocusAdapter() { //Grey text for input box when not focused on
