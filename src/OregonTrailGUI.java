@@ -70,12 +70,13 @@ public class OregonTrailGUI {
         frame.setContentPane(game.MainPanel);
         frame.setTitle("The Oregon Trail -- Remake");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         //Give the application the System's theme.
         //Delete this line if the app won't start
         setTheme();
+
         frame.pack();
         addUIMenuBar(frame);
-
         frame.setVisible(true);
     }
 
@@ -84,22 +85,12 @@ public class OregonTrailGUI {
      */
     //Create application
     public OregonTrailGUI() {
-        //MAIN MENU
         userInput.addFocusListener(inputHelp);
         if(inMenu) {
             ImageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/MainMenu.png"));
             displayMainMenu();
             userInput.addActionListener(menuListener);
         }
-
-//TODO: NOW USER GETS TO START PLAYING GAME
-        if (inGame) {
-            userInput.addActionListener(gameMenu);
-            ImageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/MainGame.png"));
-            augusta.setSick(true);
-            writeGameInfo();
-        }
-
     }
 
     /**
@@ -184,21 +175,30 @@ public class OregonTrailGUI {
      * exits gracefully (returns 0).
      */
     public static void exitGame() {
-        if (JOptionPane.showConfirmDialog(null,"Are you sure you want to quit?","Exit?",JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
+        if (JOptionPane.showConfirmDialog(null,"Are you sure you want to quit?",
+                "Exit?",JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
             System.exit(0);
         }
     }
 
-    public void introScene() {
+    private void introScene() {
         stopContTravel();
         scene.loadScene("intro");
         inGame = true;
-        Shop shop = new Shop(money, food, ammunition, medicine, clothes, wagonTools, splints, oxen);
-        shop.pack();
-        shop.setVisible(true);
+        loadStatusPanels();
+        openShop();
         userInput.addActionListener(gameMenu);
+        ImageLabel.setIcon(new javax.swing.ImageIcon(""));
         weather.setRandomWeather();
         writeGameInfo();
+    }
+
+    private void loadStatusPanels(){
+        HattiePanel.setVisible(true);
+        CharlesPanel.setVisible(true);
+        AugustaPanel.setVisible(true);
+        BenPanel.setVisible(true);
+        JakePanel.setVisible(true);
     }
 
     /**
@@ -207,9 +207,8 @@ public class OregonTrailGUI {
      * @param message - The message to display to the user
      * @param title - The title of the message box.
      */
-
     //Oregon image from http://www.clker.com/clipart-oregon-3.html
-    public static void showAbout(String message, String title) {
+    private static void showAbout(String message, String title) {
         int breakTextAt = 15; //Where to break the text
         StringBuilder newMessage = new StringBuilder(message);
         int wordCounter = 0;
@@ -233,14 +232,12 @@ public class OregonTrailGUI {
                 INPUT DIALOGUE BOX HELP MENU
                 
                 Options available for input dialog box:
+                
                 H: HELP
                 I: INVENTORY
                 P: SET PACE
                 
-                If you're inside a town or fort:
-                W: GO TO THE LOCAL WAGON REPAIR MECHANIC
-                S: VISIT THE LOCAL SHOP
-                R: REST AT THE LOCAL INN
+                More information can be found in the menu bars at the top of this window.
                 """
         );
     }
@@ -266,7 +263,6 @@ public class OregonTrailGUI {
         impactHappiness();
         date.advanceDate();
         weather.setRandomWeather();
-        happiness = calculateHappiness(-2*sickCharacters);
         if (sickCharacters>0) {handleSickCharacters();}
         writeGameInfo();
         killPlayer();
@@ -339,7 +335,7 @@ public class OregonTrailGUI {
         gameInfo = gameInfo.replace("$weather",weather.toString());
         gameInfo = gameInfo.replace("$happiness",Integer.toString(happiness));
         gameInfo = gameInfo.replace("$pace",currPaceToString());
-        gameInfo = gameInfo.replace("$rations","RATIONS FIXME");
+        gameInfo = gameInfo.replace("$rations", String.valueOf(getFood()));
         storyTextArea.setText(gameInfo);
         updateStats();
     }
@@ -351,19 +347,10 @@ public class OregonTrailGUI {
      * @return the amount of happiness to add or subtract.
      */
     public int calculateHappiness(int amount) {
-        int newHappiness = 0;
-        if (amount>0) {
-            if (happiness+amount <=100) {newHappiness = amount;}
-            else {newHappiness = 100-happiness;}
-        }
-        else if (amount < 0){
-            if (happiness + amount >= 0) {newHappiness = amount;}
-            else {newHappiness = -happiness;}
-        }
-        else {
-            newHappiness = 0;
-        }
-        return happiness+newHappiness;
+        if (happiness - amount < 0) { happiness = 0; }
+        else if (happiness + amount > 100) { happiness = 100; }
+        else happiness += amount;
+        return happiness;
     }
 
     /**
@@ -376,9 +363,8 @@ public class OregonTrailGUI {
         //Weather
         if (weather.getWeatherCondition().equals("Good")) {happiness = calculateHappiness(5);}
         else if (weather.getWeatherCondition().equals("Bad")) {happiness = calculateHappiness(-5);}
-
         //Player is ill
-        //Code goes here lmao
+        happiness = calculateHappiness(-2*sickCharacters);
     }
 
     /**
@@ -517,8 +503,6 @@ public class OregonTrailGUI {
                 userInput.removeActionListener(menuListener);
 
             }
-
-
             userInput.setText("");
         }
     };
@@ -538,10 +522,7 @@ public class OregonTrailGUI {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (userInput.getText().equalsIgnoreCase("I")) {
-                Inventory inv = new Inventory(food, ammunition, medicine, clothes, wagonTools, splints, oxen, happiness,
-                        money, hattie, augusta, charles, ben, jake);
-                inv.pack();
-                inv.setVisible(true);
+                openInventory();
             }
             else if (userInput.getText().equalsIgnoreCase("H")) {
                 displayHelpMenu();
@@ -559,6 +540,18 @@ public class OregonTrailGUI {
             userInput.setText("");
         }
     };
+
+    private void openInventory() {
+        Inventory inv = new Inventory(this);
+        inv.pack();
+        inv.setVisible(true);
+    }
+
+    private void openShop() {
+        Shop shop = new Shop(this);
+        shop.pack();
+        shop.setVisible(true);
+    }
 
     //check broke
     private int setPace() {
@@ -708,13 +701,15 @@ public class OregonTrailGUI {
         return pace;
     }
 
+    //TODO: IMPLEMENT THIS ON SETTING PACE IN MAIN
     public void setCurrentPace(int newPace) {
         this.currentPace = newPace;
     }
 
+    //IMPLEMENT ONE DAY GRACE PERIOD BEFORE DYING
     public void killPlayer() {
         for (Character character : characterArrayList) {
-            if (character.getHealth()<=0) {
+            if (character.getHealth() <=0) {
                 JOptionPane.showMessageDialog(null,character.getName()+" died.");
                 updateStats();
             }
@@ -750,5 +745,86 @@ public class OregonTrailGUI {
             characterIndex++;
         }
     }
+
+    public ArrayList<Character> getCharacterArrayList() {
+        return characterArrayList;
+    }
+
+    public void setCharacterArrayList(ArrayList<Character> characterArrayList) {
+        this.characterArrayList = characterArrayList;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
+    }
+
+    public int getFood() {
+        return food;
+    }
+
+    public void setFood(int food) {
+        this.food = food;
+    }
+
+    public int getAmmunition() {
+        return ammunition;
+    }
+
+    public void setAmmunition(int ammunition) {
+        this.ammunition = ammunition;
+    }
+
+    public int getMedicine() {
+        return medicine;
+    }
+
+    public void setMedicine(int medicine) {
+        this.medicine = medicine;
+    }
+
+    public int getClothes() {
+        return clothes;
+    }
+
+    public void setClothes(int clothes) {
+        this.clothes = clothes;
+    }
+
+    public int getWagonTools() {
+        return wagonTools;
+    }
+
+    public void setWagonTools(int wagonTools) {
+        this.wagonTools = wagonTools;
+    }
+
+    public int getSplints() {
+        return splints;
+    }
+
+    public void setSplints(int splints) {
+        this.splints = splints;
+    }
+
+    public int getOxen() {
+        return oxen;
+    }
+
+    public void setOxen(int oxen) {
+        this.oxen = oxen;
+    }
+
+    public int getHappiness() {
+        return happiness;
+    }
+
+    public void setHappiness(int happiness) {
+        this.happiness = happiness;
+    }
+
 }
 

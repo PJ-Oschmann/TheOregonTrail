@@ -16,17 +16,17 @@ public class Party extends JDialog {
     private JTextPane partyStats;
     private JTextArea partyTextArea;
     private JLabel questionText;
-    public final ArrayList<Character> characterArrayList;
-    public Character hattie, charles, augusta, ben, jake;
+    public ArrayList<Character> characterArrayList;
     public int happiness, money;
+    private final OregonTrailGUI game;
 
-    public Party(Character hattie, Character charles, Character augusta, Character ben, Character jake, int happiness, int money) {
+    public Party(OregonTrailGUI game) {
         //instantiating variables
-        setGlobalVar(hattie, charles, augusta, ben, jake, happiness, money);
-
+        this.game = game;
+        setGlobalVar();
         this.setTitle("Party");
         this.setMinimumSize(new Dimension(1000,300));
-        this.characterArrayList = new ArrayList<>(List.of(hattie, charles, augusta, ben, jake));
+
         //this.setUndecorated(true);
         setContentPane(contentPane);
         setModal(true);
@@ -112,13 +112,17 @@ public class Party extends JDialog {
         }
     }
 
-    private void setGlobalVar(Character hattie, Character charles, Character augusta, Character ben, Character jake, int happiness,
-                 int money) {
-        this.hattie = hattie; this.charles = charles; this.augusta = augusta; this.jake = jake;
-        this.happiness = happiness; this.money = money;
+    private void setGlobalVar() {
+        this.happiness = game.getHappiness();
+        this.money = game.getMoney();
+        this.characterArrayList = game.getCharacterArrayList();
     }
 
-    private FocusAdapter inputHelp = new FocusAdapter() { //Grey text for input box when not focused on
+    private void passBackVar() {
+        game.setHappiness(this.happiness);
+    }
+
+    private final FocusAdapter inputHelp = new FocusAdapter() { //Grey text for input box when not focused on
         @Override
         public void focusGained(FocusEvent e) {
             if (userInput.getText().trim().equals("Input Selection Here")) {
@@ -135,11 +139,11 @@ public class Party extends JDialog {
     };
 
     private void onCancel() {
-        setGlobalVar(hattie, charles, augusta, ben, jake, happiness, money);
+        passBackVar();
         dispose();
     }
 
-    private WindowAdapter windowClose = new WindowAdapter() {
+    private final WindowAdapter windowClose = new WindowAdapter() {
         public void windowClosing(WindowEvent e) {
             onCancel();
         }

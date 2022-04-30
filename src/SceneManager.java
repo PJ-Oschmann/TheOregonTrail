@@ -4,7 +4,6 @@ import java.util.ArrayList;
 public class SceneManager{
 
     private boolean sceneIsLoaded = false;
-    private final ReadText readText = new ReadText();
     private boolean chainScenes = false;
     ArrayList<String> sceneToRead = new ArrayList<>();
     ArrayList<String> arrayOfScenes = new ArrayList<>();
@@ -21,7 +20,7 @@ public class SceneManager{
     //Load scene. Saves to global variable to avoid reopening textfile.
     public void loadScene(String sceneName) {
         if (!sceneIsLoaded) {
-            sceneToRead = readText.readScene(sceneName);
+            sceneToRead = ReadText.readScene(sceneName);
             imageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/"+sceneName+".png"));
             sceneIsLoaded = true;
             continueButton.setVisible(true);

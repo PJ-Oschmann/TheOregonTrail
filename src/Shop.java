@@ -11,26 +11,30 @@ public class Shop extends JDialog {
     private JLabel inputLabel;
     private JPanel mainPanel;
     private JLabel shopImage;
+
     //B = Buy; S = Sell
-    private final int clothesBuyPrice = 10;
-    private final int ammoBuyPrice = 4;
-    private final int foodBuyPrice = 3; //for 5 units of food
-    private final int medBuyPrice = 3;
-    private final int splintBuyPrice = 8;
-    private final int toolsBuyPrice = 10;
-    private final int oxenBuyPrice = 10;
+    private static final int clothesBuyPrice = 10;
+    private static final int ammoBuyPrice = 4;
+    private static final int foodBuyPrice = 3; //for 5 units of food
+    private static final int medBuyPrice = 3;
+    private static final int splintBuyPrice = 8;
+    private static final int toolsBuyPrice = 10;
+    private static final int oxenBuyPrice = 10;
 
-    private final int clothesSellPrice = 8;
-    private final int ammoSellPrice = 3;
-    private final int foodSellPrice = 2; // for 5 units of food
-    private final int medSellPrice = 2;
-    private final int splintSellPrice = 5;
-    private final int toolsSellPrice = 8;
-    private final int oxenSellPrice = 8;
+    private static final int clothesSellPrice = 8;
+    private static final int ammoSellPrice = 3;
+    private static final int foodSellPrice = 2; // for 5 units of food
+    private static final int medSellPrice = 2;
+    private static final int splintSellPrice = 5;
+    private static final int toolsSellPrice = 8;
+    private static final int oxenSellPrice = 8;
+    private final OregonTrailGUI game;
 
-    public int money;
+    public int money; int food; int ammunition; int medicine; int clothes; int wagonTools; int splints; int oxen;
 
-    public Shop(int money, int food, int ammo, int medicine, int clothes, int wagonTools, int splints, int oxen) {
+    public Shop(OregonTrailGUI game){
+        this.game = game;
+        setGlobalVar();
         setContentPane(shopPane);
         setModal(true);
         this.setTitle("THE SHOP");
@@ -46,7 +50,7 @@ public class Shop extends JDialog {
                 switch (input) {
                     case 0 -> displayMenu();
                     case 1 -> displayFood(food);
-                    case 2 -> displayAmmo(ammo);
+                    case 2 -> displayAmmo(ammunition);
                     case 3 -> displayMed(medicine);
                     case 4 -> displayClothes(clothes);
                     case 5 -> displayWT(wagonTools);
@@ -56,25 +60,7 @@ public class Shop extends JDialog {
                 }
             }});
 
-        shopInput.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String input = shopInput.getText().toUpperCase();
-                switch (input) {
-                    case "I" -> { displayMenu(); shopComboBox.setSelectedIndex(0); }
-                    case "F" -> { displayFood(food); shopComboBox.setSelectedIndex(1); }
-                    case "A" -> { displayAmmo(ammo); shopComboBox.setSelectedIndex(2); }
-                    case "M" -> { displayMed(medicine); shopComboBox.setSelectedIndex(3); }
-                    case "C" -> { displayClothes(clothes); shopComboBox.setSelectedIndex(4); }
-                    case "W" -> { displayWT(wagonTools); shopComboBox.setSelectedIndex(5); }
-                    case "S" -> { displaySplints(splints); shopComboBox.setSelectedIndex(6); }
-                    case "O" -> { displayOxen(oxen); shopComboBox.setSelectedIndex(7); }
-                    default -> displayMenu();
-                }
-
-                shopInput.setText("");
-            }
-        });
+        shopInput.addActionListener(shopMenuListener);
 
         shopInput.addFocusListener(inputHelp);
 
@@ -110,9 +96,9 @@ public class Shop extends JDialog {
             S: SPLINTS
             O: OXEN
             
-            M: RETURN TO THIS MENU
+            R: RETURN TO THIS MENU
             
-            Press ESC to exit the SHOP.
+            Press ESC to exit the SHOP once you are finished shopping.
             """
         );
     }
@@ -137,12 +123,12 @@ public class Shop extends JDialog {
                 
                 Enter "B" to buy FOOD.
                 Enter "S" to sell FOOD.
-                Enter "M" to return to the SHOP MENU.
+                Enter "R" to return to the SHOP MENU.
                 """, foodBuyPrice, foodSellPrice, food
         ));
     }
 
-    private void displayAmmo(int ammo) {
+    private void displayAmmo(int ammunition) {
         shopInfo.setText(String.format(
                 """
                 AMMUNITION is a consumable resource used in
@@ -162,8 +148,8 @@ public class Shop extends JDialog {
                 
                 Enter "B" to buy AMMUNITION.
                 Enter "S" to sell AMMUNITION.
-                Enter "M" to return to the SHOP MENU.
-                """, ammoBuyPrice, ammoSellPrice, ammo
+                Enter "R" to return to the SHOP MENU.
+                """, ammoBuyPrice, ammoSellPrice, ammunition
         ));
     }
 
@@ -190,7 +176,7 @@ public class Shop extends JDialog {
                 
                 Enter "B" to buy MEDICINE.
                 Enter "S" to sell MEDICINE.
-                Enter "M" to return to the SHOP MENU.
+                Enter "R" to return to the SHOP MENU.
                 """, medBuyPrice, medSellPrice, meds
         ));
     }
@@ -218,7 +204,7 @@ public class Shop extends JDialog {
                 
                 Enter "B" to buy CLOTHES.
                 Enter "S" to sell CLOTHES.
-                Enter "M" to return to the SHOP MENU.
+                Enter "R" to return to the SHOP MENU.
                 """, clothesBuyPrice, clothesSellPrice, clothes
         ));
     }
@@ -249,7 +235,7 @@ public class Shop extends JDialog {
                 
                 Enter "B" to buy WAGON TOOLS.
                 Enter "S" to sell WAGON TOOLS.
-                Enter "M" to return to the SHOP MENU.
+                Enter "R" to return to the SHOP MENU.
                 """, toolsBuyPrice, toolsSellPrice, wagonTools
         ));
     }
@@ -279,7 +265,7 @@ public class Shop extends JDialog {
                 
                 Enter "B" to buy SPLINTS.
                 Enter "S" to sell SPLINTS.
-                Enter "M" to return to the SHOP MENU.
+                Enter "R" to return to the SHOP MENU.
                 """, splintBuyPrice, splintSellPrice, splints
         ));
     }
@@ -308,7 +294,7 @@ public class Shop extends JDialog {
                 
                 Enter "B" to buy OXEN.
                 Enter "S" to sell OXEN.
-                Enter "M" to return to the OXEN.
+                Enter "R" to return to the OXEN.
                 """, oxenBuyPrice, oxenSellPrice, oxen
         ));
     }
@@ -316,7 +302,11 @@ public class Shop extends JDialog {
 
     private void onCancel() {
         // add your code here if necessary
-        dispose();
+        if (JOptionPane.showConfirmDialog(null,"Are you sure you want to leave the shop?",
+                "Leave SHOP?",JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
+            passBackVar();
+            dispose();
+        }
     }
 
     private WindowAdapter closeWindow = new WindowAdapter() {
@@ -325,7 +315,7 @@ public class Shop extends JDialog {
         }
     };
 
-    private FocusAdapter inputHelp = new FocusAdapter() { //Grey text for input box when not focused on
+    private final FocusAdapter inputHelp = new FocusAdapter() { //Grey text for input box when not focused on
         @Override
         public void focusGained(FocusEvent e) {
             if (shopInput.getText().trim().equals("Input Option Here")) {
@@ -340,4 +330,81 @@ public class Shop extends JDialog {
             shopInput.setForeground(new Color(147, 147,147));
         }
     };
+
+    private final ActionListener shopMenuListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String input = shopInput.getText().toUpperCase();
+            switch (input) {
+                case "R" -> { displayMenu(); shopComboBox.setSelectedIndex(0); itemSelected(); }
+                case "F" -> { displayFood(food); shopComboBox.setSelectedIndex(1); itemSelected(); }
+                case "A" -> { displayAmmo(ammunition); shopComboBox.setSelectedIndex(2); itemSelected(); }
+                case "M" -> { displayMed(medicine); shopComboBox.setSelectedIndex(3); itemSelected(); }
+                case "C" -> { displayClothes(clothes); shopComboBox.setSelectedIndex(4); itemSelected(); }
+                case "W" -> { displayWT(wagonTools); shopComboBox.setSelectedIndex(5); itemSelected(); }
+                case "S" -> { displaySplints(splints); shopComboBox.setSelectedIndex(6); itemSelected(); }
+                case "O" -> { displayOxen(oxen); shopComboBox.setSelectedIndex(7); itemSelected(); }
+                default -> { notValidInput(); displayMenu(); }
+            }
+            shopInput.setText("");
+        }
+    };
+
+    private final ActionListener shopItemListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String input = shopInput.getText().toUpperCase();
+            switch(input) {
+                case "B" -> { buyItem(game); displayMenu(); backToMenu(); }
+                case "S" -> { sellItem(game); displayMenu(); backToMenu(); }
+                case "R" -> { displayMenu(); backToMenu(); }
+                default -> { displayMenu(); shopInput.addActionListener(shopMenuListener); notValidInput(); }
+            }
+        }
+    };
+
+    private void buyItem(OregonTrailGUI game) {
+
+    }
+
+    private void sellItem(OregonTrailGUI game) {
+
+    }
+
+    private void setGlobalVar() {
+        this.food = game.getFood();
+        this.ammunition = game.getAmmunition();
+        this.medicine = game.getMedicine();
+        this.clothes = game.getClothes();
+        this.wagonTools = game.getWagonTools();
+        this.splints = game.getSplints();
+        this.oxen = game.getOxen();
+        this.money = game.getMoney();
+    }
+
+    public void passBackVar() {
+        game.setFood(this.food);
+        game.setAmmunition(this.ammunition);
+        game.setMedicine(this.medicine);
+        game.setClothes(this.clothes);
+        game.setWagonTools(this.wagonTools);
+        game.setSplints(this.splints);
+        game.setOxen(this.oxen);
+        game.setMoney(this.money);
+    }
+
+    private void itemSelected(){
+        shopInput.removeActionListener(shopMenuListener);
+        shopInput.addActionListener(shopItemListener);
+    }
+
+    private void backToMenu() {
+        shopInput.addActionListener(shopMenuListener);
+        shopInput.removeActionListener(shopItemListener);
+    }
+
+    private void notValidInput() {
+        JOptionPane.showMessageDialog(null, "That is not a valid input",
+                "ERROR", JOptionPane.ERROR_MESSAGE);
+    }
 }
