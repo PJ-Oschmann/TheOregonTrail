@@ -301,7 +301,7 @@ public class Inventory extends JDialog {
 
 //TODO: THESE ALL NEED IMPLEMENTATION AND EDITING
     private void useFood() {
-        openParty();
+        openParty("FOOD");
         invInfo.setText(
                 """
                 Player has chosen to use one unit of food.
@@ -316,7 +316,7 @@ public class Inventory extends JDialog {
     }
 
     private void useMedicine() {
-        openParty();
+        openParty("MEDICINE");
         invInfo.setText(
                 """
                 Player has chosen to use one medicine item.
@@ -331,7 +331,7 @@ public class Inventory extends JDialog {
     }
 
     private void equipClothes() {
-        openParty();
+        openParty("CLOTHES");
         invInfo.setText(
                 """
                 Player has chosen to equip one set of clothes.
@@ -348,7 +348,7 @@ public class Inventory extends JDialog {
     }
 
     private void useSplints() {
-        openParty();
+        openParty("SPLINTS");
         invInfo.setText(
                 """
                 Player has chosen to use one splint.
