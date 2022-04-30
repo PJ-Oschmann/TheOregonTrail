@@ -1,1 +1,4 @@
 -- Change file references from repository paths to 'getResourceAsStream' for jar compilation/file
+-- try/catch and throw exceptions for potential code errors
+-- correct private/public notations
+-- add javadocs once completed
