@@ -34,13 +34,14 @@ public class OregonTrailGUI {
     private final Scene scene = new Scene();
     //private final DebugGUI debug = new DebugGUI();
     private Random rand = new Random();
+    private Activities activities;
 
     //Our players
-    public Character hattie = new Character("Hattie Campbell", 100, 0);
-    public Character charles = new Character("Charles",100,0);
-    public Character augusta = new Character("Augusta",100,0);
-    public Character ben = new Character("Ben",100,0);
-    private Character jake = new Character("Jake",100,0);
+    public Character hattie = new Character("Hattie Campbell", 100, 0, false);
+    public Character charles = new Character("Charles",100,0, true);
+    public Character augusta = new Character("Augusta",100,0, true);
+    public Character ben = new Character("Ben",100,0, false);
+    private Character jake = new Character("Jake",100,0, false);
 
     public ArrayList<Character> characterArrayList = new ArrayList<>(List.of(hattie,charles,augusta,ben,jake));
     //private ArrayList<Character> allCharacters = new ArrayList<>(List.of(hattie,charles,augusta,ben,jake));
@@ -57,6 +58,7 @@ public class OregonTrailGUI {
     private static boolean inGame = false;
     private int currentPace = 0; //0=Steady, 1=Strenuous, 2=Grueling
     private int sickCharacters = 0;
+    private int dailyActions = 2;
     private Timer travelClock = new Timer(5000, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -91,6 +93,7 @@ public class OregonTrailGUI {
             displayMainMenu();
             userInput.addActionListener(menuListener);
         }
+        activities = new Activities(this);
     }
 
     /**
@@ -426,6 +429,12 @@ public class OregonTrailGUI {
             isLost = true;
         }
 
+        //If the adults are dead
+        else if (augusta.getHealth()==0 && charles.getHealth()==0) {
+            message = "Augusta and Charles died. Without the guidance of their elders, the younglings find themselves confused. You can't continue";
+            isLost = true;
+        }
+
         //If everyone is dead
         else if (hattie.getHealth()<=0 && charles.getHealth() <= 0 && augusta.getHealth() <= 0 && ben.getHealth() <= 0
                 && jake.getHealth() <= 0) {
@@ -547,6 +556,9 @@ public class OregonTrailGUI {
             }
             else if (userInput.getText().equalsIgnoreCase("C")) {
                 continuousTravel();
+            }
+            else if (userInput.getText().equalsIgnoreCase("/test")) {
+                activities.makeClothes();
             }
             userInput.setText("");
         }
@@ -705,11 +717,11 @@ public class OregonTrailGUI {
 
     //Be sure this respects defaults should any be changed during development!
     public void resetGame() {
-        hattie  = new Character("Hattie Campbell", 100, 0);
-        charles = new Character("Charles",100,0);
-        augusta = new Character("Augusta",100,0);
-        ben = new Character("Ben",100,0);
-        jake = new Character("Jake",100,0);
+        hattie  = new Character("Hattie Campbell", 100, 0,false);
+        charles = new Character("Charles",100,0, true);
+        augusta = new Character("Augusta",100,0, true);
+        ben = new Character("Ben",100,0, false);
+        jake = new Character("Jake",100,0, false);
         characterArrayList = new ArrayList<>(List.of(hattie,charles,augusta,ben,jake));
         //allCharacters = new ArrayList<>(List.of(hattie,charles,augusta,ben,jake));
         food = 0; ammunition = 0; medicine = 0; clothes = 0; wagonTools = 0; splints = 0; oxen = 0;
@@ -858,5 +870,12 @@ public class OregonTrailGUI {
         this.happiness = happiness;
     }
 
+    public int getDailyActions() {
+        return dailyActions;
+    }
+
+    public void setDailyActions(int dailyActions) {
+        this.dailyActions = dailyActions;
+    }
 }
 

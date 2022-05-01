@@ -9,6 +9,7 @@ public class Character {
     private boolean hasClothing = false;
     private boolean isSick = false;
     private boolean isInjured = false;
+    private boolean isAdult = false;
 
     /**
      * Constructor for the Player class. Every player shall have a default health count,
@@ -17,10 +18,11 @@ public class Character {
      * @param name - Name of the player.
      * @param hunger - Amount of hunger set by default.
      */
-    public Character(String name, int health, int hunger) {
+    public Character(String name, int health, int hunger, boolean isAdult) {
         this.health = health; //We can report a string "good, poor, very poor, etc" based on this number.
         this.name = name;
         this.hunger = hunger;
+        this.isAdult = isAdult;
     }
 
     //Getters
@@ -146,6 +148,14 @@ public class Character {
             injured = "Injured";
         }
         return injured;
+    }
+
+    public boolean isAdult() {
+        return isAdult;
+    }
+
+    public void setAdult(boolean adult) {
+        isAdult = adult;
     }
 }
 
