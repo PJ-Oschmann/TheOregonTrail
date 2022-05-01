@@ -28,10 +28,9 @@ public class Party extends JDialog {
         this.game = game;
         this.item = item;
         setGlobalVar();
-        this.setTitle("PARTY");
         initializePartyTextArea(item);
         this.setMinimumSize(new Dimension(1000,1000));
-
+        //promptTextPane.setText("Select a character to give this " + item.toLowerCase() + " item to!");
         //this.setUndecorated(true);
         setContentPane(contentPane);
         setModal(true);
@@ -62,7 +61,7 @@ public class Party extends JDialog {
     }
 
     private void initializePartyTextArea(String itemName) {
-        partyTextArea.setText(String.format(
+        promptTextPane.setText(String.format(
                 """
                 Please select the character you would like to use %s on using the input text area below:
                 
