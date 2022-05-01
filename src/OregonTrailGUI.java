@@ -242,15 +242,12 @@ public class OregonTrailGUI {
                 I: INVENTORY
                 P: SET PACE
                 T: TRAVEL ONE DAY
-                C: CONTINUOUSLY TRAVEL
+                D: DAILY ACTIONS (resets each travel)
                 
                 ABOUT PACE:
                 Hunger is increased respectively by travel speed (not including
                 status ailment effects) on characters. 1, 2, or 3 hunger is added
                 depending on the speed you are traveling.
-                
-                ABOUT CONTINUOUS TRAVEL:
-                FIXME
                 
                 More information can be found in the menu bars at the top of this window.
                 """
@@ -677,18 +674,14 @@ public class OregonTrailGUI {
     private FocusAdapter gameHelp = new FocusAdapter() { //Grey text for input box when not focused on
         @Override
         public void focusGained(FocusEvent e) {
-            if (userInput.getText().trim().equals("Enter 'H' to display input options")) {
-                userInput.setText("");
-                userInput.setForeground(Color.BLACK);
-            }
+            userInput.setText("");
+            userInput.setForeground(Color.BLACK);
         }
 
         @Override
         public void focusLost(FocusEvent e) {
-            if (userInput.getText().trim().equals("")) {
-                userInput.setText("Enter 'H' to display input options");
-                userInput.setForeground(new Color(147, 147,147));
-            }
+            userInput.setText("Enter 'H' to display input options");
+            userInput.setForeground(new Color(147, 147,147));
         }
     };
 

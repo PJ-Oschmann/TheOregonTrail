@@ -146,10 +146,8 @@ public class Party extends JDialog {
     private final FocusAdapter inputHelp = new FocusAdapter() { //Grey text for input box when not focused on
         @Override
         public void focusGained(FocusEvent e) {
-            if (userInput.getText().trim().equals("Input Selection Here")) {
-                userInput.setText("");
-                userInput.setForeground(Color.BLACK);
-            }
+            userInput.setText("");
+            userInput.setForeground(Color.BLACK);
         }
 
         @Override

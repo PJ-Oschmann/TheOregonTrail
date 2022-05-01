@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.UncheckedIOException;
 import java.util.InputMismatchException;
 
 public class Shop extends JDialog {
@@ -30,8 +29,12 @@ public class Shop extends JDialog {
     private static final int splintSellPrice = 5;
     private static final int toolsSellPrice = 8;
     private static final int oxenSellPrice = 8;
-    private boolean itemShowing = false;
-    private boolean menuShowing = true;
+    private boolean menuListenerActive = true;
+    private boolean itemListenerActive = false;
+    private boolean inMenu = true;
+    private boolean inItem = false;
+
+
     private final OregonTrailGUI game;
 
     public int money; int food; int ammunition; int medicine; int clothes; int wagonTools; int splints; int oxen;
@@ -43,37 +46,32 @@ public class Shop extends JDialog {
         setModal(true);
         this.setTitle("THE SHOP");
         shopImage.setIcon(new javax.swing.ImageIcon("src/assets/images/Shop.png"));
-        if (shopComboBox.getSelectedIndex() == 0) {
-            displayMenu();
-            menuSelected();
-        }
+        shopInput.addActionListener(shopMenuListener);
+        shopInput.addFocusListener(inputHelp);
+        displayMenu();
 
         shopComboBox.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 int input = shopComboBox.getSelectedIndex();
                 switch (input) {
-                    case 0 -> { displayMenu(); inMenu(); }
-                    case 1 -> { displayFood(food); inItem(); }
+                    case 0 -> { displayMenu(); inMenu();}
+                    case 1 -> { displayFood(food); inItem();}
                     case 2 -> { displayAmmo(ammunition); inItem(); }
                     case 3 -> { displayMed(medicine); inItem(); }
                     case 4 -> { displayClothes(clothes); inItem(); }
                     case 5 -> { displayWT(wagonTools); inItem(); }
                     case 6 -> { displaySplints(splints); inItem(); }
                     case 7 -> { displayOxen(oxen); inItem(); }
-                    default -> { notValidInput(); displayMenu(); inMenu();}
+                    default -> { displayMenu(); }
                 }
-                if (menuShowing) {
+                if (inMenu && !menuListenerActive) {
                     menuSelected();
                 }
-                else if (itemShowing) {
+                else if (inItem && !itemListenerActive) {
                     itemSelected();
                 }
             }});
-
-        shopInput.addActionListener(shopMenuListener);
-
-        shopInput.addFocusListener(inputHelp);
 
         // call onCancel() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -88,13 +86,13 @@ public class Shop extends JDialog {
     }
 
     private void inMenu() {
-        menuShowing = true;
-        itemShowing = false;
+        inMenu = true;
+        inItem = false;
     }
 
     private void inItem() {
-        menuShowing = false;
-        itemShowing = true;
+        inItem = true;
+        inMenu = false;
     }
 
     //Main Shop Menu
@@ -339,10 +337,8 @@ public class Shop extends JDialog {
     private final FocusAdapter inputHelp = new FocusAdapter() { //Grey text for input box when not focused on
         @Override
         public void focusGained(FocusEvent e) {
-            if (shopInput.getText().trim().equals("Input Option Here")) {
-                shopInput.setText("");
-                shopInput.setForeground(Color.BLACK);
-            }
+            shopInput.setText("");
+            shopInput.setForeground(Color.BLACK);
         }
 
         @Override
@@ -357,21 +353,15 @@ public class Shop extends JDialog {
         public void actionPerformed(ActionEvent e) {
             String input = shopInput.getText().toUpperCase();
             switch (input) {
-                case "R" -> { displayMenu(); shopComboBox.setSelectedIndex(0); inMenu(); }
-                case "F" -> { displayFood(food); shopComboBox.setSelectedIndex(1); inItem(); }
-                case "A" -> { displayAmmo(ammunition); shopComboBox.setSelectedIndex(2); inItem(); }
-                case "M" -> { displayMed(medicine); shopComboBox.setSelectedIndex(3); inItem(); }
-                case "C" -> { displayClothes(clothes); shopComboBox.setSelectedIndex(4); inItem(); }
-                case "W" -> { displayWT(wagonTools); shopComboBox.setSelectedIndex(5); inItem(); }
-                case "S" -> { displaySplints(splints); shopComboBox.setSelectedIndex(6); inItem(); }
-                case "O" -> { displayOxen(oxen); shopComboBox.setSelectedIndex(7); inItem(); }
-                default -> { notValidInput(); displayMenu(); inMenu(); }
-            }
-            if (menuShowing) {
-                menuSelected();
-            }
-            else if (itemShowing) {
-                itemSelected();
+                case "R" -> { displayMenu(); shopComboBox.setSelectedIndex(0); }
+                case "F" -> { displayFood(food); shopComboBox.setSelectedIndex(1); }
+                case "A" -> { displayAmmo(ammunition); shopComboBox.setSelectedIndex(2); }
+                case "M" -> { displayMed(medicine); shopComboBox.setSelectedIndex(3); }
+                case "C" -> { displayClothes(clothes); shopComboBox.setSelectedIndex(4); }
+                case "W" -> { displayWT(wagonTools); shopComboBox.setSelectedIndex(5); }
+                case "S" -> { displaySplints(splints); shopComboBox.setSelectedIndex(6); }
+                case "O" -> { displayOxen(oxen); shopComboBox.setSelectedIndex(7); }
+                default -> { notValidInput(); shopComboBox.setSelectedIndex(0);}
             }
             shopInput.setText("");
         }
@@ -387,11 +377,12 @@ public class Shop extends JDialog {
                 case "R" -> { displayMenu(); inMenu(); }
                 default -> { displayMenu(); notValidInput(); inMenu(); }
             }
-            if (menuShowing) {
+            if (inMenu && !menuListenerActive) {
                 menuSelected();
             } else {
                 throw new IllegalArgumentException("Shop didn't function correctly in shopItemListener.");
             }
+            shopInput.setText("");
         }
     };
 
@@ -420,11 +411,15 @@ public class Shop extends JDialog {
     private void itemSelected(){
         shopInput.removeActionListener(shopMenuListener);
         shopInput.addActionListener(shopItemListener);
+        itemListenerActive = true;
+        menuListenerActive = false;
     }
 
     private void menuSelected() {
         shopInput.addActionListener(shopMenuListener);
         shopInput.removeActionListener(shopItemListener);
+        itemListenerActive = false;
+        menuListenerActive = true;
     }
 
     private void notValidInput() {
@@ -560,6 +555,7 @@ public class Shop extends JDialog {
             int moneyEarned = quantity * sellPrice;
             item -= quantity;
             game.setMoney(game.getMoney() + moneyEarned);
+            sellDialogue(itemName, moneyEarned, quantity);
         }
         return item;
     }
@@ -569,11 +565,15 @@ public class Shop extends JDialog {
             amount *= 5;
         }
         JOptionPane.showMessageDialog(null,
-                String.format("You've purchased %d units of %s for %d dollars.", amount, name, cost));
+                String.format("You've purchased %d units of %s for $%d.", amount, name, cost));
     }
 
-    private void sellDialogue(String item, int quantity, int profit) {
-
+    private void sellDialogue(String name, int profit, int amount) {
+        if (name.equals("FOOD")) {
+            amount *= 5;
+        }
+        JOptionPane.showMessageDialog(null,
+                String.format("You've sold %d units of %s for $%d", amount, name, profit));
     }
 
     private boolean confirmBuy(String name, int cost, int amount) {

@@ -398,10 +398,8 @@ public class Inventory extends JDialog {
     private FocusAdapter inputHelp = new FocusAdapter() { //Grey text for input box when not focused on
         @Override
         public void focusGained(FocusEvent e) {
-            if (userInput.getText().trim().equals("Input Option Here")) {
-                userInput.setText("");
-                userInput.setForeground(Color.BLACK);
-            }
+            userInput.setText("");
+            userInput.setForeground(Color.BLACK);
         }
 
         @Override
