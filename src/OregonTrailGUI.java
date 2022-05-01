@@ -437,7 +437,7 @@ public class OregonTrailGUI {
                         character.setDaysSick(0);
                         JOptionPane.showMessageDialog(null, String.format("%s has gotten sick.\n" +
                                         "Use medicine to cure them!", character.getName()), "Someone got sick",
-                                JOptionPane.PLAIN_MESSAGE);
+                                JOptionPane.WARNING_MESSAGE);
                     }
                 }
             }
