@@ -70,7 +70,6 @@ public class River {
                     crossed = false;
                 }
             }
-
         }
 
         //5% chance someone drowns

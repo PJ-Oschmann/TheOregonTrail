@@ -430,12 +430,12 @@ public class OregonTrailGUI {
     public void weatherAffectPlayer() {
         for (Character character : characterArrayList) {
             if (!character.getHasClothing()) {
-                character.setHealth(character.getHealth() - 25);
+                character.setHealth(character.getHealth() - 20);
                 if (rand.nextInt(4) == 0) {
                     character.setSick(true);
                     JOptionPane.showMessageDialog(null, String.format("%s has gotten sick.\n" +
                             "Use medicine to cure them!", character.getName()), "Someone got sick",
-                            JOptionPane.PLAIN_MESSAGE);
+                            JOptionPane.WARNING_MESSAGE);
                 }
             }
         }
@@ -487,7 +487,7 @@ public class OregonTrailGUI {
         return JOptionPane.showOptionDialog(null,String.format("%s the oxen was injured while" +
                         "you were traveling today. You put %s out of their misery. You can choose to leave " +
                         "%s on the side of the road, or harvest their corpse for 10 units of food.",
-                oxenName, oxenName, oxenName),"INJURED OXEN", JOptionPane.YES_NO_OPTION,JOptionPane.PLAIN_MESSAGE,
+                oxenName, oxenName, oxenName),"INJURED OXEN", JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE,
                 null, choices, null);
     }
 
@@ -501,7 +501,7 @@ public class OregonTrailGUI {
     private void leaveOxenBe(String oxenName) {
         JOptionPane.showMessageDialog(null, String.format("You chose to leave %s's corpse alone" +
                         "and let nature take its course.\nRest in peace %s.", oxenName, oxenName),
-                String.format("RIP %s the oxen", oxenName), JOptionPane.PLAIN_MESSAGE);
+                String.format("RIP %s the oxen", oxenName), JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void callPETA() {
