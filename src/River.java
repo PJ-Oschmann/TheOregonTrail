@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.Random;
 public class River {
     private OregonTrailGUI game;
@@ -11,23 +12,29 @@ public class River {
     //Booleans: true = crossed; false = didn't. (Still true if someone gets hurt/sick/etc but crossed successfully)
 
     public boolean takeFerry() {
+        boolean crossed = true;
         if (game.getMoney()>=20) {
             game.setMoney(game.getMoney()-20);
-            return true;
+
         }
         else {
-            //TODO: ENTER CODE FOR NOT ENOUGH MONEY
-            return false;
+            staticMethods.notEnoughMoney();
+            crossed = false;
         }
+        return crossed;
     }
 
     public boolean buildRaft() {
+        boolean crossed = true;
         if (game.getWagonTools()>=2) {
             game.setWagonTools(game.getWagonTools()-2);
 
             //10% 1 oxen dies
             if (rand.nextInt(9)==0) {
                 game.setOxen(game.getOxen()-1);
+                if (game.getOxen()==0) {
+                    crossed = false;
+                }
             }
 
             //15% for someone to get sick
@@ -43,7 +50,7 @@ public class River {
                 wagon.setState(1);
             }
         }
-        return true;
+        return crossed;
     }
 
     public boolean crossAlone() {

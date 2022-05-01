@@ -428,17 +428,21 @@ public class OregonTrailGUI {
      * chance of getting ill.
      */
     public void weatherAffectPlayer() {
-        for (Character character : characterArrayList) {
-            if (!character.getHasClothing()) {
-                character.setHealth(character.getHealth() - 25);
-                if (rand.nextInt(4) == 0) {
-                    character.setSick(true);
-                    JOptionPane.showMessageDialog(null, String.format("%s has gotten sick.\n" +
-                            "Use medicine to cure them!", character.getName()), "Someone got sick",
-                            JOptionPane.PLAIN_MESSAGE);
+        if (weather.getWeatherCondition()=="Bad") {
+            for (Character character : characterArrayList) {
+                if (!character.getHasClothing()) {
+                    character.setHealth(character.getHealth() - 25);
+                    if (rand.nextInt(4) == 0) {
+                        character.setSick(true);
+                        character.setDaysSick(0);
+                        JOptionPane.showMessageDialog(null, String.format("%s has gotten sick.\n" +
+                                        "Use medicine to cure them!", character.getName()), "Someone got sick",
+                                JOptionPane.PLAIN_MESSAGE);
+                    }
                 }
             }
         }
+
     }
 
     private void oxenInjured() {
