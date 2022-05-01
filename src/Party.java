@@ -119,6 +119,7 @@ public class Party extends JDialog {
                 Clothing: $Clothing
                 Healthiness: $Healthiness
                 Injured: $Injured
+                Hunger: $Hunger
                 
                 """;
         for (JTextPane stats : arrayOfPanes) {
@@ -131,12 +132,12 @@ public class Party extends JDialog {
                 newText = newText.replace("$Clothing", characterArrayList.get(characterIndex).hasClothingToString());
                 newText = newText.replace("$Healthiness",characterArrayList.get(characterIndex).isSickToString());
                 newText = newText.replace("$Injured",characterArrayList.get(characterIndex).isInjuredToString());
+                newText = newText.replace("$Hunger", String.valueOf(characterArrayList.get(characterIndex).getHunger()));
                 stats.setText(newText);
             }
             characterIndex++;
         }
     }
-
     private void setGlobalVar() {
         this.happiness = game.getHappiness();
         this.money = game.getMoney();
