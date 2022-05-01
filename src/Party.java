@@ -38,10 +38,12 @@ public class Party extends JDialog {
         userInput.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                selectCharacter(userInput.getText());
-                doAction(item);
-                game.writeGameInfo();
-                userInput.setText("");
+                if (selectCharacter(userInput.getText())) {
+                    doAction(item);
+                    game.writeGameInfo();
+                    userInput.setText("");
+                }
+
             }
         });
         updateStats(money, happiness);
@@ -64,7 +66,7 @@ public class Party extends JDialog {
      * @param character - The character being selected
      * @return A string of the character selected. If the selection was invalid, "INVALID" is returned.
      */
-    public void selectCharacter(String character) {
+    public boolean selectCharacter(String character) {
         int charIndex;
         if (character.equalsIgnoreCase("H")) {
             charIndex = 0;
@@ -79,8 +81,10 @@ public class Party extends JDialog {
         }
         else {
             staticMethods.notValidInput();
+            return false;
         }
         selectedCharacter = characterArrayList.get(charIndex);
+        return true;
     }
 
     ArrayList<JTextPane> arrayOfPanes = new ArrayList<>(List.of(hattieStats, charlesStats, augustaStats, benStats, jakeStats));
@@ -152,6 +156,12 @@ public class Party extends JDialog {
             userInput.setText("");
             userInput.setForeground(Color.BLACK);
         }
+        /*
+        else {
+
+        }
+
+         */
 
         @Override
         public void focusLost(FocusEvent e) {
