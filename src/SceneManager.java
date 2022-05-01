@@ -31,6 +31,21 @@ public class SceneManager{
         }
     }
 
+    //Load scene. Saves to global variable to avoid reopening textfile.
+    public void loadScene(String sceneName, String currentDate) {
+        if (!sceneIsLoaded) {
+            sceneToRead = ReadText.readScene(sceneName);
+            sceneToRead.add(0,currentDate);
+            imageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/"+sceneName+".png"));
+            sceneIsLoaded = true;
+            continueButton.setVisible(true);
+            continueScene();
+        }
+        else {
+            System.out.println("SceneManager.java: Attempted to load scene " + sceneName + ", but another scene is loaded. Unload the scene first.");
+        }
+    }
+
     //Play back a scene after the other finishes
     //Note: Scenes should be put together in their text file. Only use this if needed.
     public void chainLoadScene(ArrayList<String> arrayOfScenes) {

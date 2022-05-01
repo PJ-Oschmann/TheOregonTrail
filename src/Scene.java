@@ -57,6 +57,12 @@ public class Scene extends JDialog {
         this.setVisible(true);
     }
 
+    public void loadScene(String scene, String currentDate) {
+        sceneMan.loadScene(scene, currentDate);
+        this.pack();
+        this.setVisible(true);
+    }
+
     public void chainLoadScene(ArrayList<String> arrayOfScenes) {
         sceneMan.chainLoadScene(arrayOfScenes);
         this.pack();
