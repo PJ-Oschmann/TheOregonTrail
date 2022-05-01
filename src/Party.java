@@ -39,6 +39,8 @@ public class Party extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 selectCharacter(userInput.getText());
+                doAction(item);
+                game.writeGameInfo();
                 userInput.setText("");
             }
         });
