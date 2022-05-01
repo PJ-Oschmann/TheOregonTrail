@@ -93,7 +93,6 @@ public class OregonTrailGUI {
             displayMainMenu();
             userInput.addActionListener(menuListener);
         }
-        activities = new Activities(this);
     }
 
     /**
@@ -193,6 +192,7 @@ public class OregonTrailGUI {
         inGame = true;
         loadStatusPanels();
         openShop();
+        activities = new Activities(this);
         userInput.addActionListener(gameMenu);
         userInput.removeFocusListener(playHelp);
         userInput.addFocusListener(gameHelp);
@@ -207,6 +207,14 @@ public class OregonTrailGUI {
         AugustaPanel.setVisible(true);
         BenPanel.setVisible(true);
         JakePanel.setVisible(true);
+    }
+
+    private void hideStatusPanels() {
+        HattiePanel.setVisible(false);
+        CharlesPanel.setVisible(false);
+        AugustaPanel.setVisible(false);
+        BenPanel.setVisible(false);
+        JakePanel.setVisible(false);
     }
 
     /**
@@ -305,7 +313,7 @@ public class OregonTrailGUI {
      */
     public void stopContTravel() {
         travelClock.stop();
-        isTraveling= false;
+        isTraveling = false;
     }
     //Check for scenarios to continue the story line.
     //Most things happen based on distance+location
@@ -335,6 +343,7 @@ public class OregonTrailGUI {
      * The party's happiness level
      * The current pace
      * The current rations
+     * The remaining daily actions available
      */
     //TODO: Implement Strings for location, pace, and rations
     //Call this function whenever the game info is updated.
@@ -347,6 +356,7 @@ public class OregonTrailGUI {
                 Party Happiness: $happiness
                 Pace: $pace
                 Rations: $rations
+                Daily Actions Available: $daily actions
                 """;
         gameInfo = gameInfo.replace("$location","LOCATION FIXME");
         gameInfo = gameInfo.replace("$date",date.toString());
@@ -354,6 +364,7 @@ public class OregonTrailGUI {
         gameInfo = gameInfo.replace("$happiness",Integer.toString(happiness));
         gameInfo = gameInfo.replace("$pace",currPaceToString());
         gameInfo = gameInfo.replace("$rations", String.valueOf(getFood()));
+        gameInfo = gameInfo.replace("$daily actions", Integer.toString(dailyActions));
         storyTextArea.setText(gameInfo);
         updateStats();
     }
@@ -841,8 +852,8 @@ public class OregonTrailGUI {
         jake = new Character("Jake",100,0, false);
         characterArrayList = new ArrayList<>(List.of(hattie,charles,augusta,ben,jake));
         //allCharacters = new ArrayList<>(List.of(hattie,charles,augusta,ben,jake));
-        money = 200; food = 0; ammunition = 0; medicine = 0; clothes = 0; wagonTools = 0; splints = 0; oxen = 0;
-        isGameWon = false; isGameLost = false;
+        money = 200; food = 0; ammunition = 0; medicine = 0; clothes = 0; wagonTools = 0; splints = 0; oxen = 4;
+        isGameWon = false; isGameLost = false; inMenu = true; inGame = false;
         happiness = 75;
         weather = new Weather();
         wagon = new Wagon();
@@ -850,8 +861,13 @@ public class OregonTrailGUI {
         date.setDate(3,18,1861);
         isTraveling = false;
         //TODO: GO BACK TO MAIN MENU HERE
-
-
+        userInput.addFocusListener(playHelp);
+        if(inMenu) {
+            ImageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/MainMenu.png"));
+            displayMainMenu();
+            userInput.addActionListener(menuListener);
+            hideStatusPanels();
+        }
     }
 
     public String currPaceToString() {
@@ -889,6 +905,7 @@ public class OregonTrailGUI {
                 Clothing: $Clothing
                 Healthiness: $Healthiness
                 Injured: $Injured
+                Hunger: $Hunger
                 """;
         for (JTextPane stats : arrayOfPanes) {
             if (characterArrayList.get(characterIndex).getHealth() <= 0) {
@@ -898,8 +915,9 @@ public class OregonTrailGUI {
                 String newText = statsText;
                 newText = newText.replace("$HP", Integer.toString(characterArrayList.get(characterIndex).getHealth()));
                 newText = newText.replace("$Clothing", characterArrayList.get(characterIndex).hasClothingToString());
-                newText = newText.replace("$Healthiness",characterArrayList.get(characterIndex).isSickToString());
-                newText = newText.replace("$Injured",characterArrayList.get(characterIndex).isInjuredToString());
+                newText = newText.replace("$Healthiness", characterArrayList.get(characterIndex).isSickToString());
+                newText = newText.replace("$Injured", characterArrayList.get(characterIndex).isInjuredToString());
+                newText = newText.replace("$Hunger", String.valueOf(characterArrayList.get(characterIndex).getHunger()));
                 stats.setText(newText);
 
             }

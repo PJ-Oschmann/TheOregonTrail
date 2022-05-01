@@ -424,7 +424,7 @@ public class Inventory extends JDialog {
     private void openParty(String item) {
         Party party = new Party(game, item);
         party.pack();
-        party.setTitle("USE ITEM ON . . .");
+        party.setTitle("PARTY DETAILS");
         party.setVisible(true);
     }
 

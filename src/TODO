@@ -6,6 +6,8 @@
 -- insert storyline
 -- insert all scenes
 -- insert landmarks
--- partyAreaTextBox updates on successful item usage
+-- partyAreaTextBox updates on successful item usage (PJ)
+-- reformat party GUI (KEN)
 -- river class
--- check if restart or reset game works
+-- check if restart or reset game works (KEN)
+-- debug game over (KEN)

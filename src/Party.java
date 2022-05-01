@@ -28,10 +28,9 @@ public class Party extends JDialog {
         this.game = game;
         this.item = item;
         setGlobalVar();
-        this.setTitle("PARTY");
         initializePartyTextArea(item);
         this.setMinimumSize(new Dimension(1000,1000));
-
+        //promptTextPane.setText("Select a character to give this " + item.toLowerCase() + " item to!");
         //this.setUndecorated(true);
         setContentPane(contentPane);
         setModal(true);
@@ -62,7 +61,7 @@ public class Party extends JDialog {
     }
 
     private void initializePartyTextArea(String itemName) {
-        partyTextArea.setText(String.format(
+        promptTextPane.setText(String.format(
                 """
                 Please select the character you would like to use %s on using the input text area below:
                 
@@ -120,6 +119,7 @@ public class Party extends JDialog {
                 Clothing: $Clothing
                 Healthiness: $Healthiness
                 Injured: $Injured
+                Hunger: $Hunger
                 
                 """;
         for (JTextPane stats : arrayOfPanes) {
@@ -132,12 +132,12 @@ public class Party extends JDialog {
                 newText = newText.replace("$Clothing", characterArrayList.get(characterIndex).hasClothingToString());
                 newText = newText.replace("$Healthiness",characterArrayList.get(characterIndex).isSickToString());
                 newText = newText.replace("$Injured",characterArrayList.get(characterIndex).isInjuredToString());
+                newText = newText.replace("$Hunger", String.valueOf(characterArrayList.get(characterIndex).getHunger()));
                 stats.setText(newText);
             }
             characterIndex++;
         }
     }
-
     private void setGlobalVar() {
         this.happiness = game.getHappiness();
         this.money = game.getMoney();
@@ -204,6 +204,7 @@ public class Party extends JDialog {
     }
     private void eatFood() {
         selectedCharacter.setHunger(calculateHunger(selectedCharacter,2));
+        promptTextPane.setText(selectedCharacter.getName() + " ate some food!");
         staticMethods.resetNFC();
     }
 
@@ -215,8 +216,7 @@ public class Party extends JDialog {
         }
         else {
             selectedCharacter.setSick(false);
-            JOptionPane.showMessageDialog(null,selectedCharacter.getName()+" has been cured!",
-                    selectedCharacter.getName()+"'s Illness",JOptionPane.PLAIN_MESSAGE);
+            promptTextPane.setText(selectedCharacter.getName()+" has been cured!");
         }
     }
 
@@ -227,8 +227,7 @@ public class Party extends JDialog {
         }
         else {
             selectedCharacter.setHasClothing(true);
-            JOptionPane.showMessageDialog(null,selectedCharacter.getName()+" now has protective " +
-                    "clothing.",selectedCharacter.getName()+"'s Clothing",JOptionPane.PLAIN_MESSAGE);
+            promptTextPane.setText(selectedCharacter.getName()+" now has protective " + "clothing.");
         }
     }
 
@@ -240,8 +239,8 @@ public class Party extends JDialog {
         }
         else {
             selectedCharacter.setInjured(false);
-            JOptionPane.showMessageDialog(null,selectedCharacter.getName()+" now has " +
-                    "protective clothing.",selectedCharacter.getName()+"'s Clothing",JOptionPane.PLAIN_MESSAGE);
+            promptTextPane.setText(selectedCharacter.getName()+" now has " +
+                    "protective clothing.");
         }
 
     }
