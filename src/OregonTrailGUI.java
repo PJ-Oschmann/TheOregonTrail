@@ -283,6 +283,7 @@ public class OregonTrailGUI {
         writeGameInfo();
         killPlayer();
         checkIfLost();
+        oxenInjured();
         doStoryLine();
         //anything else that changes on the day.
     }
@@ -422,8 +423,6 @@ public class OregonTrailGUI {
                 }
             }
         }
-
-
     }
 
     /**
@@ -436,16 +435,26 @@ public class OregonTrailGUI {
      * @return false if the game is not lost, true if the game is lost
      */
 
-    //TODO: Lack of food for 3 days
-    public boolean checkIfLost() {
+    private boolean checkIfLost() {
         boolean isLost = false;
         String message = "";
 
+        //Lack of food for 3 days
+        if (daysNoFood >= 3) {
+            isLost = true;
+            message = "Your party has starved to death from a lack of food.";
+        }
+
         //If there are no healthy oxen
         //TODO: Re-implement oxen system
+        else if (oxen < 0) {
+            isLost = true;
+            message = "You have no more healthy oxen to pull your wagon. You can't continue.";
+        }
+
         //If the wagon breaks
-        if (wagon.getState() == 2) {
-            message= "Your wagon broke. You can't continue";
+        else if (wagon.getState() == 2) {
+            message = "Your wagon broke. You can't continue";
             isLost = true;
         }
 
@@ -457,7 +466,8 @@ public class OregonTrailGUI {
 
         //If the adults are dead
         else if (augusta.getHealth()==0 && charles.getHealth()==0) {
-            message = "Augusta and Charles died. Without the guidance of their elders, the younglings find themselves confused. You can't continue";
+            message = "Augusta and Charles died. Without the guidance of their elders, the young-lings find themselves " +
+                    "confused. You can't continue";
             isLost = true;
         }
 

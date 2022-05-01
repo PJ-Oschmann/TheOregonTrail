@@ -28,7 +28,7 @@ public class Party extends JDialog {
         this.game = game;
         this.item = item;
         setGlobalVar();
-        this.setTitle("Party");
+        this.setTitle("PARTY");
         this.setMinimumSize(new Dimension(1000,300));
 
         //this.setUndecorated(true);
@@ -65,21 +65,22 @@ public class Party extends JDialog {
      * @return A string of the character selected. If the selection was invalid, "INVALID" is returned.
      */
     public void selectCharacter(String character) {
-        int characterInt=99;
+        int charIndex;
         if (character.equalsIgnoreCase("H")) {
-            characterInt = 0;
+            charIndex = 0;
         } else if (character.equalsIgnoreCase("C")) {
-            characterInt = 1;
+            charIndex = 1;
         } else if (character.equalsIgnoreCase("A")) {
-            characterInt = 2;
+            charIndex = 2;
         } else if (character.equalsIgnoreCase("B")) {
-            characterInt = 3;
+            charIndex = 3;
         } else if (character.equalsIgnoreCase("J")) {
-            characterInt = 4;
+            charIndex = 4;
         }
-
-        selectedCharacter = characterArrayList.get(characterInt);
-
+        else {
+            staticMethods.notValidInput();
+        }
+        selectedCharacter = characterArrayList.get(charIndex);
     }
 
     ArrayList<JTextPane> arrayOfPanes = new ArrayList<>(List.of(hattieStats, charlesStats, augustaStats, benStats, jakeStats));

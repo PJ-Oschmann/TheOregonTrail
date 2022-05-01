@@ -80,7 +80,9 @@ public class Shop extends JDialog {
         // call onCancel() on ESCAPE
         shopPane.registerKeyboardAction(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                onCancel();
+                if (enoughOxen()) {
+                    onCancel();
+                }
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
@@ -114,6 +116,8 @@ public class Shop extends JDialog {
             W: WAGON TOOLS
             S: SPLINTS
             O: OXEN
+            
+            YOU WILL NEED A MINIMUM OF 4 OXEN TO BEGIN YOUR JOURNEY.
             
             R: RETURN TO THIS MENU
             
@@ -361,7 +365,7 @@ public class Shop extends JDialog {
                 case "W" -> { displayWT(wagonTools); shopComboBox.setSelectedIndex(5); }
                 case "S" -> { displaySplints(splints); shopComboBox.setSelectedIndex(6); }
                 case "O" -> { displayOxen(oxen); shopComboBox.setSelectedIndex(7); }
-                default -> { notValidInput(); shopComboBox.setSelectedIndex(0);}
+                default -> { staticMethods.notValidInput(); shopComboBox.setSelectedIndex(0);}
             }
             shopInput.setText("");
         }
@@ -375,7 +379,7 @@ public class Shop extends JDialog {
                 case "B" -> { buyItem(); shopComboBox.setSelectedIndex(0); inMenu(); }
                 case "S" -> { sellItem(); shopComboBox.setSelectedIndex(0); inMenu(); }
                 case "R" -> { shopComboBox.setSelectedIndex(0); inMenu(); }
-                default -> { notValidInput(); shopComboBox.setSelectedIndex(0); inMenu(); }
+                default -> { staticMethods.notValidInput(); shopComboBox.setSelectedIndex(0); inMenu(); }
             }
             if (inMenu && !menuListenerActive) {
                 menuSelected();
@@ -422,11 +426,6 @@ public class Shop extends JDialog {
         menuListenerActive = true;
     }
 
-    private void notValidInput() {
-        JOptionPane.showMessageDialog(null, "That is not a valid input",
-                "ERROR", JOptionPane.ERROR_MESSAGE);
-    }
-
     private int enterBuyQuantity(String item, int itemCost) {
         int quantity = 0;
             try {
@@ -440,7 +439,7 @@ public class Shop extends JDialog {
             }
             catch (InputMismatchException e) {
                 e.printStackTrace();
-                notValidInput();
+                staticMethods.notValidInput();
             }
         return quantity;
     }
@@ -463,7 +462,7 @@ public class Shop extends JDialog {
         }
         catch (InputMismatchException e) {
             e.printStackTrace();
-            notValidInput();
+            staticMethods.notValidInput();
         }
         return quantity;
     }
@@ -479,7 +478,7 @@ public class Shop extends JDialog {
             case 5 -> { itemName = "WAGON TOOLS"; wagonTools = checkBuy(itemName, wagonTools, toolsBuyPrice); } //wagonTools
             case 6 -> { itemName = "SPLINTS"; splints = checkBuy(itemName, splints, splintBuyPrice); } //splints
             case 7 -> { itemName = "OXEN"; oxen = checkBuy(itemName, oxen, oxenBuyPrice); } //oxen
-            default -> {notValidInput();}
+            default -> {staticMethods.notValidInput();}
         }
     }
 
@@ -494,7 +493,7 @@ public class Shop extends JDialog {
             case 5 -> { itemName = "WAGON TOOLS"; wagonTools = checkSell(itemName, wagonTools); } //wagonTools
             case 6 -> { itemName = "SPLINTS"; splints = checkSell(itemName, splints); } //splints
             case 7 -> { itemName = "OXEN"; oxen = checkSell(itemName, oxen); } //oxen
-            default -> {notValidInput();}
+            default -> {staticMethods.notValidInput();}
         }
     }
 
@@ -601,5 +600,14 @@ public class Shop extends JDialog {
     private void transactionCancelled() {
         JOptionPane.showMessageDialog(null, "The transaction was cancelled.","CANCELLED",
                 JOptionPane.PLAIN_MESSAGE);
+    }
+
+    private boolean enoughOxen(){
+        if (game.getOxen() < 4) {
+            JOptionPane.showMessageDialog(null, "You don't have enough Oxen to begin your journey." +
+                    "Please purchase at least 4 oxen before leaving the shop!", "CAUTION", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        return true;
     }
 }
