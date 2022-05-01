@@ -47,7 +47,7 @@ public class OregonTrailGUI {
     //private ArrayList<Character> allCharacters = new ArrayList<>(List.of(hattie,charles,augusta,ben,jake));
 
     //game variables
-    public int money = 200, food = 0, ammunition = 0, medicine = 0, clothes = 0, wagonTools = 0, splints = 0, oxen = 0;
+    public int money = 200, food = 0, ammunition = 0, medicine = 0, clothes = 0, wagonTools = 0, splints = 0, oxen = 4;
     private boolean isGameWon = false, isGameLost = false;
     public int happiness = 75;
     private Weather weather = new Weather();
@@ -471,13 +471,16 @@ public class OregonTrailGUI {
             else {
                 leaveOxenBe(injuredOxenName);
             }
-            JOptionPane.showMessageDialog(null, "Your oxen's chance of injury when traveling is " +
-                    "significantly higher if you have less than 4 oxen to pull the wagon. Please buy more oxen" +
-                    "before we call PETA for animal abuse.", "OXEN DEFICIENCY", JOptionPane.ERROR_MESSAGE);
+            callPETA();
         }
         else if (injuredOxen) {
             oxen -= 1;
-
+            if (consumeOxen == 0) {
+                consumeInjuredOxen(injuredOxenName);
+            }
+            else {
+                leaveOxenBe(injuredOxenName);
+            }
         }
     }
 
@@ -500,6 +503,12 @@ public class OregonTrailGUI {
         JOptionPane.showMessageDialog(null, String.format("You chose to leave %s's corpse alone" +
                         "and let nature take its course.\nRest in peace %s.", oxenName, oxenName),
                 String.format("RIP %s the oxen", oxenName), JOptionPane.PLAIN_MESSAGE);
+    }
+
+    private void callPETA() {
+        JOptionPane.showMessageDialog(null, "Your oxen's chance of injury when traveling is " +
+                "significantly higher if you have less than 4 oxen to pull the wagon. Please buy more oxen" +
+                "before we call PETA for animal abuse.", "OXEN DEFICIENCY", JOptionPane.ERROR_MESSAGE);
     }
 
     /**
@@ -555,13 +564,13 @@ public class OregonTrailGUI {
 
         String[] gameOverChoices = {"Exit Game","Main Menu"};
         if (isLost) {
-            if (JOptionPane.showOptionDialog(null,message,"Game Over",
+            if (JOptionPane.showOptionDialog(null,message,"GAME OVER",
                     JOptionPane.YES_NO_OPTION,JOptionPane.PLAIN_MESSAGE,null,gameOverChoices,
                     null)==JOptionPane.YES_OPTION) {
-                resetGame();
+                exitGame();
             }
             else {
-                exitGame();
+                resetGame();
             }
         }
     }
@@ -834,13 +843,15 @@ public class OregonTrailGUI {
         //allCharacters = new ArrayList<>(List.of(hattie,charles,augusta,ben,jake));
         money = 200; food = 0; ammunition = 0; medicine = 0; clothes = 0; wagonTools = 0; splints = 0; oxen = 0;
         isGameWon = false; isGameLost = false;
-        happiness=75;
+        happiness = 75;
         weather = new Weather();
         wagon = new Wagon();
         date = new Date();
         date.setDate(3,18,1861);
         isTraveling = false;
         //TODO: GO BACK TO MAIN MENU HERE
+
+
     }
 
     public String currPaceToString() {

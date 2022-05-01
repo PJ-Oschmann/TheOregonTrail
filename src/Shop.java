@@ -80,9 +80,7 @@ public class Shop extends JDialog {
         // call onCancel() on ESCAPE
         shopPane.registerKeyboardAction(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (enoughOxen()) {
-                    onCancel();
-                }
+                onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
@@ -99,7 +97,7 @@ public class Shop extends JDialog {
 
     //Main Shop Menu
     private void displayMenu() {
-        shopInfo.setText(
+        shopInfo.setText(String.format(
             """
             WELCOME TO THE SHOP!
             
@@ -109,6 +107,8 @@ public class Shop extends JDialog {
             corresponding with the item you would like to view more
             information on:
             
+            YOU CURRENTLY HAVE $%d.
+            
             F: FOOD (5 units)
             A: AMMUNITION
             M: MEDICINE
@@ -117,13 +117,14 @@ public class Shop extends JDialog {
             S: SPLINTS
             O: OXEN
             
-            YOU WILL NEED A MINIMUM OF 4 OXEN TO BEGIN YOUR JOURNEY.
+            You will begin the journey with 4 oxen, however, it is recommended
+            you purchase more.
             
             R: RETURN TO THIS MENU
             
             Press ESC to exit the SHOP once you are finished shopping.
-            """
-        );
+            """, money
+        ));
     }
 
     private void displayFood(int food) {
@@ -143,11 +144,12 @@ public class Shop extends JDialog {
                 SELLING 1 bundle of 5 units of FOOD pays $%d.
                 
                 You currently have %d units of FOOD in your inventory.
+                You have $%d.
                 
                 Enter "B" to buy FOOD.
                 Enter "S" to sell FOOD.
                 Enter "R" to return to the SHOP MENU.
-                """, foodBuyPrice, foodSellPrice, food
+                """, foodBuyPrice, foodSellPrice, food, game.getMoney()
         ));
     }
 
@@ -168,11 +170,12 @@ public class Shop extends JDialog {
                 SELLING 1 box of AMMUNITION pays $%d.
                 
                 You have %d boxes of AMMUNITION in your INVENTORY.
+                You have $%d.
                 
                 Enter "B" to buy AMMUNITION.
                 Enter "S" to sell AMMUNITION.
                 Enter "R" to return to the SHOP MENU.
-                """, ammoBuyPrice, ammoSellPrice, ammunition
+                """, ammoBuyPrice, ammoSellPrice, ammunition, game.getMoney()
         ));
     }
 
@@ -196,11 +199,12 @@ public class Shop extends JDialog {
                 SELLING 1 unit of MEDICINE pays $%d.
                 
                 You have %d units if MEDICINE in your INVENTORY.
+                You have $%d.
                 
                 Enter "B" to buy MEDICINE.
                 Enter "S" to sell MEDICINE.
                 Enter "R" to return to the SHOP MENU.
-                """, medBuyPrice, medSellPrice, meds
+                """, medBuyPrice, medSellPrice, meds, game.getMoney()
         ));
     }
 
@@ -224,11 +228,12 @@ public class Shop extends JDialog {
                 SELLING 1 set of CLOTHES pays $%d.
                 
                 You have %d sets of CLOTHES in your INVENTORY.
+                You have $%d.
                 
                 Enter "B" to buy CLOTHES.
                 Enter "S" to sell CLOTHES.
                 Enter "R" to return to the SHOP MENU.
-                """, clothesBuyPrice, clothesSellPrice, clothes
+                """, clothesBuyPrice, clothesSellPrice, clothes, game.getMoney()
         ));
     }
 
@@ -255,11 +260,12 @@ public class Shop extends JDialog {
                 SELLING 1 set of WAGON TOOLS pays $%d.
                 
                 You have %d sets of WAGON TOOLS in your INVENTORY.
+                You have $%d.
                 
                 Enter "B" to buy WAGON TOOLS.
                 Enter "S" to sell WAGON TOOLS.
                 Enter "R" to return to the SHOP MENU.
-                """, toolsBuyPrice, toolsSellPrice, wagonTools
+                """, toolsBuyPrice, toolsSellPrice, wagonTools, game.getMoney()
         ));
     }
 
@@ -285,11 +291,12 @@ public class Shop extends JDialog {
                 SELLING 1 SPLINT pays $%d.
                 
                 You have %d SPLINTS in your INVENTORY.
+                You have $%d.
                 
                 Enter "B" to buy SPLINTS.
                 Enter "S" to sell SPLINTS.
                 Enter "R" to return to the SHOP MENU.
-                """, splintBuyPrice, splintSellPrice, splints
+                """, splintBuyPrice, splintSellPrice, splints, game.getMoney()
         ));
     }
 
@@ -314,11 +321,12 @@ public class Shop extends JDialog {
                 SELLING 1 OXEN pays $%d.
                 
                 You have %d OXEN in your INVENTORY.
+                You have $%d.
                 
                 Enter "B" to buy OXEN.
                 Enter "S" to sell OXEN.
                 Enter "R" to return to the OXEN.
-                """, oxenBuyPrice, oxenSellPrice, oxen
+                """, oxenBuyPrice, oxenSellPrice, oxen, game.getMoney()
         ));
     }
 
@@ -434,8 +442,8 @@ public class Shop extends JDialog {
                             String.format("""
                                     You have $%d available to spend. This item costs $%d.
                                     How many %s would you like to purchase?
-                                    (Enter 0 to cancel):""", game.getMoney(), itemCost, item)));
-                } while (quantity * itemCost > game.getMoney());
+                                    (Enter 0 to cancel):""", money, itemCost, item)));
+                } while (quantity * itemCost > money);
             }
             catch (InputMismatchException e) {
                 e.printStackTrace();
@@ -478,8 +486,9 @@ public class Shop extends JDialog {
             case 5 -> { itemName = "WAGON TOOLS"; wagonTools = checkBuy(itemName, wagonTools, toolsBuyPrice); } //wagonTools
             case 6 -> { itemName = "SPLINTS"; splints = checkBuy(itemName, splints, splintBuyPrice); } //splints
             case 7 -> { itemName = "OXEN"; oxen = checkBuy(itemName, oxen, oxenBuyPrice); } //oxen
-            default -> {staticMethods.notValidInput();}
+            default -> { staticMethods.notValidInput(); }
         }
+        game.setMoney(money);
     }
 
     private void sellItem() {
@@ -493,8 +502,9 @@ public class Shop extends JDialog {
             case 5 -> { itemName = "WAGON TOOLS"; wagonTools = checkSell(itemName, wagonTools); } //wagonTools
             case 6 -> { itemName = "SPLINTS"; splints = checkSell(itemName, splints); } //splints
             case 7 -> { itemName = "OXEN"; oxen = checkSell(itemName, oxen); } //oxen
-            default -> {staticMethods.notValidInput();}
+            default -> { staticMethods.notValidInput(); }
         }
+        game.setMoney(money);
     }
 
     private int checkBuy(String itemName, int item, int itemCost) {
@@ -600,14 +610,5 @@ public class Shop extends JDialog {
     private void transactionCancelled() {
         JOptionPane.showMessageDialog(null, "The transaction was cancelled.","CANCELLED",
                 JOptionPane.PLAIN_MESSAGE);
-    }
-
-    private boolean enoughOxen(){
-        if (game.getOxen() < 4) {
-            JOptionPane.showMessageDialog(null, "You don't have enough Oxen to begin your journey." +
-                    "Please purchase at least 4 oxen before leaving the shop!", "CAUTION", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-        return true;
     }
 }
