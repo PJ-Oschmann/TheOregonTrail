@@ -274,6 +274,7 @@ public class OregonTrailGUI {
      */
     public void travel() {
         dailyHealthBoost(5);
+        staticMethods.incrementNFC();
         sickCharacters = countSickCharacters();
         weatherAffectPlayer();
         impactHappiness();
@@ -442,6 +443,65 @@ public class OregonTrailGUI {
         }
     }
 
+    private void oxenInjured() {
+        boolean injuredOxen = false;
+        boolean lessThanFour = false;
+        Random rand = new Random();
+        int rng = rand.nextInt(100);
+
+        if (oxen > 3) {
+            if (rng < 5) {
+                injuredOxen = true;
+            }
+        }
+        else {
+            lessThanFour = true;
+            if (rng < 15) {
+                injuredOxen = true;
+            }
+        }
+        String injuredOxenName = ReadText.generateOxenName();
+        String[] consumeOxenChoices = {String.format("Harvest %s", injuredOxenName), String.format("Leave %s be", injuredOxenName)};
+        int consumeOxen = travelingOxenInjured(injuredOxenName, consumeOxenChoices);
+        if (injuredOxen && lessThanFour) {
+            oxen -= 1;
+            if (consumeOxen == 0) {
+                consumeInjuredOxen(injuredOxenName);
+            }
+            else {
+                leaveOxenBe(injuredOxenName);
+            }
+            JOptionPane.showMessageDialog(null, "Your oxen's chance of injury when traveling is " +
+                    "significantly higher if you have less than 4 oxen to pull the wagon. Please buy more oxen" +
+                    "before we call PETA for animal abuse.", "OXEN DEFICIENCY", JOptionPane.ERROR_MESSAGE);
+        }
+        else if (injuredOxen) {
+            oxen -= 1;
+
+        }
+    }
+
+    private int travelingOxenInjured(String oxenName, String[] choices) {
+        return JOptionPane.showOptionDialog(null,String.format("%s the oxen was injured while" +
+                        "you were traveling today. You put %s out of their misery. You can choose to leave " +
+                        "%s on the side of the road, or harvest their corpse for 10 units of food.",
+                oxenName, oxenName, oxenName),"INJURED OXEN", JOptionPane.YES_NO_OPTION,JOptionPane.PLAIN_MESSAGE,
+                null, choices, null);
+    }
+
+    private void consumeInjuredOxen(String oxenName) {
+        JOptionPane.showMessageDialog(null, String.format("You chose to make the most out of %s's" +
+                        "time here with us. You gain 10 units of food.\nRest in piece(s of food) %s.", oxenName, oxenName),
+                String.format("RIP %s the oxen", oxenName), JOptionPane.PLAIN_MESSAGE);
+        food += 10;
+    }
+
+    private void leaveOxenBe(String oxenName) {
+        JOptionPane.showMessageDialog(null, String.format("You chose to leave %s's corpse alone" +
+                        "and let nature take its course.\nRest in peace %s.", oxenName, oxenName),
+                String.format("RIP %s the oxen", oxenName), JOptionPane.PLAIN_MESSAGE);
+    }
+
     /**
      * Check if the game is lost. The game is lost if:
      * - there are no healthy oxen
@@ -449,15 +509,13 @@ public class OregonTrailGUI {
      * - the party's happiness equals 0
      * - everyone dies
      * - no one has food available for 3 consecutive days.
-     * @return false if the game is not lost, true if the game is lost
      */
-
-    private boolean checkIfLost() {
+    private void checkIfLost() {
         boolean isLost = false;
         String message = "";
 
         //Lack of food for 3 days
-        if (daysNoFood >= 3) {
+        if (staticMethods.getNFC() >= 3) {
             isLost = true;
             message = "Your party has starved to death from a lack of food.";
         }
@@ -495,7 +553,7 @@ public class OregonTrailGUI {
             isLost = true;
         }
 
-        String[] gameOverChoices = {"Play again","Main Menu"};
+        String[] gameOverChoices = {"Exit Game","Main Menu"};
         if (isLost) {
             if (JOptionPane.showOptionDialog(null,message,"Game Over",
                     JOptionPane.YES_NO_OPTION,JOptionPane.PLAIN_MESSAGE,null,gameOverChoices,
@@ -503,12 +561,9 @@ public class OregonTrailGUI {
                 resetGame();
             }
             else {
-                JOptionPane.showMessageDialog(null,"FIXME: Main Menu not implemented.");
+                exitGame();
             }
         }
-        //if (isLost){JOptionPane.showMessageDialog(null,message,"Game Over",JOptionPane.PLAIN_MESSAGE);}
-        return isLost;
-
     }
 
     /**
@@ -777,17 +832,15 @@ public class OregonTrailGUI {
         jake = new Character("Jake",100,0, false);
         characterArrayList = new ArrayList<>(List.of(hattie,charles,augusta,ben,jake));
         //allCharacters = new ArrayList<>(List.of(hattie,charles,augusta,ben,jake));
-        food = 0; ammunition = 0; medicine = 0; clothes = 0; wagonTools = 0; splints = 0; oxen = 0;
+        money = 200; food = 0; ammunition = 0; medicine = 0; clothes = 0; wagonTools = 0; splints = 0; oxen = 0;
         isGameWon = false; isGameLost = false;
-        happiness=100;
+        happiness=75;
         weather = new Weather();
         wagon = new Wagon();
         date = new Date();
         date.setDate(3,18,1861);
         isTraveling = false;
-        introScene();
-        writeGameInfo();
-
+        //TODO: GO BACK TO MAIN MENU HERE
     }
 
     public String currPaceToString() {

@@ -375,7 +375,7 @@ public class Inventory extends JDialog {
             if(happiness >= 7) { happinessLost = 7; happiness -= 7; }
             else { happinessLost = happiness; happiness = 0; }
 
-            String oxenName = generateOxenName();
+            String oxenName = ReadText.generateOxenName();
             invInfo.setText(String.format(
                     """
                     You have chosen to CONSUME one OXEN. You have gained 10 FOOD.
@@ -423,13 +423,8 @@ public class Inventory extends JDialog {
     private void openParty(String item) {
         Party party = new Party(game, item);
         party.pack();
+        party.setTitle("USE ITEM ON . . .");
         party.setVisible(true);
     }
 
-    private String generateOxenName() {
-        ArrayList<String> oxenNames = ReadText.readIntoArrayList("src/assets/text/oxenNames.txt");
-        Random rand = new Random();
-        int nameIndex = rand.nextInt(oxenNames.size());
-        return oxenNames.get(nameIndex);
-    }
 }

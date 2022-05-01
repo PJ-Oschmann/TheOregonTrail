@@ -29,6 +29,7 @@ public class Party extends JDialog {
         this.item = item;
         setGlobalVar();
         this.setTitle("PARTY");
+        initializePartyTextArea(item);
         this.setMinimumSize(new Dimension(1000,300));
 
         //this.setUndecorated(true);
@@ -43,7 +44,6 @@ public class Party extends JDialog {
                     game.writeGameInfo();
                     userInput.setText("");
                 }
-
             }
         });
         updateStats(money, happiness);
@@ -61,12 +61,27 @@ public class Party extends JDialog {
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
+    private void initializePartyTextArea(String itemName) {
+        partyTextArea.setText(String.format(
+                """
+                Please select the character you would like to use %s on using the input text area below:
+                
+                H: Hattie
+                C: Charles
+                A: Augusta
+                B: Ben
+                J: Jake
+                
+                Press ESC at anytime to exit this menu.
+                """, itemName));
+    }
+
     /**
      * Selects a character to use for the desired action.
      * @param character - The character being selected
      * @return A string of the character selected. If the selection was invalid, "INVALID" is returned.
      */
-    public boolean selectCharacter(String character) {
+    private boolean selectCharacter(String character) {
         int charIndex;
         if (character.equalsIgnoreCase("H")) {
             charIndex = 0;
@@ -118,7 +133,6 @@ public class Party extends JDialog {
                 newText = newText.replace("$Healthiness",characterArrayList.get(characterIndex).isSickToString());
                 newText = newText.replace("$Injured",characterArrayList.get(characterIndex).isInjuredToString());
                 stats.setText(newText);
-
             }
             characterIndex++;
         }
@@ -156,12 +170,6 @@ public class Party extends JDialog {
             userInput.setText("");
             userInput.setForeground(Color.BLACK);
         }
-        /*
-        else {
-
-        }
-
-         */
 
         @Override
         public void focusLost(FocusEvent e) {
@@ -196,35 +204,44 @@ public class Party extends JDialog {
     }
     private void eatFood() {
         selectedCharacter.setHunger(calculateHunger(selectedCharacter,2));
+        staticMethods.resetNFC();
     }
 
     private void takeMeds() {
         if(selectedCharacter.isSick()) {
-            JOptionPane.showMessageDialog(null,selectedCharacter.getName()+" is not sick. Please pick another character.",selectedCharacter.getName()+"'s Lack of Illness",JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(null,selectedCharacter.getName()+" is not sick. " +
+                    "Please pick another character.",selectedCharacter.getName()+"'s Lack of Illness",
+                    JOptionPane.PLAIN_MESSAGE);
         }
         else {
             selectedCharacter.setSick(false);
-            JOptionPane.showMessageDialog(null,selectedCharacter.getName()+" has been cured!",selectedCharacter.getName()+"'s Illness",JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(null,selectedCharacter.getName()+" has been cured!",
+                    selectedCharacter.getName()+"'s Illness",JOptionPane.PLAIN_MESSAGE);
         }
     }
 
     private void equipClothes() {
         if (selectedCharacter.getHasClothing()) {
-            JOptionPane.showMessageDialog(null,selectedCharacter.getName()+" already has protective clothing.",selectedCharacter.getName()+"'s Clothing",JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(null,selectedCharacter.getName()+" already has " +
+                    "protective clothing.",selectedCharacter.getName()+"'s Clothing",JOptionPane.PLAIN_MESSAGE);
         }
         else {
             selectedCharacter.setHasClothing(true);
-            JOptionPane.showMessageDialog(null,selectedCharacter.getName()+" now has protective clothing.",selectedCharacter.getName()+"'s Clothing",JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(null,selectedCharacter.getName()+" now has protective " +
+                    "clothing.",selectedCharacter.getName()+"'s Clothing",JOptionPane.PLAIN_MESSAGE);
         }
     }
 
     private void useSplints() {
         if (!selectedCharacter.isInjured()) {
-            JOptionPane.showMessageDialog(null,selectedCharacter.getName()+" is not injured. Please select another character.",selectedCharacter.getName()+"'s Lack of Injury",JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(null,selectedCharacter.getName()+" is not injured. " +
+                    "Please select another character.",selectedCharacter.getName()+"'s Lack of Injury",
+                    JOptionPane.PLAIN_MESSAGE);
         }
         else {
             selectedCharacter.setInjured(false);
-            JOptionPane.showMessageDialog(null,selectedCharacter.getName()+" now has protective clothing.",selectedCharacter.getName()+"'s Clothing",JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(null,selectedCharacter.getName()+" now has " +
+                    "protective clothing.",selectedCharacter.getName()+"'s Clothing",JOptionPane.PLAIN_MESSAGE);
         }
 
     }

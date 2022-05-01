@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 import java.io.*;
 
@@ -41,5 +42,12 @@ public class ReadText {
             e.printStackTrace();
         }
         return arrayList;
+    }
+
+    public static String generateOxenName() {
+        ArrayList<String> oxenNames = ReadText.readIntoArrayList("src/assets/text/oxenNames.txt");
+        Random rand = new Random();
+        int nameIndex = rand.nextInt(oxenNames.size());
+        return oxenNames.get(nameIndex);
     }
 }

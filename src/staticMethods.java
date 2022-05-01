@@ -11,4 +11,12 @@ public class staticMethods {
     public static void resetNFC() {
         noFoodCounter = 0;
     }
+
+    public static void incrementNFC() {
+        noFoodCounter++;
+    }
+
+    public static int getNFC() {
+        return noFoodCounter;
+    }
 }
