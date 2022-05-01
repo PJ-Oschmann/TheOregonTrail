@@ -12,12 +12,16 @@ public class River {
 
     public boolean takeFerry() {
         if (game.getMoney()>=20) {
-            game.calculateMoney(-20);
+            game.setMoney(game.getMoney()-20);
+            return true;
         }
-        return true;
+        else {
+            //TODO: ENTER CODE FOR NOT ENOUGH MONEY
+            return false;
+        }
     }
 
-    public boolean wagonTools() {
+    public boolean buildRaft() {
         if (game.getWagonTools()>=2) {
             game.setWagonTools(game.getWagonTools()-2);
 
@@ -29,7 +33,7 @@ public class River {
             //15% for someone to get sick
             if (rand.nextInt(99)<=15) {
                 int characterIndex = rand.nextInt(4);
-                if (game.characterArrayList.get(characterIndex).isSick()==false) {
+                if (!game.characterArrayList.get(characterIndex).isSick()) {
                     game.characterArrayList.get(characterIndex).setSick(true);
                 }
             }

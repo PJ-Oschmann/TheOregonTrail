@@ -190,6 +190,7 @@ public class OregonTrailGUI {
         stopContTravel();
         scene.loadScene("intro");
         inGame = true;
+        updateStats();
         loadStatusPanels();
         openShop();
         activities = new Activities(this);
@@ -416,23 +417,6 @@ public class OregonTrailGUI {
         character.setHealth(newHealth);
     }
 
-    public void calculateMoney(int value) {
-        int newMoney;
-        if (value >=0) {
-            newMoney=money+value;
-        }
-        else {
-            if (money+value<0) {newMoney=0;}
-            else {
-                newMoney=money+value;
-            }
-        }
-        money = newMoney;
-    }
-
-
-
-
     public void dailyHealthBoost(int value) {
         for (Character character : characterArrayList) {
             calculateHealth(character, value);
@@ -449,6 +433,9 @@ public class OregonTrailGUI {
                 character.setHealth(character.getHealth() - 25);
                 if (rand.nextInt(4) == 0) {
                     character.setSick(true);
+                    JOptionPane.showMessageDialog(null, String.format("%s has gotten sick.\n" +
+                            "Use medicine to cure them!", character.getName()), "Someone got sick",
+                            JOptionPane.PLAIN_MESSAGE);
                 }
             }
         }
@@ -473,8 +460,8 @@ public class OregonTrailGUI {
         }
         String injuredOxenName = ReadText.generateOxenName();
         String[] consumeOxenChoices = {String.format("Harvest %s", injuredOxenName), String.format("Leave %s be", injuredOxenName)};
-        int consumeOxen = travelingOxenInjured(injuredOxenName, consumeOxenChoices);
         if (injuredOxen && lessThanFour) {
+            int consumeOxen = travelingOxenInjured(injuredOxenName, consumeOxenChoices);
             oxen -= 1;
             if (consumeOxen == 0) {
                 consumeInjuredOxen(injuredOxenName);
@@ -485,6 +472,7 @@ public class OregonTrailGUI {
             callPETA();
         }
         else if (injuredOxen) {
+            int consumeOxen = travelingOxenInjured(injuredOxenName, consumeOxenChoices);
             oxen -= 1;
             if (consumeOxen == 0) {
                 consumeInjuredOxen(injuredOxenName);
@@ -617,29 +605,6 @@ public class OregonTrailGUI {
         }
     }
 
-    /**
-     * Check the Oxen ArrayList to see if all are injured.
-     * @return true if all oxen are injured, false if at least one is not.
-     */
-    /*
-    public boolean checkAllOxenInjured() {
-
-        boolean allInjured = true;
-        if (!oxenArrayList.isEmpty()) {
-            for (Oxen oxen : oxenArrayList) {
-                if (!oxen.isInjured()) {
-
-                    allInjured = false;
-                }
-            }
-        }
-        else {allInjured= false;}
-
-        return allInjured;
-    }
-
-     */
-
     private ActionListener menuListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -718,9 +683,7 @@ public class OregonTrailGUI {
     private static ActionListener returnMainMenuItem = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            //TODO: Reset image to main menu, character states to 0, location to 0, date to 0, money to 0, etc.
-            inGame = false;
-            inMenu = true;
+
         }
     };
 
@@ -860,7 +823,7 @@ public class OregonTrailGUI {
         date = new Date();
         date.setDate(3,18,1861);
         isTraveling = false;
-        //TODO: GO BACK TO MAIN MENU HERE
+
         userInput.addFocusListener(playHelp);
         if(inMenu) {
             ImageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/MainMenu.png"));
@@ -878,7 +841,6 @@ public class OregonTrailGUI {
         return pace;
     }
 
-    //TODO: IMPLEMENT THIS ON SETTING PACE IN MAIN
     public void setCurrentPace(int newPace) {
         this.currentPace = newPace;
     }
