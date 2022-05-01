@@ -330,11 +330,10 @@ public class Shop extends JDialog {
         ));
     }
 
-
     private void onCancel() {
         // add your code here if necessary
         if (JOptionPane.showConfirmDialog(null,"Are you sure you want to leave the shop?",
-                "Leave SHOP?",JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
+                "Leave SHOP?",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
             passBackVar();
             dispose();
         }
@@ -488,7 +487,6 @@ public class Shop extends JDialog {
             case 7 -> { itemName = "OXEN"; oxen = checkBuy(itemName, oxen, oxenBuyPrice); } //oxen
             default -> { staticMethods.notValidInput(); }
         }
-        game.setMoney(money);
     }
 
     private void sellItem() {
@@ -541,6 +539,7 @@ public class Shop extends JDialog {
                 }
             }
         }
+        game.setMoney(money);
         return item;
     }
 
@@ -566,6 +565,7 @@ public class Shop extends JDialog {
             game.setMoney(game.getMoney() + moneyEarned);
             sellDialogue(itemName, moneyEarned, quantity);
         }
+        game.setMoney(money);
         return item;
     }
 
