@@ -204,6 +204,7 @@ public class Party extends JDialog {
     }
     private void eatFood() {
         selectedCharacter.setHunger(calculateHunger(selectedCharacter,2));
+        promptTextPane.setText(selectedCharacter.getName() + " ate some food!");
         staticMethods.resetNFC();
     }
 
@@ -215,8 +216,7 @@ public class Party extends JDialog {
         }
         else {
             selectedCharacter.setSick(false);
-            JOptionPane.showMessageDialog(null,selectedCharacter.getName()+" has been cured!",
-                    selectedCharacter.getName()+"'s Illness",JOptionPane.PLAIN_MESSAGE);
+            promptTextPane.setText(selectedCharacter.getName()+" has been cured!");
         }
     }
 
@@ -227,8 +227,7 @@ public class Party extends JDialog {
         }
         else {
             selectedCharacter.setHasClothing(true);
-            JOptionPane.showMessageDialog(null,selectedCharacter.getName()+" now has protective " +
-                    "clothing.",selectedCharacter.getName()+"'s Clothing",JOptionPane.PLAIN_MESSAGE);
+            promptTextPane.setText(selectedCharacter.getName()+" now has protective " + "clothing.");
         }
     }
 
@@ -240,8 +239,8 @@ public class Party extends JDialog {
         }
         else {
             selectedCharacter.setInjured(false);
-            JOptionPane.showMessageDialog(null,selectedCharacter.getName()+" now has " +
-                    "protective clothing.",selectedCharacter.getName()+"'s Clothing",JOptionPane.PLAIN_MESSAGE);
+            promptTextPane.setText(selectedCharacter.getName()+" now has " +
+                    "protective clothing.");
         }
 
     }
