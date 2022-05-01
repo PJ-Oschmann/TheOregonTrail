@@ -78,7 +78,7 @@ public class OregonTrailGUI {
         setTheme();
 
         frame.pack();
-        addUIMenuBar(frame);
+        game.addUIMenuBar(frame);
         frame.setVisible(true);
     }
 
@@ -117,7 +117,7 @@ public class OregonTrailGUI {
     }
 
     //Menu Bar Method
-    public static void addUIMenuBar(JFrame frame){
+    public void addUIMenuBar(JFrame frame){
         JMenuBar menuBar = new JMenuBar();
         frame.setJMenuBar(menuBar);
 
@@ -680,10 +680,10 @@ public class OregonTrailGUI {
         return newPaceInt;
     }
 
-    private static ActionListener returnMainMenuItem = new ActionListener() {
+    private ActionListener returnMainMenuItem = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-
+            resetGame();
         }
     };
 
@@ -839,10 +839,6 @@ public class OregonTrailGUI {
         else if (currentPace==1) {pace="Strenuous";}
         else {pace="Grueling";}
         return pace;
-    }
-
-    public void setCurrentPace(int newPace) {
-        this.currentPace = newPace;
     }
 
     //IMPLEMENT ONE DAY GRACE PERIOD BEFORE DYING

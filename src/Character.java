@@ -28,31 +28,6 @@ public class Character {
     //Getters
 
     /**
-     * Get the current health of the player and return a string based on how much they have.
-     * Closer to 100 is better.
-     * @return the string value of currentHealth
-     */
-
-    public String healthToString() {
-        if (health <=100 && health >80) {
-            currentHealth = "good";
-        }
-        else if (health <= 80 && health >60) {
-            currentHealth = "fair";
-        }
-        else if (health <= 60 && health >40) {
-            currentHealth = "poor";
-        }
-        else if (health <=40 && health > 20) {
-            currentHealth = "very poor";
-        }
-        else if (health <= 20) {
-            currentHealth = "about to die";
-        }
-        return currentHealth;
-    }
-
-    /**
      * Player's health getter
      * @return the Player's health as an integer
      */
