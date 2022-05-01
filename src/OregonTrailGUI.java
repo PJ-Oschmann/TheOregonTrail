@@ -494,7 +494,7 @@ public class OregonTrailGUI {
     private void consumeInjuredOxen(String oxenName) {
         JOptionPane.showMessageDialog(null, String.format("You chose to make the most out of %s's" +
                         "time here with us. You gain 10 units of food.\nRest in piece(s of food) %s.", oxenName, oxenName),
-                String.format("RIP %s the oxen", oxenName), JOptionPane.PLAIN_MESSAGE);
+                String.format("RIP %s the oxen", oxenName), JOptionPane.INFORMATION_MESSAGE);
         food += 10;
     }
 
@@ -560,17 +560,12 @@ public class OregonTrailGUI {
             message = "Everyone literally died. Ghosts don't go to Oregon. You can't continue.";
             isLost = true;
         }
+        gameOver(isLost, message);
+    }
 
-        String[] gameOverChoices = {"Exit Game","Main Menu"};
-        if (isLost) {
-            if (JOptionPane.showOptionDialog(null,message,"GAME OVER",
-                    JOptionPane.YES_NO_OPTION,JOptionPane.PLAIN_MESSAGE,null,gameOverChoices,
-                    null)==JOptionPane.YES_OPTION) {
-                exitGame();
-            }
-            else {
-                resetGame();
-            }
+    private void gameOver(boolean lose, String msg) {
+        if (lose) {
+            JOptionPane.showMessageDialog(null, msg, "YOU LOSE", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
@@ -578,7 +573,7 @@ public class OregonTrailGUI {
      * Count the number of sick characters. For each sick character, 2 happiness is lost.
      * @return
      */
-    public int countSickCharacters() {
+    private int countSickCharacters() {
         int counter = 0;
         for (Character character : characterArrayList) {
            if(character.isSick()) {
@@ -596,7 +591,8 @@ public class OregonTrailGUI {
         for (Character character : characterArrayList) {
             if (character.getDaysSick()>=5) {
                 character.setSick(false);
-                JOptionPane.showMessageDialog(null, character.getName()+" has been cured!",character.getName()+"'s Illness",JOptionPane.PLAIN_MESSAGE);
+                JOptionPane.showMessageDialog(null, character.getName()+" has been cured!",
+                        character.getName()+"'s Illness",JOptionPane.INFORMATION_MESSAGE);
             }
             if (character.isSick()) {
                 character.setDaysSick(character.getDaysSick()+1);

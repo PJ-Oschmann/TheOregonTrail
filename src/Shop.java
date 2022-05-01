@@ -524,7 +524,7 @@ public class Shop extends JDialog {
             }
             int costOfPurchase = quantity * buyPrice;
             if (money < costOfPurchase) {
-                notEnoughMoney();
+                staticMethods.notEnoughMoney();
                 transactionCancelled();
             }
             else if (money > costOfPurchase) {
@@ -594,11 +594,6 @@ public class Shop extends JDialog {
                 String.format("Are you sure you want to buy %d units of %s for %d dollars?", amount, name, cost),
                 "ARE YOU SURE?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
         return confirmed;
-    }
-
-    private void notEnoughMoney() {
-        JOptionPane.showMessageDialog(null, "You don't have enough money to do this.",
-                "INVALID", JOptionPane.ERROR_MESSAGE);
     }
 
     private void notEnoughQuantity(String itemName) {

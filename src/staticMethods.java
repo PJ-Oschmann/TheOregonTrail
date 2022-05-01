@@ -19,4 +19,9 @@ public class staticMethods {
     public static int getNFC() {
         return noFoodCounter;
     }
+
+    public static void notEnoughMoney() {
+        JOptionPane.showMessageDialog(null, "You don't have enough money to do this.",
+                "INVALID", JOptionPane.ERROR_MESSAGE);
+    }
 }
