@@ -30,7 +30,7 @@ public class Party extends JDialog {
         setGlobalVar();
         this.setTitle("PARTY");
         initializePartyTextArea(item);
-        this.setMinimumSize(new Dimension(1000,300));
+        this.setMinimumSize(new Dimension(1000,1000));
 
         //this.setUndecorated(true);
         setContentPane(contentPane);

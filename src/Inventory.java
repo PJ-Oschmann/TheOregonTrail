@@ -20,6 +20,7 @@ public class Inventory extends JDialog {
     public Inventory(OregonTrailGUI game) {
         //instantiating private vars
         this.game = game;
+        this.setMinimumSize(new Dimension(1000,600));
         setGlobalVar();
 
         this.setTitle("INVENTORY");
