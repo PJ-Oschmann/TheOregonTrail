@@ -273,6 +273,7 @@ public class OregonTrailGUI {
      * The game info gets updated.
      */
     public void travel() {
+        dailyHealthBoost(5);
         sickCharacters = countSickCharacters();
         weatherAffectPlayer();
         impactHappiness();
@@ -382,6 +383,31 @@ public class OregonTrailGUI {
         happiness = calculateHappiness(-2*sickCharacters);
     }
 
+    public void calculateHealth(Character character, int value) {
+        int newHealth = 0;
+        if (value>=0) {
+            if (character.getHealth() + value > 100) {
+                newHealth = 100;
+            } else {
+                newHealth = character.getHealth() + value;
+            }
+        }
+        if (value<0) {
+            if (character.getHealth() + value < 0) {
+                newHealth=0;
+            }
+            else {
+                newHealth = character.getHealth() + value;
+            }
+        }
+        character.setHealth(newHealth);
+    }
+
+    public void dailyHealthBoost(int value) {
+        for (Character character : characterArrayList) {
+            calculateHealth(character, value);
+        }
+    }
     /**
      * If a given character is not wearing protective clothing, they will be harmed by
      * cold weather. Their health will decrease by 25 HP each day, and they have a 1/4

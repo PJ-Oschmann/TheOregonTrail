@@ -16,6 +16,7 @@ public class Activities {
     private OregonTrailGUI game;
     private int dailyActions;
     private int cloDACounter = 0;
+    private int journCounter = 0;
     private Random rand = new Random();
 
     public Activities(OregonTrailGUI game) {
@@ -103,7 +104,6 @@ public class Activities {
     }
 
     public void makeClothes() {
-        System.out.println("Activities.java: " + cloDACounter);
         if (checkDailyActions()) {
             if (cloDACounter <= 1) {
                 cloDACounter++;
@@ -113,6 +113,22 @@ public class Activities {
                 cloDACounter=0;
                 JOptionPane.showMessageDialog(null,"You made a fresh set of clothes. They have been added ot your inventory.","Clothes-making Activity",JOptionPane.PLAIN_MESSAGE);
                 clothes+=1;
+            }
+        }
+    }
+
+    public void writeJournal() {
+        if (checkDailyActions() && journCounter ==0) {
+            journCounter++;
+            JOptionPane.showMessageDialog(null,"You take out your journal and pen and begin to write","Writing Activity",JOptionPane.PLAIN_MESSAGE);
+            happiness = game.calculateHappiness(5);
+        }
+    }
+
+    public void sleep() {
+        if (checkDailyActions()) {
+            for (Character character : characterArrayList) {
+               game.calculateHealth(character,5);
             }
         }
     }
