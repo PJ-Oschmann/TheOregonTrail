@@ -372,10 +372,10 @@ public class Shop extends JDialog {
         public void actionPerformed(ActionEvent e) {
             String input = shopInput.getText().toUpperCase();
             switch (input) {
-                case "B" -> { buyItem(); displayMenu(); inMenu(); }
-                case "S" -> { sellItem(); displayMenu(); inMenu(); }
-                case "R" -> { displayMenu(); inMenu(); }
-                default -> { displayMenu(); notValidInput(); inMenu(); }
+                case "B" -> { buyItem(); shopComboBox.setSelectedIndex(0); inMenu(); }
+                case "S" -> { sellItem(); shopComboBox.setSelectedIndex(0); inMenu(); }
+                case "R" -> { shopComboBox.setSelectedIndex(0); inMenu(); }
+                default -> { notValidInput(); shopComboBox.setSelectedIndex(0); inMenu(); }
             }
             if (inMenu && !menuListenerActive) {
                 menuSelected();
@@ -588,18 +588,18 @@ public class Shop extends JDialog {
     }
 
     private void notEnoughMoney() {
-        JOptionPane.showMessageDialog(null, "You don't have enough money to do this.","",
-                JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(null, "You don't have enough money to do this.",
+                "INVALID", JOptionPane.ERROR_MESSAGE);
     }
 
     private void notEnoughQuantity(String itemName) {
         JOptionPane.showMessageDialog(null,
-                String.format("You don't have enough %s to make this transaction.", itemName), "",
+                String.format("You don't have enough %s to make this transaction.", itemName), "INVALID",
                 JOptionPane.ERROR_MESSAGE);
     }
 
     private void transactionCancelled() {
-        JOptionPane.showMessageDialog(null, "The transaction was cancelled.","",
+        JOptionPane.showMessageDialog(null, "The transaction was cancelled.","CANCELLED",
                 JOptionPane.PLAIN_MESSAGE);
     }
 }
