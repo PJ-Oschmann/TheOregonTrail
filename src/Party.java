@@ -192,7 +192,7 @@ public class Party extends JDialog {
         else if (item.equals("MEDICINE")) {takeMeds();}
         else if (item.equals("CLOTHES")) {equipClothes();}
         else if (item.equals("SPLINTS")) {useSplints();}
-        dispose();
+
     }
     private void eatFood() {
         selectedCharacter.setHunger(calculateHunger(selectedCharacter,2));

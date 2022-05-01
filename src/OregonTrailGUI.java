@@ -404,6 +404,23 @@ public class OregonTrailGUI {
         character.setHealth(newHealth);
     }
 
+    public void calculateMoney(int value) {
+        int newMoney;
+        if (value >=0) {
+            newMoney=money+value;
+        }
+        else {
+            if (money+value<0) {newMoney=0;}
+            else {
+                newMoney=money+value;
+            }
+        }
+        money = newMoney;
+    }
+
+
+
+
     public void dailyHealthBoost(int value) {
         for (Character character : characterArrayList) {
             calculateHealth(character, value);
