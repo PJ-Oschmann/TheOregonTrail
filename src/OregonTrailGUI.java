@@ -488,7 +488,7 @@ public class OregonTrailGUI {
     }
 
     private int travelingOxenInjured(String oxenName, String[] choices) {
-        return JOptionPane.showOptionDialog(null,String.format("%s the oxen was injured while" +
+        return JOptionPane.showOptionDialog(null,String.format("%s the oxen was injured while " +
                         "you were traveling today. You put %s out of their misery. You can choose to leave " +
                         "%s on the side of the road, or harvest their corpse for 10 units of food.",
                 oxenName, oxenName, oxenName),"INJURED OXEN", JOptionPane.YES_NO_OPTION,JOptionPane.PLAIN_MESSAGE,
