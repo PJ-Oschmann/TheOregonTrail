@@ -930,5 +930,13 @@ public class OregonTrailGUI {
     public void setDailyActions(int dailyActions) {
         this.dailyActions = dailyActions;
     }
+
+    public Wagon getWagon() {
+        return wagon;
+    }
+
+    public void setWagon(Wagon wagon) {
+        this.wagon = wagon;
+    }
 }
 
