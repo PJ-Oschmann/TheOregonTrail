@@ -57,6 +57,7 @@ public class OregonTrailGUI {
     private boolean isTraveling = false;
     private static boolean inMenu = true;
     private static boolean inGame = false;
+    private RandomEventGUI reg = new RandomEventGUI();
     private Timer travelClock = new Timer(5000, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -280,7 +281,7 @@ public class OregonTrailGUI {
      */
     public void travel() {
         location.addMileage();
-        openRandomEvent();
+        reg.checkForRandomEvent();
         dailyHealthBoost(5);
         staticMethods.incrementNFC();
         sickCharacters = countSickCharacters();
@@ -658,7 +659,7 @@ public class OregonTrailGUI {
                 case "P" ->  { currentPace = setPace(); writeGameInfo(); }
                 case "T" ->  travel();
                 case "A" -> activities.displayActivitiesMenu();
-                case "/TEST" -> openRandomEvent();
+                case "/TEST" -> reg.checkForRandomEvent();
                 default -> staticMethods.notValidInput();
             }
         }
@@ -668,17 +669,6 @@ public class OregonTrailGUI {
         Inventory inv = new Inventory(this);
         inv.pack();
         inv.setVisible(true);
-    }
-
-    private void openRandomEvent() {
-        if (rand.nextInt(9)==0) {
-            RandomEventGUI reg = new RandomEventGUI();
-            reg.doEvent();
-            reg.pack();
-            reg.setVisible(true);
-            updateStats();
-        }
-
     }
 
     private void openShop() {

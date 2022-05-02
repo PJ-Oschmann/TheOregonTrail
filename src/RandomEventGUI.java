@@ -35,10 +35,6 @@ public class RandomEventGUI extends JDialog {
     private ArrayList<Character> characterArrayList;
 
     public RandomEventGUI() {
-        setGlobalVar();
-        setContentPane(contentPane);
-        setModal(true);
-
         // call onCancel() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
@@ -53,6 +49,21 @@ public class RandomEventGUI extends JDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    }
+
+    public void checkForRandomEvent() {
+        int n = game.rand.nextInt(9);
+        if (n == 0) {
+            setGlobalVar();
+            setContentPane(contentPane);
+            setModal(true);
+            this.pack();
+            this.setVisible(true);
+
+            String event = "encounterTraveler";
+            this.setTitle(event.toUpperCase());
+            doEvent(event);
+        }
     }
 
     private void setGlobalVar() {
@@ -242,7 +253,7 @@ public class RandomEventGUI extends JDialog {
             }
             catch (Exception oops) {
                 JOptionPane.showMessageDialog(null,"Sorry, you couldn't be understood. Please try " +
-                        "again, using the correct format.","Woops",JOptionPane.ERROR_MESSAGE);
+                        "again, using the correct format.","Whoops",JOptionPane.ERROR_MESSAGE);
                 System.out.println("RandomEventGUI.java: Something went wrong. Let's take a peek at the error: " + oops);
             }
         }
@@ -379,70 +390,83 @@ public class RandomEventGUI extends JDialog {
         game.setHappiness(game.calculateHappiness(10));
     }
 
-    public void doEvent() {
-
-        String event = eventName();
+    public void doEvent(String event) {
         ArrayList<Character> characterArrayList = game.getCharacterArrayList();
         int characterIndex = game.rand.nextInt(4);
 
         //Good events
-        if (event.equals("encounterTraveler")) {
-            inputField.addActionListener(encounterAL);
-            encounterTraveler();
-        }
-        else if (event.equals("smallStream")) {
-            inputField.addActionListener(streamAL);
-            promptPane.setText("You found a small stream! Press S to swim, F to fish.");
-        }
-        else if (event.equals("wagonFound")) { //TODO: FIX THIS @@KEN@@
-            int newItem = game.rand.nextInt(5);
-            int amount = game.rand.nextInt(3)+1;
-            String newItemName = "";
-            if (newItem==0){newItemName="Clothes";}
-            else if (newItem==1){newItemName="Ammunition";}
-            else if (newItem==2){newItemName="Medicine";}
-            else if (newItem==3){newItemName="Splints";}
-            else if (newItem==4){newItemName="Wagon Tools";}
-            promptPane.setText("You found " + amount + " " + newItemName + "! Press 'C' to continue");
-            game.calculateHappiness(5);
-            inputField.addActionListener(closeAL);
-
-        }
-
-        //Bad events
-        else if (event.equals("injury")) {
-            if (!characterArrayList.get(characterIndex).isInjured()) {
-                characterArrayList.get(characterIndex).setInjured(true);
-                promptPane.setText(characterArrayList.get(characterIndex).getName() + " got injured. Press 'C' to continue.");
+        switch (event) {
+            case "encounterTraveler":
+                inputField.addActionListener(encounterAL);
+                encounterTraveler();
+                break;
+            case "smallStream":
+                inputField.addActionListener(streamAL);
+                promptPane.setText("""
+                You found a small stream!
+                
+                S: SWIM (Happiness++)
+                F: FISHING (Food++)
+                """);
+                break;
+            case "wagonFound":  //TODO: FIX THIS @@KEN@@
+                int newItem = game.rand.nextInt(5);
+                int amount = game.rand.nextInt(3) + 1;
+                String newItemName = "";
+                if (newItem == 0) {
+                    newItemName = "Clothes";
+                } else if (newItem == 1) {
+                    newItemName = "Ammunition";
+                } else if (newItem == 2) {
+                    newItemName = "Medicine";
+                } else if (newItem == 3) {
+                    newItemName = "Splints";
+                } else {
+                    newItemName = "Wagon Tools";
+                }
+                promptPane.setText("You found " + amount + " " + newItemName + "! Press 'C' to continue");
+                game.calculateHappiness(5);
                 inputField.addActionListener(closeAL);
-            }
-            else {
-                characterArrayList.get(characterIndex).setInjured(true);
-                promptPane.setText(characterArrayList.get(characterIndex).getName() + " got injured again. Press 'C' to continue.");
-                inputField.addActionListener(closeAL);
-            }
-        }
-        else if (event.equals("wagonDamage")) {
-            game.calculateHappiness(-5);
-            game.getWagon().setState(1);
-            promptPane.setText("As you traveled your wagon hit a rock and became damaged. Everyone is saddened. Press " +
-                    "'C' to continue.");
-            inputField.addActionListener(closeAL);
-        }
-        else if (event.equals("foodSpoiled")) {
-            double spoiledFoodDb = game.getFood() * .2;
-            int spoiledFood = (int)spoiledFoodDb;
-            game.calculateFood(-spoiledFood);
-            promptPane.setText("Some of your food spoiled. You lost " + spoiledFood + " food. Press 'C' to continue.");
-            inputField.addActionListener(closeAL);
-        }
-        else if (event.equals("illness")) {
-            if (!characterArrayList.get(characterIndex).isSick()) {
-                promptPane.setText(characterArrayList.get(characterIndex).getName() + " has fallen sick! Press 'C' to continue.");
-                characterArrayList.get(characterIndex).setSick(true);
-                inputField.addActionListener(closeAL);
-            }
 
+                break;
+
+            //Bad events
+            case "injury":
+                if (!characterArrayList.get(characterIndex).isInjured()) {
+                    characterArrayList.get(characterIndex).setInjured(true);
+                    promptPane.setText(characterArrayList.get(characterIndex).getName() + " got injured. Press 'C' to continue.");
+                    inputField.addActionListener(closeAL);
+                } else {
+                    characterArrayList.get(characterIndex).setInjured(true);
+                    promptPane.setText(characterArrayList.get(characterIndex).getName() + " got injured again. Press 'C' to continue.");
+                    inputField.addActionListener(closeAL);
+                }
+                break;
+            case "wagonDamage":
+                game.calculateHappiness(-5);
+                game.wagon.setState(game.wagon.getState() - 1);
+                if (game.wagon.getState() == 0) {
+                    game.checkIfLost();
+                }
+                promptPane.setText("As you traveled your wagon hit a rock and became damaged. Everyone is saddened. Press " +
+                        "'C' to continue.");
+                inputField.addActionListener(closeAL);
+                break;
+            case "foodSpoiled":
+                double spoiledFoodDb = game.getFood() * .2;
+                int spoiledFood = (int) spoiledFoodDb;
+                game.calculateFood(-spoiledFood);
+                promptPane.setText("Some of your food spoiled. You lost " + spoiledFood + " food. Press 'C' to continue.");
+                inputField.addActionListener(closeAL);
+                break;
+            case "illness":
+                if (!characterArrayList.get(characterIndex).isSick()) {
+                    promptPane.setText(characterArrayList.get(characterIndex).getName() + " has fallen sick! Press 'C' to continue.");
+                    characterArrayList.get(characterIndex).setSick(true);
+                    inputField.addActionListener(closeAL);
+                }
+
+                break;
         }
     }
 }

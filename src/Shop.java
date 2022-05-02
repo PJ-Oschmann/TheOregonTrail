@@ -406,7 +406,10 @@ public class Shop extends JDialog {
             }
             if (inMenu && !menuListenerActive) {
                 menuSelected();
-            } else {
+            } else if (inItem & !itemListenerActive) {
+                itemSelected();
+            }
+            else if (menuListenerActive && itemListenerActive || !menuListenerActive && !itemListenerActive) {
                 throw new IllegalArgumentException("Shop didn't function correctly in shopItemListener.");
             }
             shopInput.setText("");
