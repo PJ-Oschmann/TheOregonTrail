@@ -449,7 +449,7 @@ public class RandomEventGUI extends JDialog {
                 break;
             case "wagonDamage":
                 game.calculateHappiness(-5);
-                game.wagon.setState(game.wagon.getState() - 1);
+                game.wagon.setState(game.wagon.getState() + 1);
                 if (game.wagon.getState() == 0) {
                     game.checkIfLost();
                 }
