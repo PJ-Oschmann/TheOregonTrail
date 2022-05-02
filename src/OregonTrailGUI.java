@@ -22,7 +22,7 @@ public class OregonTrailGUI {
     private JPanel HattiePanel;
     public JTextArea storyTextArea;
     private JPanel JakePanel;
-    private JTextField userInput;
+    public JTextField userInput;
     private JLabel mainInputLabel;
     private JTextPane hattieStats;
     private JTextPane charlesStats;
@@ -281,6 +281,7 @@ public class OregonTrailGUI {
         dailyHealthBoost(5);
         staticMethods.incrementNFC();
         sickCharacters = countSickCharacters();
+        dailyActions = 2;
         weatherAffectPlayer();
         impactHappiness();
         date.advanceDate();
@@ -292,6 +293,10 @@ public class OregonTrailGUI {
         oxenInjured();
         doStoryLine();
         //anything else that changes on the day.
+    }
+
+    public int getCurrentPace() {
+        return currentPace;
     }
 
     //Check for scenarios to continue the story line.
@@ -334,6 +339,8 @@ public class OregonTrailGUI {
                 Pace: $pace
                 Rations: $rations
                 Daily Actions Available: $daily actions
+                
+                Enter "H" to see available input options.
                 """;
         gameInfo = gameInfo.replace("$location","LOCATION FIXME");
         gameInfo = gameInfo.replace("$date",date.toString());
@@ -594,7 +601,7 @@ public class OregonTrailGUI {
         }
     }
 
-    private ActionListener menuListener = new ActionListener() {
+    public ActionListener menuListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (userInput.getText().equalsIgnoreCase("E")) {
@@ -632,7 +639,7 @@ public class OregonTrailGUI {
                 case "H" ->  displayHelpMenu();
                 case "P" ->  { currentPace = setPace(); writeGameInfo(); }
                 case "T" ->  travel();
-                case "A" -> activities.activitiesMenu();
+                case "A" -> activities.displayActivitiesMenu();
                 case "/TEST" -> openRandomEvent();
                 default -> staticMethods.notValidInput();
             }

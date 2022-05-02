@@ -1,4 +1,6 @@
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -16,7 +18,7 @@ public class Activities {
     private OregonTrailGUI game;
     private int dailyActions;
     private int cloDACounter = 0;
-    private int journCounter = 0;
+    public int journCounter = 0;
     private Random rand = new Random();
 
     public Activities(OregonTrailGUI game) {
@@ -38,6 +40,19 @@ public class Activities {
         this.dailyActions = game.getDailyActions();
     }
 
+    private void passBackVar() {
+        game.setFood(this.food);
+        game.setAmmunition(this.ammunition);
+        game.setMedicine(this.medicine);
+        game.setClothes(this.clothes);
+        game.setWagonTools(this.wagonTools);
+        game.setSplints(this.splints);
+        game.setOxen(this.oxen);
+        game.setMoney(this.money);
+        game.setCharacterArrayList(this.game.getCharacterArrayList());
+        game.setHappiness(this.happiness);
+    }
+
     private boolean checkDailyActions() {
         boolean doAction = false;
         if (dailyActions>0) {
@@ -47,14 +62,58 @@ public class Activities {
         return doAction;
     }
 
-    public void activitiesMenu() {
+    public void displayActivitiesMenu() {
         game.storyTextArea.setText(String.format(
             """
+            DAILY ACTIVITIES SELECTION (COSTS)
+            You have %d daily actions remaining.
             
-            H: HUNTING
-                        
-            """
+            H: Hunting (ONE ACTION, ONE AMMO BOX)
+            F: Foraging (TWO ACTIONS)
+            C: Sowing a set of clothes (ONE ACTION)
+            W: Repairing the wagon (ONE ACTION, ONE WAGON TOOL)
+            J: Write in your Journal (ONE ACTION, LIMIT ONCE A DAY)
+            S: Sleep (ONE ACTION)
+            
+            A: ADDITIONAL INFORMATION ON THE DAILY ACTIVITIES
+            
+            Enter R to return to the previous menu.
+            """, game.getDailyActions()
         ));
+        game.userInput.removeActionListener(game.menuListener);
+        game.userInput.addActionListener(activityMenuListener);
+    }
+
+    private ActionListener activityMenuListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String input = game.userInput.getText().toUpperCase();
+            switch (input) {
+                case "H" -> { hunt(); } //hunting
+                case "F" -> { forage(); } //foraging
+                case "C" -> { makeClothes(); } //clothes
+                case "W" -> { } //wagon repairs
+                case "J" -> { writeJournal(); } //journaling
+                case "S" -> { sleep(); } //sleep
+                case "A" -> { displayAdditionalInfo(); } //get additional info
+                case "R" -> returnToGameMenu();
+                default -> { staticMethods.notValidInput(); }
+            }
+        }
+    };
+
+    public void returnToGameMenu() {
+        game.updateStats();
+        game.writeGameInfo();
+        passBackVar();
+    }
+
+    private void displayAdditionalInfo(){
+        game.storyTextArea.setText(
+                """
+                
+                """
+        );
     }
 
     public void hunt() {
@@ -96,19 +155,19 @@ public class Activities {
             if(rand.nextInt(9)==0) {
                 newFood = 0;
             }
-            else if (rand.nextInt(99)<=15) {
+            else if (rand.nextInt(99) <= 15) {
                 newFood = 1;
             }
-            else if (rand.nextInt(4)==0) {
+            else if (rand.nextInt(4) == 0) {
                 newFood = 2;
             }
-            else if (rand.nextInt(3)<=0) {
+            else if (rand.nextInt(3) <= 0) {
                 newFood = 3;
             }
-            else if (rand.nextInt(4)==0) {
+            else if (rand.nextInt(4) == 0) {
                 newFood = 4;
             }
-            else if (rand.nextInt(9)==0) {
+            else if (rand.nextInt(9) == 0) {
                 newFood = 5;
             }
         }
@@ -133,8 +192,16 @@ public class Activities {
         }
     }
 
+    public int getJournCounter() {
+        return journCounter;
+    }
+
+    public void setJournCounter(int journCounter) {
+        this.journCounter = journCounter;
+    }
+
     public void writeJournal() {
-        if (checkDailyActions() && journCounter ==0) {
+        if (checkDailyActions() && journCounter == 0) {
             journCounter++;
             JOptionPane.showMessageDialog(null,"You take out your journal and pen and begin to write",
                     "Writing Activity",JOptionPane.PLAIN_MESSAGE);

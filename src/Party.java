@@ -48,6 +48,7 @@ public class Party extends JDialog {
                 }
             }
         });
+
         updateStats();
         userInput.addFocusListener(inputHelp);
         this.addWindowListener(new WindowListener() {
