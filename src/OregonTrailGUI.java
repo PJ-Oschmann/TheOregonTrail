@@ -35,6 +35,7 @@ public class OregonTrailGUI {
     //private final DebugGUI debug = new DebugGUI();
     private Random rand = new Random();
     private Activities activities;
+    private Location location = new Location(this);
 
     //Our players
     private Character hattie = new Character("Hattie Campbell", 100, 0, false);
@@ -278,6 +279,7 @@ public class OregonTrailGUI {
      * The game info gets updated.
      */
     public void travel() {
+        location.addMileage();
         openRandomEvent();
         dailyHealthBoost(5);
         staticMethods.incrementNFC();
@@ -332,7 +334,8 @@ public class OregonTrailGUI {
     //Call this function whenever the game info is updated.
     public void writeGameInfo() {
         String gameInfo = """
-                Location: $location
+                Last Location: $location
+                Distance Travelled: $distTraveled
                 Date: $date
                 -----------------
                 Weather: $weather
@@ -343,13 +346,14 @@ public class OregonTrailGUI {
                 
                 Enter "H" to see available input options.
                 """;
-        gameInfo = gameInfo.replace("$location","LOCATION FIXME");
+        gameInfo = gameInfo.replace("$location",location.getCurrentLocation());
         gameInfo = gameInfo.replace("$date",date.toString());
         gameInfo = gameInfo.replace("$weather",weather.toString());
         gameInfo = gameInfo.replace("$happiness",Integer.toString(happiness));
         gameInfo = gameInfo.replace("$pace",currPaceToString());
         gameInfo = gameInfo.replace("$rations", String.valueOf(getFood()));
         gameInfo = gameInfo.replace("$daily actions", Integer.toString(dailyActions));
+        gameInfo = gameInfo.replace("$distTraveled",Integer.toString(location.getMilesTravd()));
         storyTextArea.setText(gameInfo);
         updateStats();
     }
