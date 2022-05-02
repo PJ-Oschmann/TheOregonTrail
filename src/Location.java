@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Location {
     private int pace;
+    private OregonTrailGUI game;
     private int milesTravd=0;
     private String currentLocation="Independence";
     private int markerCounter = 0; //Index of the milage marker we're at
@@ -12,6 +13,7 @@ public class Location {
     ArrayList<String> names = new ArrayList<String>(List.of("Independence", "Fort Kearny", "Courthouse Rock",
             "Scotts Bluff", "Fort Laramie", "Fort Bridger", "Fort Hall", "Three Island Crossing", "Fort Boise", "Oregon City"));
     public Location(OregonTrailGUI game) {
+        this.game = game;
         this.pace = game.getCurrentPace();
         /**
          * The location class is used to track the location of the character/party during
@@ -42,6 +44,7 @@ public class Location {
 
     public void addMileage() {
         int miles;
+        pace=game.getCurrentPace();
         if (pace==0) {miles = 15;}
         else if (pace == 1) {miles = 20;}
         else {miles = 25;}

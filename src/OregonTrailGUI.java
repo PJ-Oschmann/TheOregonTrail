@@ -34,7 +34,7 @@ public class OregonTrailGUI {
     private final Scene scene = new Scene();
     //private final DebugGUI debug = new DebugGUI();
     private Random rand = new Random();
-    private Activities activities;
+    private Activities activities = new Activities(this);
     private Location location = new Location(this);
 
     //Our players
