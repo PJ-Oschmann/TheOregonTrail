@@ -291,6 +291,15 @@ public class RandomEventGUI extends JDialog {
         }
     };
 
+    private final ActionListener closeAL = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (inputField.getText().equalsIgnoreCase("C")) {
+                dispose();
+            }
+        }
+    };
+
     private void shareStories() {
         JOptionPane.showMessageDialog(null,"You had a jolly old time sharing stories and earned 10 happiness!","Share Stories",JOptionPane.PLAIN_MESSAGE);
         game.setHappiness(game.calculateHappiness(10));
@@ -305,9 +314,25 @@ public class RandomEventGUI extends JDialog {
             encounterTraveler();
         }
         else if (eventName().equals("injury")) {
-            if (!characterArrayList.get(characterIndex).isInjured()) {
+            if (!characterArrayList.get(characterIndex).isInjured() && rand.nextInt(2)==0) {
                 characterArrayList.get(characterIndex).setInjured(true);
+                promptLabel.setText(characterArrayList.get(characterIndex)+ " got injured. Press 'C' to continue.");
+                inputField.addActionListener(closeAL);
+
             } //No else cuz it just doesn't happen
+        }
+        else if (eventName().equals("wagonDamage")) {
+            game.calculateHappiness(-5);
+            promptLabel.setText("As you traveled your wagon hit a rock and became damaged. Everyone is saddened. Press " +
+                    "'C' to continue.");
+            inputField.addActionListener(closeAL);
+        }
+        else if (eventName().equals("foodSpoiled")) {
+            double spoiledFoodDb = game.getFood() * .2;
+            int spoiledFood = Integer.parseInt(Double.toString(spoiledFoodDb));
+            game.setFood(game.getFood()-spoiledFood);
+            promptLabel.setText("Some of your food spoiled. You lost " + spoiledFood + " food.");
+            inputField.addActionListener(closeAL);
         }
     }
 }
