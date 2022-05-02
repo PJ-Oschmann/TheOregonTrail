@@ -35,7 +35,7 @@
               <text value="Selection:"/>
             </properties>
           </component>
-          <component id="1e4f5" class="javax.swing.JTextArea" binding="promptTextPane">
+          <component id="1e4f5" class="javax.swing.JTextArea" binding="promptTextArea">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
                 <minimum-size width="-1" height="250"/>
