@@ -7,15 +7,19 @@ import java.util.List;
 
 public class Party extends JDialog {
     private JPanel contentPane;
-    private JTextPane charlesStats;
-    private JTextPane hattieStats;
-    private JTextPane augustaStats;
-    private JTextPane benStats;
-    private JTextPane jakeStats;
+    private JTextArea charlesStats;
+    private JTextArea hattieStats;
+    private JTextArea augustaStats;
+    private JTextArea benStats;
+    private JTextArea jakeStats;
     private JTextField userInput;
-    private JTextPane partyStats;
+    private JTextArea partyStats;
     private JLabel questionText;
-    private JTextPane promptTextPane;
+    private JTextArea promptTextArea;
+    private JPanel InterfacePanel;
+    private JPanel imagePanel;
+    private JLabel imageLabel;
+    private JPanel statsPanel;
     private JTextArea partyTextArea;
     public ArrayList<Character> characterArrayList;
     private int happiness, money, food, ammo, medicine, clothes, tools, splints, oxen;
@@ -29,10 +33,9 @@ public class Party extends JDialog {
         this.item = item;
         setGlobalVar();
         initializePartyTextArea(item);
-        this.setMinimumSize(new Dimension(1000,1000));
-        //promptTextPane.setText("Select a character to give this " + item.toLowerCase() + " item to!");
-        //this.setUndecorated(true);
         setContentPane(contentPane);
+
+        //INSERT IMAGE INTO IMAGELABEL
         setModal(true);
 
         userInput.addActionListener(new ActionListener() {
@@ -61,7 +64,7 @@ public class Party extends JDialog {
     }
 
     private void initializePartyTextArea(String itemName) {
-        promptTextPane.setText(String.format(
+        promptTextArea.setText(String.format(
                 """
                 Please select the character you would like to use %s on using the input text area below:
                 
@@ -101,7 +104,7 @@ public class Party extends JDialog {
         return true;
     }
 
-    ArrayList<JTextPane> arrayOfPanes = new ArrayList<>(List.of(hattieStats, charlesStats, augustaStats, benStats, jakeStats));
+    ArrayList<JTextArea> arrayOfAreas = new ArrayList<>(List.of(hattieStats, charlesStats, augustaStats, benStats, jakeStats));
     /**
      * Update the status of each player. If the player is dead, their status is marked "DEAD."
      */
@@ -122,7 +125,7 @@ public class Party extends JDialog {
                 Hunger: $Hunger
                 
                 """;
-        for (JTextPane stats : arrayOfPanes) {
+        for (JTextArea stats : arrayOfAreas) {
             if (characterArrayList.get(characterIndex).getHealth() <= 0) {
                 stats.setText("DEAD");
 
@@ -204,7 +207,7 @@ public class Party extends JDialog {
     }
     private void eatFood() {
         selectedCharacter.setHunger(calculateHunger(selectedCharacter,2));
-        promptTextPane.setText(selectedCharacter.getName() + " ate some food!");
+        promptTextArea.setText(selectedCharacter.getName() + " ate some food!");
         staticMethods.resetNFC();
     }
 
@@ -216,7 +219,7 @@ public class Party extends JDialog {
         }
         else {
             selectedCharacter.setSick(false);
-            promptTextPane.setText(selectedCharacter.getName()+" has been cured!");
+            promptTextArea.setText(selectedCharacter.getName()+" has been cured!");
         }
     }
 
@@ -227,7 +230,7 @@ public class Party extends JDialog {
         }
         else {
             selectedCharacter.setHasClothing(true);
-            promptTextPane.setText(selectedCharacter.getName()+" now has protective " + "clothing.");
+            promptTextArea.setText(selectedCharacter.getName()+" now has protective " + "clothing.");
         }
     }
 
@@ -239,7 +242,7 @@ public class Party extends JDialog {
         }
         else {
             selectedCharacter.setInjured(false);
-            promptTextPane.setText(selectedCharacter.getName()+" now has " +
+            promptTextArea.setText(selectedCharacter.getName()+" now has " +
                     "protective clothing.");
         }
 
