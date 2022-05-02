@@ -49,6 +49,7 @@ public class Shop extends JDialog {
         shopInput.addActionListener(shopMenuListener);
         shopInput.addFocusListener(inputHelp);
         displayMenu();
+        shopInput.requestFocusInWindow();
 
         shopComboBox.addItemListener(new ItemListener() {
             @Override

@@ -27,6 +27,7 @@ public class Inventory extends JDialog {
         this.setTitle("INVENTORY");
         setContentPane(contentPane);
         setModal(true);
+        userInput.requestFocusInWindow();
 
         //Image goes here
         InventoryImageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/Inventory.png"));
@@ -99,26 +100,64 @@ public class Inventory extends JDialog {
         @Override
         public void actionPerformed(ActionEvent e) {
             int index = invComboBox.getSelectedIndex();
-
-
-
-
-
-
-            if (userInput.getText().equalsIgnoreCase("U") && invComboBox.getSelectedIndex() == 1) {
-                useFood();
-            }
-            else if (userInput.getText().equalsIgnoreCase("U") && invComboBox.getSelectedIndex() == 3) {
-                useMedicine();
-            }
-            else if (userInput.getText().equalsIgnoreCase("E") && invComboBox.getSelectedIndex() == 4) {
-                equipClothes();
-            }
-            else if (userInput.getText().equalsIgnoreCase("U") && invComboBox.getSelectedIndex() == 6) {
-                useSplints();
-            }
-            else if (userInput.getText().equalsIgnoreCase("C") && invComboBox.getSelectedIndex() == 7) {
-                consumeOxen();
+            switch (index) {
+                case 1 -> {
+                    if (userInput.getText().equalsIgnoreCase("U")) {
+                        useFood();
+                    } else if (userInput.getText().equalsIgnoreCase("I")) {
+                        displayMenu(); invComboBox.setSelectedIndex(0);
+                    } else {
+                        staticMethods.notValidInput();
+                    }
+                }
+                case 2, 5 -> {
+                    if (userInput.getText().equalsIgnoreCase("I")) {
+                        displayMenu(); invComboBox.setSelectedIndex(0);
+                    } else {
+                        staticMethods.notValidInput();
+                    }
+                }
+                case 3 -> {
+                    if (userInput.getText().equalsIgnoreCase("U")) {
+                        useMedicine();
+                    } else if (userInput.getText().equalsIgnoreCase("I")) {
+                        displayMenu();
+                        invComboBox.setSelectedIndex(0);
+                    } else {
+                        staticMethods.notValidInput();
+                    }
+                }
+                case 4 -> {
+                    if (userInput.getText().equalsIgnoreCase("E")) {
+                        equipClothes();
+                    } else if (userInput.getText().equalsIgnoreCase("I")) {
+                        displayMenu();
+                        invComboBox.setSelectedIndex(0);
+                    } else {
+                        staticMethods.notValidInput();
+                    }
+                }
+                case 6 -> {
+                    if (userInput.getText().equalsIgnoreCase("U")) {
+                        useSplints();
+                    } else if (userInput.getText().equalsIgnoreCase("I")) {
+                        displayMenu();
+                        invComboBox.setSelectedIndex(0);
+                    } else {
+                        staticMethods.notValidInput();
+                    }
+                }
+                case 7 -> {
+                    if (userInput.getText().equalsIgnoreCase("C")) {
+                        consumeOxen();
+                    } else if (userInput.getText().equalsIgnoreCase("I")) {
+                        displayMenu();
+                        invComboBox.setSelectedIndex(0);
+                    } else {
+                        staticMethods.notValidInput();
+                    }
+                }
+                default -> { staticMethods.notValidInput(); displayMenu(); invComboBox.setSelectedIndex(0); }
             }
             userInput.setText("");
         }
