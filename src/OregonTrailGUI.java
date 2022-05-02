@@ -342,6 +342,7 @@ public class OregonTrailGUI {
                 Party Happiness: $happiness
                 Pace: $pace
                 Rations: $rations
+                Days without Eating: $daysNoEat/3
                 Daily Actions Available: $daily actions
                 
                 Enter "H" to see available input options.
@@ -354,6 +355,7 @@ public class OregonTrailGUI {
         gameInfo = gameInfo.replace("$rations", String.valueOf(getFood()));
         gameInfo = gameInfo.replace("$daily actions", Integer.toString(dailyActions));
         gameInfo = gameInfo.replace("$distTraveled",Integer.toString(location.getMilesTravd()));
+        gameInfo = gameInfo.replace("$daysNoEat",Integer.toString(staticMethods.getNFC()));
         storyTextArea.setText(gameInfo);
         updateStats();
     }
@@ -824,6 +826,7 @@ public class OregonTrailGUI {
         date = new Date();
         date.setDate(3,18,1861);
         isTraveling = false;
+        staticMethods.resetNFC();
 
         userInput.addFocusListener(playHelp);
         if(inMenu) {
