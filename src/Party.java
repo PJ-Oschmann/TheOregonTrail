@@ -50,6 +50,22 @@ public class Party extends JDialog {
         });
         updateStats();
         userInput.addFocusListener(inputHelp);
+        this.addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) { userInput.requestFocusInWindow(); }
+            @Override
+            public void windowClosing(WindowEvent e) { }
+            @Override
+            public void windowClosed(WindowEvent e) { }
+            @Override
+            public void windowIconified(WindowEvent e) { }
+            @Override
+            public void windowDeiconified(WindowEvent e) { }
+            @Override
+            public void windowActivated(WindowEvent e) { }
+            @Override
+            public void windowDeactivated(WindowEvent e) { }
+        });
 
         // call onCancel() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);

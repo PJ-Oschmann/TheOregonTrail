@@ -497,7 +497,7 @@ public class OregonTrailGUI {
 
     private void consumeInjuredOxen(String oxenName) {
         JOptionPane.showMessageDialog(null, String.format("You chose to make the most out of %s's" +
-                        "time here with us. You gain 10 units of food.\nRest in piece(s of food) %s.", oxenName, oxenName),
+                        "time here with us. You gain 10 units of food.\nRest in peace(s of food) %s.", oxenName, oxenName),
                 String.format("RIP %s the oxen", oxenName), JOptionPane.INFORMATION_MESSAGE);
         food += 10;
     }
@@ -615,6 +615,9 @@ public class OregonTrailGUI {
                 inMenu = false;
                 introScene();
                 userInput.removeActionListener(menuListener);
+            }
+            else {
+                staticMethods.notValidInput();
             }
             userInput.setText("");
         }
