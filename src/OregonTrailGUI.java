@@ -278,6 +278,7 @@ public class OregonTrailGUI {
      * The game info gets updated.
      */
     public void travel() {
+        openRandomEvent();
         dailyHealthBoost(5);
         staticMethods.incrementNFC();
         sickCharacters = countSickCharacters();
@@ -653,11 +654,14 @@ public class OregonTrailGUI {
     }
 
     private void openRandomEvent() {
-        RandomEventGUI reg = new RandomEventGUI(this);
-        reg.testEvent();
-        reg.pack();
-        reg.setVisible(true);
-        updateStats();
+        if (rand.nextInt(9)==0) {
+            RandomEventGUI reg = new RandomEventGUI(this);
+            reg.doEvent();
+            reg.pack();
+            reg.setVisible(true);
+            updateStats();
+        }
+
     }
 
     private void openShop() {
