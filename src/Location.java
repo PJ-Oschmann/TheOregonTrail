@@ -70,6 +70,7 @@ public class Location {
                 }
                 else {
                     crossRiver();
+
                 }
 
             case "3":

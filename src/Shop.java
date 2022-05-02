@@ -40,6 +40,7 @@ public class Shop extends JDialog {
     public int money; int food; int ammunition; int medicine; int clothes; int wagonTools; int splints; int oxen;
 
     public Shop(OregonTrailGUI game){
+        this.setMinimumSize(new Dimension(1000,650));
         this.game = game;
         setGlobalVar();
         setContentPane(shopPane);
