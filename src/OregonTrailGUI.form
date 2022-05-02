@@ -253,7 +253,7 @@
             </constraints>
             <properties>
               <focusable value="true"/>
-              <foreground color="-8553092"/>
+              <foreground color="-16777216"/>
               <text value=""/>
             </properties>
           </component>

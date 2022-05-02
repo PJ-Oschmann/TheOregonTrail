@@ -791,18 +791,14 @@ public class OregonTrailGUI {
     private FocusAdapter playHelp = new FocusAdapter() { //Grey text for input box when not focused on
         @Override
         public void focusGained(FocusEvent e) {
-            if (userInput.getText().trim().equals("Enter 'P' to Travel the Trail!")) {
                 userInput.setText("");
                 userInput.setForeground(Color.BLACK);
-            }
         }
 
         @Override
         public void focusLost(FocusEvent e) {
-            if (userInput.getText().trim().equals("")) {
                 userInput.setText("Enter 'P' to Travel the Trail!");
                 userInput.setForeground(new Color(147, 147,147));
-            }
         }
     };
 
