@@ -3,7 +3,8 @@
 -- add javadocs once completed
 
 -- win conditons + options (KEN)
--- FIX RANDEVENTSGUI (KEN)
+-- UPDATE RANDEVENTSGUI (KEN)
+-- debug passBackVar methods across the classes that use it (if/else throw new exception)
 -- insert storyline
 -- insert all scenes
 -- insert landmarks

@@ -251,6 +251,7 @@ public class OregonTrailGUI {
                 P: SET PACE
                 T: TRAVEL ONE DAY
                 D: DAILY ACTIONS (resets each travel)
+                M: RETURN TO PREVIOUS MENU
                 
                 ABOUT PACE:
                 Hunger is increased respectively by travel speed (not including
@@ -657,14 +658,16 @@ public class OregonTrailGUI {
         public void actionPerformed(ActionEvent e) {
             String input = userInput.getText().toUpperCase();
             switch (input) {
-                case "I" ->  openInventory();
-                case "H" ->  displayHelpMenu();
-                case "P" ->  { currentPace = setPace(); writeGameInfo(); }
-                case "T" ->  travel();
+                case "I" -> openInventory();
+                case "H" -> displayHelpMenu();
+                case "P" -> { currentPace = setPace(); writeGameInfo(); }
+                case "T" -> travel();
                 case "A" -> activities.displayActivitiesMenu();
-                case "/TEST" -> checkForRandomEvent();
+                case "F" -> reg.forceRandomEvent();
+                case "M" -> writeGameInfo();
                 default -> staticMethods.notValidInput();
             }
+            userInput.setText("");
         }
     };
 
