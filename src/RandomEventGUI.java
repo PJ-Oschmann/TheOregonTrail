@@ -244,7 +244,8 @@ public class RandomEventGUI extends JDialog {
                 trade(3);
             }
             else {
-                JOptionPane.showMessageDialog(null,"You wave goodbye and abandon the trade.","Abandoning Trade",JOptionPane.PLAIN_MESSAGE);
+                JOptionPane.showMessageDialog(null,"You wave goodbye and abandon the trade.",
+                        "Abandoning Trade",JOptionPane.PLAIN_MESSAGE);
                 dispose();
             }
         }
@@ -256,16 +257,20 @@ public class RandomEventGUI extends JDialog {
             //TODO: Check for valid input
             try {
                 int price=0;
+                int invAmt=0;
                 tradeGiveAmt = Integer.parseInt(inputField.getText().substring(0,1));
                 System.out.println("REG: tradeAmtGive=" + tradeGiveAmt);
                 System.out.println("REG: tradeItem="+ traderItem);
-                if (traderItem.equalsIgnoreCase("clothes")) {price = clothesAmt;}
-                else if (traderItem.equalsIgnoreCase("ammunition")) {price = ammoAmt;}
-                else if (traderItem.equalsIgnoreCase("food")) {price = foodAmt;}
-                else if (traderItem.equalsIgnoreCase("medicine")) {price = medsAmt;}
-                else if (tradeItem.equalsIgnoreCase("splints")) {price = splintAmt;}
-                else if (tradeItem.equalsIgnoreCase("tools")) {price = toolsAmt;}
-                if (tradeGiveAmt*price>=halfOff){
+
+                if (traderItem.equalsIgnoreCase("clothes")) {price = clothesAmt;invAmt=game.getClothes();}
+                else if (traderItem.equalsIgnoreCase("ammunition")) {price = ammoAmt; invAmt=game.getAmmunition();}
+                else if (traderItem.equalsIgnoreCase("food")) {price = foodAmt; invAmt=game.getFood();}
+                else if (traderItem.equalsIgnoreCase("medicine")) {price = medsAmt; invAmt=game.getMedicine();}
+                else if (tradeItem.equalsIgnoreCase("splints")) {price = splintAmt; invAmt=game.getSplints();}
+                else if (tradeItem.equalsIgnoreCase("tools")) {price = toolsAmt; invAmt=game.getWagonTools();}
+
+                //TODO: make string about not having enough lmao
+                if (tradeGiveAmt*price>=halfOff && tradeGiveAmt<=invAmt){
                     trade(4);
                 }
                 else {
