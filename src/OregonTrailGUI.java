@@ -647,7 +647,7 @@ public class OregonTrailGUI {
     }
 
     private void openRandomEvent() {
-        if (rand.nextInt(100)==0) {
+        if (rand.nextInt(9)==0) {
             RandomEventGUI reg = new RandomEventGUI(this);
             reg.doEvent();
             reg.pack();
