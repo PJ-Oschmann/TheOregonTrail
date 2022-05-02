@@ -11,7 +11,7 @@ public class RandomEventGUI extends JDialog {
     private JPanel imagePanel;
     private JLabel imageLabel;
     private JTextPane promptPane;
-    private OregonTrailGUI game;
+    private final OregonTrailGUI game;
 
     private int clothesAmt = 8;
     private int ammoAmt = 2;
@@ -19,6 +19,8 @@ public class RandomEventGUI extends JDialog {
     private int medsAmt = 2;
     private int splintAmt = 5;
     private int toolsAmt = 8;
+    private String traderItem;
+    private int halfOff;
     private ArrayList<String> nameArrayList = new ArrayList<>(List.of("Felicia","Mia","Kristin","Katrina","Janet",
             "Almudena","Chika","Mary","Nicole","Jessica","Maxine","Stephany","Kendra","Kendall","Kenifer","Elise",
             "Anna","Lizzy","Minnie","Ida","Florence","Martha","Nellie","Lena","Agnes","Candace","Jane","April", "Jordan",
@@ -34,8 +36,9 @@ public class RandomEventGUI extends JDialog {
     private int food, ammunition, medicine, clothes, wagonTools, splints, oxen, money, happiness;
     private ArrayList<Character> characterArrayList;
 
-    public RandomEventGUI() {
+    public RandomEventGUI(OregonTrailGUI game) {
         // call onCancel() when cross is clicked
+        this.game = game;
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -61,7 +64,7 @@ public class RandomEventGUI extends JDialog {
             this.setVisible(true);
 
             String event = "encounterTraveler";
-            this.setTitle(event.toUpperCase());
+            this.setTitle("RANDOM EVENT");
             doEvent(event);
         }
     }
@@ -177,10 +180,9 @@ public class RandomEventGUI extends JDialog {
         inputField.addActionListener(encounterAL);
     }
 
-    String traderItem = itemArrayList.get(game.rand.nextInt(5));
-    int halfOff=99;
     private void trade(int step) {
-
+        traderItem = itemArrayList.get(game.rand.nextInt(5));
+        halfOff = -1;
         if (step==1) {
             inputField.removeActionListener(encounterAL);
             promptPane.setText("What would you like to trade? Enter it in the format 'Number' 'Item' (E.g., 5 F for 5 Food)");
@@ -190,12 +192,15 @@ public class RandomEventGUI extends JDialog {
         else if (step==2) {
             inputField.setText("");
             inputField.removeActionListener(tradeALWant);
-            if (tradeItem.equalsIgnoreCase("F")) {halfOff = foodAmt/2;}
-            else if (tradeItem.equalsIgnoreCase("A")) {halfOff = ammoAmt/2;}
-            else if (tradeItem.equalsIgnoreCase("M")) {halfOff = medsAmt/2;}
-            else if (tradeItem.equalsIgnoreCase("C")) {halfOff = clothesAmt/2;}
-            else if (tradeItem.equalsIgnoreCase("S")) {halfOff = splintAmt/2;}
-            else if (tradeItem.equalsIgnoreCase("T")) {halfOff = toolsAmt/2;}
+            do {
+                if (tradeItem.equalsIgnoreCase("F")) {halfOff = foodAmt/2;}
+                else if (tradeItem.equalsIgnoreCase("A")) {halfOff = ammoAmt/2;}
+                else if (tradeItem.equalsIgnoreCase("M")) {halfOff = medsAmt/2;}
+                else if (tradeItem.equalsIgnoreCase("C")) {halfOff = clothesAmt/2;}
+                else if (tradeItem.equalsIgnoreCase("S")) {halfOff = splintAmt/2;}
+                else if (tradeItem.equalsIgnoreCase("T")) {halfOff = toolsAmt/2;}
+                else { staticMethods.notValidInput(); }
+                } while (halfOff == -1);
             promptPane.setText(nameArrayList.get(randName1) + " and " + nameArrayList.get(randName2) + " want at least $" +
                     halfOff + " worth of " + traderItem + ". Would you like to trade?\nY=Yes N=No (Abandon Trade)");
             inputField.addActionListener(tradeAbandonNo);

@@ -50,14 +50,11 @@ public class OregonTrailGUI {
     private int money = 200, food = 0, ammunition = 0, medicine = 0, clothes = 0, wagonTools = 0, splints = 0, oxen = 4,
     currentPace = 0, sickCharacters = 0, dailyActions = 2, happiness = 75;
 
-    private boolean isGameWon = false, isGameLost = false;
     private Weather weather = new Weather();
     public Wagon wagon = new Wagon();
     private Date date = new Date();
-    private boolean isTraveling = false;
-    private static boolean inMenu = true;
-    private static boolean inGame = false;
-    private RandomEventGUI reg = new RandomEventGUI();
+    private static boolean inMenu = true, inGame = false, isTraveling = false, isGameWon = false, isGameLost = false;
+    private RandomEventGUI reg;
     private Timer travelClock = new Timer(5000, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -192,6 +189,7 @@ public class OregonTrailGUI {
         updateStats();
         loadStatusPanels();
         openShop();
+        reg = new RandomEventGUI(this);
         userInput.addActionListener(gameMenu);
         userInput.removeFocusListener(playHelp);
         userInput.addFocusListener(gameHelp);
@@ -281,7 +279,7 @@ public class OregonTrailGUI {
      */
     public void travel() {
         location.addMileage();
-        reg.checkForRandomEvent();
+        checkForRandomEvent();
         dailyHealthBoost(5);
         staticMethods.incrementNFC();
         sickCharacters = countSickCharacters();
@@ -302,6 +300,10 @@ public class OregonTrailGUI {
     private void resetDailies() {
         dailyActions = 2;
         activities.setJournCounter(0);
+    }
+
+    private void checkForRandomEvent() {
+        reg.checkForRandomEvent();
     }
 
     private void updateLocation(){
@@ -659,7 +661,7 @@ public class OregonTrailGUI {
                 case "P" ->  { currentPace = setPace(); writeGameInfo(); }
                 case "T" ->  travel();
                 case "A" -> activities.displayActivitiesMenu();
-                case "/TEST" -> reg.checkForRandomEvent();
+                case "/TEST" -> checkForRandomEvent();
                 default -> staticMethods.notValidInput();
             }
         }
