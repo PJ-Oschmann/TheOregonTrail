@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +9,7 @@ public class RandomEventGUI extends JDialog {
     private JPanel contentPane;
     private JTextField inputField;
     private JLabel promptLabel;
+    private JLabel imageLabel;
 
     private Random rand = new Random();
     private OregonTrailGUI game;
@@ -34,6 +36,7 @@ public class RandomEventGUI extends JDialog {
     public RandomEventGUI(OregonTrailGUI game) {
         this.game = game;
         this.happiness = game.getHappiness();
+        this.setMinimumSize(new Dimension(1000,100));
 
         setContentPane(contentPane);
         setModal(true);
@@ -303,13 +306,16 @@ public class RandomEventGUI extends JDialog {
     private final ActionListener streamAL = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (inputField.getText().equals("S'")) {
+            if (inputField.getText().equalsIgnoreCase("S")) {
+                inputField.setText("");
                 swim();
             }
-            else if (inputField.getText().equals("F")) {
+            else if (inputField.getText().equalsIgnoreCase("F")) {
+                inputField.setText("");
                 fish();
             }
             else {
+                inputField.setText("");
                 staticMethods.notValidInput();
             }
         }
@@ -341,17 +347,11 @@ public class RandomEventGUI extends JDialog {
 
     private void fish() {
         int fishAmount=0;
-        if (rand.nextInt(2)==0) {
-            fishAmount=rand.nextInt(4)+5;
-            inputField.removeActionListener(streamAL);
-            inputField.addActionListener(closeAL);
-            promptLabel.setText("You caught " + fishAmount + " fish! Press 'C' to continue.");
-        }
-        else {
-            inputField.removeActionListener(streamAL);
-            inputField.addActionListener(closeAL);
-            promptLabel.setText("You caught no fish. Press 'C' to continue.");
-        }
+        fishAmount=rand.nextInt(10);
+        inputField.removeActionListener(streamAL);
+        inputField.addActionListener(closeAL);
+        promptLabel.setText("You caught " + fishAmount + " fish! Press 'C' to continue.");
+
     }
     private void shareStories() {
         JOptionPane.showMessageDialog(null,"You had a jolly old time sharing stories and earned 10 happiness!","Share Stories",JOptionPane.PLAIN_MESSAGE);
@@ -359,13 +359,8 @@ public class RandomEventGUI extends JDialog {
     }
 
     public void testEvent() {
-        ArrayList<Character> characterArrayList = game.getCharacterArrayList();
-        int characterIndex = rand.nextInt(4);
-        if (!characterArrayList.get(characterIndex).isSick()) {
-            promptLabel.setText(characterArrayList.get(characterIndex).getName() + " has fallen sick! Press 'C' to continue.");
-            characterArrayList.get(characterIndex).setSick(true);
-            inputField.addActionListener(closeAL);
-        }
+        inputField.addActionListener(streamAL);
+        promptLabel.setText("You found a small stream! Press S to swim, F to fish.");
     }
 
     private void doEvent() {
@@ -398,22 +393,27 @@ public class RandomEventGUI extends JDialog {
 
         //Bad events
         else if (eventName().equals("injury")) {
-            if (!characterArrayList.get(characterIndex).isInjured() && rand.nextInt(2)==0) {
+            if (!characterArrayList.get(characterIndex).isInjured()) {
                 characterArrayList.get(characterIndex).setInjured(true);
-                promptLabel.setText(characterArrayList.get(characterIndex)+ " got injured. Press 'C' to continue.");
+                promptLabel.setText(characterArrayList.get(characterIndex).getName() + " got injured. Press 'C' to continue.");
                 inputField.addActionListener(closeAL);
-
-            } //No else cuz it just doesn't happen
+            }
+            else {
+                characterArrayList.get(characterIndex).setInjured(true);
+                promptLabel.setText(characterArrayList.get(characterIndex).getName() + " got injured again. Press 'C' to continue.");
+                inputField.addActionListener(closeAL);
+            }
         }
         else if (eventName().equals("wagonDamage")) {
             game.calculateHappiness(-5);
+            game.getWagon().setState(1);
             promptLabel.setText("As you traveled your wagon hit a rock and became damaged. Everyone is saddened. Press " +
                     "'C' to continue.");
             inputField.addActionListener(closeAL);
         }
         else if (eventName().equals("foodSpoiled")) {
             double spoiledFoodDb = game.getFood() * .2;
-            int spoiledFood = Integer.parseInt(Double.toString(spoiledFoodDb));
+            int spoiledFood = (int)spoiledFoodDb;
             game.calculateFood(-spoiledFood);
             promptLabel.setText("Some of your food spoiled. You lost " + spoiledFood + " food. Press 'C' to continue.");
             inputField.addActionListener(closeAL);
