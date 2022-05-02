@@ -161,6 +161,7 @@ public class RandomEventGUI extends JDialog {
             inputField.addActionListener(tradeALWant);
         }
         else if (step==2) {
+            inputField.setText("");
             inputField.removeActionListener(tradeALWant);
             if (tradeItem.equalsIgnoreCase("F")) {halfOff = foodAmt/2;}
             else if (tradeItem.equalsIgnoreCase("A")) {halfOff = ammoAmt/2;}
@@ -173,14 +174,23 @@ public class RandomEventGUI extends JDialog {
             inputField.addActionListener(tradeAbandonNo);
         }
         else if (step==3) {
+            inputField.setText("");
             inputField.removeActionListener(tradeAbandonNo);
             promptLabel.setText("You must trade at least $"+halfOff+" worth of " + traderItem+ ". How much would you" +
                     " like to trade?");
             inputField.addActionListener(tradeALgive);
         }
         else if (step==4) {
+            String itemName = "";
+            if (tradeItem.equalsIgnoreCase("F")) {itemName = "Food";}
+            else if (tradeItem.equalsIgnoreCase("A")) {itemName = "Ammunition";}
+            else if (tradeItem.equalsIgnoreCase("M")) {itemName = "Medicine";}
+            else if (tradeItem.equalsIgnoreCase("C")) {itemName = "Clothes";}
+            else if (tradeItem.equalsIgnoreCase("S")) {itemName = "Splints";}
+            else if (tradeItem.equalsIgnoreCase("T")) {itemName = "Wagon Tools";}
+            inputField.setText("");
             inputField.removeActionListener(tradeALgive);
-            promptLabel.setText("Yahoo, you earned " + tradeAmt + " " + tradeItem + "!");
+            promptLabel.setText("Yahoo, you earned " + tradeAmt + " " + itemName + "!");
             if (tradeItem.equalsIgnoreCase("F")) {game.setFood(game.getFood()+tradeAmt);}
             else if (tradeItem.equalsIgnoreCase("A")) {game.setAmmunition(game.getAmmunition()+tradeAmt);}
             else if (tradeItem.equalsIgnoreCase("M")) {game.setMedicine(game.getMedicine()+tradeAmt);}
@@ -211,11 +221,13 @@ public class RandomEventGUI extends JDialog {
     private final ActionListener tradeALWant = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
+            int itemAmt=0;
             //TODO: Check for valid input
             try {
-                tradeAmt = Integer.parseInt(inputField.getText().substring(0,2));
-                tradeItem = inputField.getText().substring(3,4);
+                tradeAmt = Integer.parseInt(inputField.getText().substring(0,1));
+                tradeItem = inputField.getText().substring(2,3);
                 trade(2);
+
             }
             catch (Exception oops) {
                 JOptionPane.showMessageDialog(null,"Sorry, you couldn't be understood. Please try " +
@@ -232,7 +244,8 @@ public class RandomEventGUI extends JDialog {
                 trade(3);
             }
             else {
-                //TODO: Exit Trade;
+                JOptionPane.showMessageDialog(null,"You wave goodbye and abandon the trade.","Abandoning Trade",JOptionPane.PLAIN_MESSAGE);
+                dispose();
             }
         }
     };
@@ -243,19 +256,21 @@ public class RandomEventGUI extends JDialog {
             //TODO: Check for valid input
             try {
                 int price=0;
-                tradeGiveAmt = Integer.parseInt(inputField.getText().substring(0,2));
+                tradeGiveAmt = Integer.parseInt(inputField.getText().substring(0,1));
+                System.out.println("REG: tradeAmtGive=" + tradeGiveAmt);
+                System.out.println("REG: tradeItem="+ traderItem);
                 if (traderItem.equalsIgnoreCase("clothes")) {price = clothesAmt;}
                 else if (traderItem.equalsIgnoreCase("ammunition")) {price = ammoAmt;}
                 else if (traderItem.equalsIgnoreCase("food")) {price = foodAmt;}
                 else if (traderItem.equalsIgnoreCase("medicine")) {price = medsAmt;}
                 else if (tradeItem.equalsIgnoreCase("splints")) {price = splintAmt;}
                 else if (tradeItem.equalsIgnoreCase("tools")) {price = toolsAmt;}
-                if (tradeGiveAmt*price<halfOff){
+                if (tradeGiveAmt*price>=halfOff){
                     trade(4);
                 }
                 else {
                     JOptionPane.showMessageDialog(null,"You need to trade at least $" +
-                            halfOff + " worth of " + traderItem + ", but you only traded " + tradeGiveAmt*price+". Please " +
+                            halfOff + " worth of " + traderItem + ", but you only traded $" + tradeGiveAmt*price+". Please " +
                             "trade the required amount.");
                     trade(3);
                 }
