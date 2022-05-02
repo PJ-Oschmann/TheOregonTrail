@@ -45,7 +45,7 @@ public class Party extends JDialog {
                 }
             }
         });
-        updateStats(money, happiness);
+        updateStats();
         userInput.addFocusListener(inputHelp);
 
         // call onCancel() when cross is clicked
@@ -105,7 +105,7 @@ public class Party extends JDialog {
     /**
      * Update the status of each player. If the player is dead, their status is marked "DEAD."
      */
-    public void updateStats(int money, int happiness) {
+    public void updateStats() {
         String partyStatsText= """
                 Money: $Money
                 Happiness: $Happiness
@@ -200,16 +200,24 @@ public class Party extends JDialog {
         else if (item.equals("MEDICINE")) {takeMeds();}
         else if (item.equals("CLOTHES")) {equipClothes();}
         else if (item.equals("SPLINTS")) {useSplints();}
+        updateStats();
 
     }
     private void eatFood() {
-        selectedCharacter.setHunger(calculateHunger(selectedCharacter,2));
-        promptTextPane.setText(selectedCharacter.getName() + " ate some food!");
-        staticMethods.resetNFC();
+        if (game.getFood()>0) {
+            game.setFood(game.getFood()-1);
+            selectedCharacter.setHunger(calculateHunger(selectedCharacter,2));
+            promptTextPane.setText(selectedCharacter.getName() + " ate some food!");
+            staticMethods.resetNFC();
+        }
+        else {
+            staticMethods.notEnoughItem("food");
+        }
+
     }
 
     private void takeMeds() {
-        if(selectedCharacter.isSick()) {
+        if(!selectedCharacter.isSick()) {
             JOptionPane.showMessageDialog(null,selectedCharacter.getName()+" is not sick. " +
                     "Please pick another character.",selectedCharacter.getName()+"'s Lack of Illness",
                     JOptionPane.PLAIN_MESSAGE);

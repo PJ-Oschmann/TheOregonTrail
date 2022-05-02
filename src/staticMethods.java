@@ -24,4 +24,8 @@ public class staticMethods {
         JOptionPane.showMessageDialog(null, "You don't have enough money to do this.",
                 "INVALID", JOptionPane.ERROR_MESSAGE);
     }
+
+    public static void notEnoughItem(String item) {
+        JOptionPane.showMessageDialog(null,"You don't have enough " + item + " to do this.","INVALID",JOptionPane.ERROR_MESSAGE);
+    }
 }
