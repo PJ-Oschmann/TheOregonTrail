@@ -2,9 +2,10 @@
 -- correct private/public notations
 -- add javadocs once completed
 
--- win condiitons + options
+-- win conditons + options (KEN)
+-- FIX RANDEVENTSGUI (KEN)
 -- insert storyline
 -- insert all scenes
 -- insert landmarks
 -- implement location (URGENT)
--- implement activities (KEN)
+    --> Location mile markers and location names dont have same sizes LOL
