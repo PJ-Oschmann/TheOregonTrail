@@ -33,8 +33,6 @@ public class Party extends JDialog {
         this.item = item;
         setGlobalVar();
         initializePartyTextArea(item);
-        initializePartyTextArea(item);
-        this.setMinimumSize(new Dimension(1000,1000));
         //promptTextPane.setText("Select a character to give this " + item.toLowerCase() + " item to!");
         //this.setUndecorated(true);
         setContentPane(contentPane);
@@ -201,10 +199,12 @@ public class Party extends JDialog {
     }
 
     private void doAction(String item) {
-        if (item.equals("FOOD")) {eatFood();}
-        else if (item.equals("MEDICINE")) {takeMeds();}
-        else if (item.equals("CLOTHES")) {equipClothes();}
-        else if (item.equals("SPLINTS")) {useSplints();}
+        switch (item) {
+            case "FOOD" -> eatFood();
+            case "MEDICINE" -> takeMeds();
+            case "CLOTHES" -> equipClothes();
+            case "SPLINTS" -> useSplints();
+        }
         updateStats();
 
     }
@@ -270,10 +270,7 @@ public class Party extends JDialog {
             else {
                 staticMethods.notEnoughItem("splints");
             }
-
-
         }
-
     }
 
 

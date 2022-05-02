@@ -26,6 +26,7 @@ public class staticMethods {
     }
 
     public static void notEnoughItem(String item) {
-        JOptionPane.showMessageDialog(null,"You don't have enough " + item + " to do this.","INVALID",JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(null,"You don't have enough " + item + " to do this.",
+                "INVALID",JOptionPane.ERROR_MESSAGE);
     }
 }

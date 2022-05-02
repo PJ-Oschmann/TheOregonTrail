@@ -302,67 +302,39 @@ public class Inventory extends JDialog {
 
 //TODO: THESE ALL NEED IMPLEMENTATION AND EDITING
     private void useFood() {
-        openParty("FOOD");
-        invInfo.setText(
-                """
-                Player has chosen to use one unit of food.
-                Proceed to select which character they want to feed.
-                Requires the character to not be full or have food level == 10.
-                
-                Pop up a mini dialogue box saying that the character
-                is full and cannot consume food if their food level is at 10.
-                
-                Enter "I" to return to the inventory menu.
-                """);
+        if (game.getFood() > 0) {
+            openParty("FOOD");
+        }
+        else {
+            staticMethods.notEnoughItem("FOOD");
+        }
     }
 
     private void useMedicine() {
-        openParty("MEDICINE");
-        invInfo.setText(
-                """
-                Player has chosen to use one medicine item.
-                Proceed to select which character they want to treat.
-                Requires the character to be ILL to use this item.
-                
-                Pop up a mini dialogue saying that the character is
-                not ILL or has been cured depending on what happens.
-                
-                Enter "I" to return to the inventory menu.
-                """);
+        if (game.getMedicine() > 0) {
+            openParty("MEDICINE");
+        }
+        else {
+            staticMethods.notEnoughItem("MEDICINE");
+        }
     }
 
     private void equipClothes() {
-        openParty("CLOTHES");
-        invInfo.setText(
-                """
-                Player has chosen to equip one set of clothes.
-                Proceed to select which character they want to equip.
-                Requires the character to not have a set of clothes
-                to equip a set of clothes..
-                
-                Pop up a mini dialogue saying that the character already
-                has a set of clothes equipped and that they do not need
-                another set.
-                
-                Enter "I" to return to the inventory menu.
-                """);
+        if (game.getClothes() > 0) {
+            openParty("CLOTHES");
+        }
+        else {
+            staticMethods.notEnoughItem("CLOTHES");
+        }
     }
 
     private void useSplints() {
-        openParty("SPLINTS");
-        invInfo.setText(
-                """
-                Player has chosen to use one splint.
-                Proceed to select which character they want to use the
-                splint on. Requires the character to be INJURED to use
-                the splints item.
-                
-                Pop up a mini dialogue saying that the character is not
-                INJURED if they try and use the splints on a healthy
-                character.
-                
-                Enter "I" to return to the inventory menu.
-                """);
+        if (game.getSplints() > 0) {
+            openParty("SPLINTS");
+        }
+        else {
+            staticMethods.notEnoughItem("SPLINTS");
+        }
     }
 
     private void consumeOxen() {
