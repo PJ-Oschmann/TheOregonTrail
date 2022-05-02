@@ -416,7 +416,19 @@ public class OregonTrailGUI {
         }
         character.setHealth(newHealth);
     }
-
+    public int calculateFood(int value) {
+        int newFood = 0;
+        if (value >=0) {
+            newFood = food+value;
+        }
+        else {
+            if (food+value<0) {newFood=0;}
+            else {
+                newFood=food+value;
+            }
+        }
+        return newFood;
+    }
     public void dailyHealthBoost(int value) {
         for (Character character : characterArrayList) {
             calculateHealth(character, value);
@@ -668,9 +680,10 @@ public class OregonTrailGUI {
 
     private void openRandomEvent() {
         RandomEventGUI reg = new RandomEventGUI(this);
-        reg.encounterTraveler();
+        reg.testEvent();
         reg.pack();
         reg.setVisible(true);
+        writeGameInfo();
 
     }
 
