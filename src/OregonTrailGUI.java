@@ -683,8 +683,7 @@ public class OregonTrailGUI {
         reg.testEvent();
         reg.pack();
         reg.setVisible(true);
-        writeGameInfo();
-
+        updateStats();
     }
 
     private void openShop() {

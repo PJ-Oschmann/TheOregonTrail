@@ -9,6 +9,7 @@ public class Character {
     private boolean hasClothing = false;
     private boolean isSick = false;
     private boolean isInjured = false;
+    private int daysInjured;
     private boolean isAdult = false;
 
     /**
@@ -58,6 +59,14 @@ public class Character {
      */
     public void setHealth(int health) {
         this.health = health;
+    }
+
+    public void setDaysInjured(int daysInjured) {
+        this.daysInjured = daysInjured;
+    }
+
+    public int getDaysInjured() {
+        return daysInjured;
     }
 
     /**

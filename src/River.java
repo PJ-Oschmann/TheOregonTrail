@@ -13,8 +13,8 @@ public class River {
 
     public boolean takeFerry() {
         boolean crossed = true;
-        if (game.getMoney()>=20) {
-            game.setMoney(game.getMoney()-20);
+        if (game.getMoney() >= 20) {
+            game.setMoney(game.getMoney() - 20);
 
         }
         else {
@@ -90,7 +90,7 @@ public class River {
         //15% chance someone gets sick
         if (rand.nextInt(99)<=15) {
             int characterIndex = rand.nextInt(4);
-            if (game.characterArrayList.get(characterIndex).isSick()==false) {
+            if (game.characterArrayList.get(characterIndex).isSick() == false) {
                 game.characterArrayList.get(characterIndex).setSick(true);
             }
         }

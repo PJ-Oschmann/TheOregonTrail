@@ -1,3 +1,6 @@
+public class Location {
+
+    public Location() {
 /**
  * The location class is used to track the location of the character/party during
  * their journey from Missouri to Nebraska (Ash Hollow). This object will hold
@@ -20,4 +23,5 @@
     Little Blue //Nebraska
     Vermilion // ??
     Platte River //Nebraska*/
-
+    }
+}
