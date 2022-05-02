@@ -15,17 +15,17 @@ public class Party extends JDialog {
     private JTextField userInput;
     private JTextArea partyStats;
     private JLabel questionText;
+    private JTextPane promptTextPane;
     private JTextArea promptTextArea;
-    private JPanel InterfacePanel;
-    private JPanel imagePanel;
-    private JLabel imageLabel;
-    private JPanel statsPanel;
-    private JTextArea partyTextArea;
     public ArrayList<Character> characterArrayList;
     private int happiness, money, food, ammo, medicine, clothes, tools, splints, oxen;
     private final OregonTrailGUI game;
     private  String item;
     private Character selectedCharacter;
+    private JPanel InterfacePanel;
+    private JPanel imagePanel;
+    private JLabel imageLabel;
+    private JPanel statsPanel;
 
     public Party(OregonTrailGUI game, String item) {
         //instantiating variables
@@ -33,9 +33,11 @@ public class Party extends JDialog {
         this.item = item;
         setGlobalVar();
         initializePartyTextArea(item);
+        initializePartyTextArea(item);
+        this.setMinimumSize(new Dimension(1000,1000));
+        //promptTextPane.setText("Select a character to give this " + item.toLowerCase() + " item to!");
+        //this.setUndecorated(true);
         setContentPane(contentPane);
-
-        //INSERT IMAGE INTO IMAGELABEL
         setModal(true);
 
         userInput.addActionListener(new ActionListener() {
@@ -48,7 +50,7 @@ public class Party extends JDialog {
                 }
             }
         });
-        updateStats(money, happiness);
+        updateStats();
         userInput.addFocusListener(inputHelp);
 
         // call onCancel() when cross is clicked
@@ -104,11 +106,11 @@ public class Party extends JDialog {
         return true;
     }
 
-    ArrayList<JTextArea> arrayOfAreas = new ArrayList<>(List.of(hattieStats, charlesStats, augustaStats, benStats, jakeStats));
+    ArrayList<JTextArea> arrayOfPanes = new ArrayList<>(List.of(hattieStats, charlesStats, augustaStats, benStats, jakeStats));
     /**
      * Update the status of each player. If the player is dead, their status is marked "DEAD."
      */
-    public void updateStats(int money, int happiness) {
+    public void updateStats() {
         String partyStatsText= """
                 Money: $Money
                 Happiness: $Happiness
@@ -125,7 +127,7 @@ public class Party extends JDialog {
                 Hunger: $Hunger
                 
                 """;
-        for (JTextArea stats : arrayOfAreas) {
+        for (JTextArea stats : arrayOfPanes) {
             if (characterArrayList.get(characterIndex).getHealth() <= 0) {
                 stats.setText("DEAD");
 
@@ -203,23 +205,37 @@ public class Party extends JDialog {
         else if (item.equals("MEDICINE")) {takeMeds();}
         else if (item.equals("CLOTHES")) {equipClothes();}
         else if (item.equals("SPLINTS")) {useSplints();}
+        updateStats();
 
     }
     private void eatFood() {
-        selectedCharacter.setHunger(calculateHunger(selectedCharacter,2));
-        promptTextArea.setText(selectedCharacter.getName() + " ate some food!");
-        staticMethods.resetNFC();
+        if (game.getFood()>0) {
+            game.setFood(game.getFood()-1);
+            selectedCharacter.setHunger(calculateHunger(selectedCharacter,2));
+            promptTextArea.setText(selectedCharacter.getName() + " ate some food!");
+            staticMethods.resetNFC();
+        }
+        else {
+            staticMethods.notEnoughItem("food");
+        }
+
     }
 
     private void takeMeds() {
-        if(selectedCharacter.isSick()) {
+        if(!selectedCharacter.isSick()) {
             JOptionPane.showMessageDialog(null,selectedCharacter.getName()+" is not sick. " +
                     "Please pick another character.",selectedCharacter.getName()+"'s Lack of Illness",
                     JOptionPane.PLAIN_MESSAGE);
         }
         else {
-            selectedCharacter.setSick(false);
-            promptTextArea.setText(selectedCharacter.getName()+" has been cured!");
+            if(game.getMedicine()>0){
+                game.setMedicine(game.getMedicine()-1);
+                selectedCharacter.setSick(false);
+                promptTextArea.setText(selectedCharacter.getName()+" has been cured!");
+            }
+            else {
+                staticMethods.notEnoughItem("medicine");
+            }
         }
     }
 
@@ -229,8 +245,14 @@ public class Party extends JDialog {
                     "protective clothing.",selectedCharacter.getName()+"'s Clothing",JOptionPane.PLAIN_MESSAGE);
         }
         else {
-            selectedCharacter.setHasClothing(true);
-            promptTextArea.setText(selectedCharacter.getName()+" now has protective " + "clothing.");
+            if (game.getClothes()>0) {
+                game.setClothes(game.getClothes()-1);
+                selectedCharacter.setHasClothing(true);
+                promptTextArea.setText(selectedCharacter.getName()+" now has protective " + "clothing.");
+            }
+            else {
+                staticMethods.notEnoughItem("clothes");
+            }
         }
     }
 
@@ -241,9 +263,15 @@ public class Party extends JDialog {
                     JOptionPane.PLAIN_MESSAGE);
         }
         else {
-            selectedCharacter.setInjured(false);
-            promptTextArea.setText(selectedCharacter.getName()+" now has " +
-                    "protective clothing.");
+            if (game.getSplints()>0){
+                selectedCharacter.setInjured(false);
+                promptTextArea.setText(selectedCharacter.getName()+" now has " + "protective clothing.");
+            }
+            else {
+                staticMethods.notEnoughItem("splints");
+            }
+
+
         }
 
     }
