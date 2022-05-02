@@ -23,7 +23,8 @@ public class RandomEventGUI extends JDialog {
     private int toolsAmt = 8;
     private ArrayList<String> nameArrayList = new ArrayList<>(List.of("Felicia","Mia","Kristin","Katrina","Janet",
             "Almudena","Chika","Mary","Nicole","Jessica","Maxine","Stephany","Kendra","Kendall","Kenifer","Elise",
-            "Anna","Lizzy","Minnie","Ida","Florence","Martha","Nellie","Lena","Agnes","Candace","Jane","April"));
+            "Anna","Lizzy","Minnie","Ida","Florence","Martha","Nellie","Lena","Agnes","Candace","Jane","April", "Jordan",
+            "Skyler","Sonia","Joanne","Crystal","Melissa","Amy","Sharron","Kelly","Shelly","Chrysanthemum"));
     private ArrayList<String> itemArrayList = new ArrayList<>(List.of("clothes","ammunition","food","medicine",
             "splints","tools"));
 
@@ -376,20 +377,22 @@ public class RandomEventGUI extends JDialog {
         encounterTraveler();
     }
 
-    private void doEvent() {
+    public void doEvent() {
+
+        String event = eventName();
         ArrayList<Character> characterArrayList = game.getCharacterArrayList();
         int characterIndex = rand.nextInt(4);
 
         //Good events
-        if (eventName().equals("encounterTraveler")) {
+        if (event.equals("encounterTraveler")) {
             inputField.addActionListener(encounterAL);
             encounterTraveler();
         }
-        else if (eventName().equals("smallStream")) {
+        else if (event.equals("smallStream")) {
             inputField.addActionListener(streamAL);
             promptLabel.setText("You found a small stream! Press S to swim, F to fish.");
         }
-        else if (eventName().equals("wagonFound")) {
+        else if (event.equals("wagonFound")) {
             int newItem = rand.nextInt(5);
             int amount = rand.nextInt(3)+1;
             String newItemName = "";
@@ -405,7 +408,7 @@ public class RandomEventGUI extends JDialog {
         }
 
         //Bad events
-        else if (eventName().equals("injury")) {
+        else if (event.equals("injury")) {
             if (!characterArrayList.get(characterIndex).isInjured()) {
                 characterArrayList.get(characterIndex).setInjured(true);
                 promptLabel.setText(characterArrayList.get(characterIndex).getName() + " got injured. Press 'C' to continue.");
@@ -417,21 +420,21 @@ public class RandomEventGUI extends JDialog {
                 inputField.addActionListener(closeAL);
             }
         }
-        else if (eventName().equals("wagonDamage")) {
+        else if (event.equals("wagonDamage")) {
             game.calculateHappiness(-5);
             game.getWagon().setState(1);
             promptLabel.setText("As you traveled your wagon hit a rock and became damaged. Everyone is saddened. Press " +
                     "'C' to continue.");
             inputField.addActionListener(closeAL);
         }
-        else if (eventName().equals("foodSpoiled")) {
+        else if (event.equals("foodSpoiled")) {
             double spoiledFoodDb = game.getFood() * .2;
             int spoiledFood = (int)spoiledFoodDb;
             game.calculateFood(-spoiledFood);
             promptLabel.setText("Some of your food spoiled. You lost " + spoiledFood + " food. Press 'C' to continue.");
             inputField.addActionListener(closeAL);
         }
-        else if (eventName().equals("illness")) {
+        else if (event.equals("illness")) {
             if (!characterArrayList.get(characterIndex).isSick()) {
                 promptLabel.setText(characterArrayList.get(characterIndex).getName() + " has fallen sick! Press 'C' to continue.");
                 characterArrayList.get(characterIndex).setSick(true);
