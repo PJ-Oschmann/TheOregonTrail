@@ -27,13 +27,30 @@ public class Inventory extends JDialog {
         this.setTitle("INVENTORY");
         setContentPane(contentPane);
         setModal(true);
-        userInput.requestFocusInWindow();
+        this.addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+                userInput.requestFocusInWindow();
+                displayMenu();
+                userInput.addActionListener(menuInputListener);
+                userInput.addFocusListener(inputHelp);
+            }
+            @Override
+            public void windowClosing(WindowEvent e) { }
+            @Override
+            public void windowClosed(WindowEvent e) { }
+            @Override
+            public void windowIconified(WindowEvent e) { }
+            @Override
+            public void windowDeiconified(WindowEvent e) { }
+            @Override
+            public void windowActivated(WindowEvent e) { }
+            @Override
+            public void windowDeactivated(WindowEvent e) { }
+        });
 
         //Image goes here
         InventoryImageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/Inventory.png"));
-        if (invComboBox.getSelectedIndex() == 0) {
-            displayMenu();
-        }
 
         invComboBox.addItemListener(new ItemListener() {
             @Override
@@ -48,22 +65,21 @@ public class Inventory extends JDialog {
                     case 5 -> { displayWT(wagonTools); inItem(); }
                     case 6 -> { displaySplints(splints); inItem(); }
                     case 7 -> { displayOxen(oxen); inItem(); }
-                    default -> { invInfo.setText("ERROR IN SWITCH"); }
+                    default -> invInfo.setText("ERROR IN SWITCH");
                 }
                 if (inItem && !itemActionListener) {
                     userInput.removeActionListener(menuInputListener);
                     userInput.addActionListener(itemInputListener);
+                    itemActionListener = true;
+                    menuActionListener = false;
                 }
                 else if (inMenu && !menuActionListener) {
                     userInput.removeActionListener(itemInputListener);
                     userInput.addActionListener(menuInputListener);
+                    menuActionListener = true;
+                    itemActionListener = false;
                 }
         }});
-
-        //Action listener for userInput
-        userInput.addActionListener(menuInputListener);
-
-        userInput.addFocusListener(inputHelp);
 
         // call onCancel() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -90,7 +106,7 @@ public class Inventory extends JDialog {
                 case "W" -> { displayWT(wagonTools); invComboBox.setSelectedIndex(5); }
                 case "S" -> { displaySplints(splints); invComboBox.setSelectedIndex(6); }
                 case "O" -> { displayOxen(oxen); invComboBox.setSelectedIndex(7); }
-                default -> { staticMethods.notValidInput(); invComboBox.setSelectedIndex(0); }
+                default -> staticMethods.notValidInput();
             }
             userInput.setText("");
         }
@@ -105,14 +121,14 @@ public class Inventory extends JDialog {
                     if (userInput.getText().equalsIgnoreCase("U")) {
                         useFood();
                     } else if (userInput.getText().equalsIgnoreCase("I")) {
-                        displayMenu(); invComboBox.setSelectedIndex(0);
+                        invComboBox.setSelectedIndex(0);
                     } else {
                         staticMethods.notValidInput();
                     }
                 }
                 case 2, 5 -> {
                     if (userInput.getText().equalsIgnoreCase("I")) {
-                        displayMenu(); invComboBox.setSelectedIndex(0);
+                        invComboBox.setSelectedIndex(0);
                     } else {
                         staticMethods.notValidInput();
                     }
@@ -121,7 +137,6 @@ public class Inventory extends JDialog {
                     if (userInput.getText().equalsIgnoreCase("U")) {
                         useMedicine();
                     } else if (userInput.getText().equalsIgnoreCase("I")) {
-                        displayMenu();
                         invComboBox.setSelectedIndex(0);
                     } else {
                         staticMethods.notValidInput();
@@ -131,7 +146,6 @@ public class Inventory extends JDialog {
                     if (userInput.getText().equalsIgnoreCase("E")) {
                         equipClothes();
                     } else if (userInput.getText().equalsIgnoreCase("I")) {
-                        displayMenu();
                         invComboBox.setSelectedIndex(0);
                     } else {
                         staticMethods.notValidInput();
@@ -141,7 +155,6 @@ public class Inventory extends JDialog {
                     if (userInput.getText().equalsIgnoreCase("U")) {
                         useSplints();
                     } else if (userInput.getText().equalsIgnoreCase("I")) {
-                        displayMenu();
                         invComboBox.setSelectedIndex(0);
                     } else {
                         staticMethods.notValidInput();
@@ -151,13 +164,12 @@ public class Inventory extends JDialog {
                     if (userInput.getText().equalsIgnoreCase("C")) {
                         consumeOxen();
                     } else if (userInput.getText().equalsIgnoreCase("I")) {
-                        displayMenu();
                         invComboBox.setSelectedIndex(0);
-                    } else {
+                    }
+                    else {
                         staticMethods.notValidInput();
                     }
                 }
-                default -> { staticMethods.notValidInput(); displayMenu(); invComboBox.setSelectedIndex(0); }
             }
             userInput.setText("");
         }
@@ -400,15 +412,15 @@ public class Inventory extends JDialog {
         //TODO: ARE YOU SURE YOU WANT TO CONSUME AN OXEN DIALOGUE Y/N
         int reply = JOptionPane.showConfirmDialog(null, "Would you like to consume an oxen?\nYou " +
                 "must have at least 5 oxen to consume 1.", "Consume an Oxen", JOptionPane.YES_NO_OPTION);
-        if (reply == JOptionPane.YES_OPTION) {
+        if (reply == JOptionPane.YES_OPTION && game.getOxen() > 4) {
             int happinessLost;
-            oxen -= 1;
-            food += 10;
+            game.setOxen(game.getOxen() - 1 );
+            game.setFood(game.getFood() + 10);
             if(happiness >= 7) { happinessLost = 7; happiness -= 7; }
             else { happinessLost = happiness; happiness = 0; }
 
             String oxenName = ReadText.generateOxenName();
-            invInfo.setText(String.format(
+            JOptionPane.showMessageDialog(null, String.format(
                     """
                     You have chosen to CONSUME one OXEN. You have gained 10 FOOD.
                     Rest in peace(s of food), %s.
@@ -417,13 +429,14 @@ public class Inventory extends JDialog {
                     
                     Enter "I" to return to the inventory menu.
                     """, oxenName, oxenName, happinessLost
-            ));
+            ), String.format("RIP %s", oxenName), JOptionPane.INFORMATION_MESSAGE);
         }
-        else {
-            invInfo.setText(
-                    """
-                    You did not consume an OXEN. Good for you.
-                    """);
+        else if (reply == JOptionPane.YES_OPTION && game.getOxen() <= 4) {
+            staticMethods.notEnoughItem("OXEN");
+        }
+        else if (reply == JOptionPane.NO_OPTION){
+            JOptionPane.showMessageDialog(null, "You did not consume an OXEN.\nGood for you.",
+                    "Your oxen live another day", JOptionPane.PLAIN_MESSAGE);
         }
     }
 

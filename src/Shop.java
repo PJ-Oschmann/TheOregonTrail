@@ -49,14 +49,29 @@ public class Shop extends JDialog {
         shopInput.addActionListener(shopMenuListener);
         shopInput.addFocusListener(inputHelp);
         displayMenu();
-        shopInput.requestFocusInWindow();
+        this.addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) { shopInput.requestFocusInWindow(); }
+            @Override
+            public void windowClosing(WindowEvent e) { }
+            @Override
+            public void windowClosed(WindowEvent e) { }
+            @Override
+            public void windowIconified(WindowEvent e) { }
+            @Override
+            public void windowDeiconified(WindowEvent e) { }
+            @Override
+            public void windowActivated(WindowEvent e) { }
+            @Override
+            public void windowDeactivated(WindowEvent e) { }
+        });
 
         shopComboBox.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 int input = shopComboBox.getSelectedIndex();
                 switch (input) {
-                    case 0 -> { displayMenu(); inMenu();}
+                    case 0 -> { displayMenu(); inMenu(); }
                     case 1 -> { displayFood(food); inItem();}
                     case 2 -> { displayAmmo(ammunition); inItem(); }
                     case 3 -> { displayMed(medicine); inItem(); }
@@ -64,7 +79,6 @@ public class Shop extends JDialog {
                     case 5 -> { displayWT(wagonTools); inItem(); }
                     case 6 -> { displaySplints(splints); inItem(); }
                     case 7 -> { displayOxen(oxen); inItem(); }
-                    default -> { displayMenu(); }
                 }
                 if (inMenu && !menuListenerActive) {
                     menuSelected();
@@ -89,11 +103,13 @@ public class Shop extends JDialog {
     private void inMenu() {
         inMenu = true;
         inItem = false;
+        shopInput.setText("");
     }
 
     private void inItem() {
         inItem = true;
         inMenu = false;
+        shopInput.setText("");
     }
 
     //Main Shop Menu
@@ -326,13 +342,12 @@ public class Shop extends JDialog {
                 
                 Enter "B" to buy OXEN.
                 Enter "S" to sell OXEN.
-                Enter "R" to return to the OXEN.
+                Enter "R" to return to the SHOP MENU.
                 """, oxenBuyPrice, oxenSellPrice, oxen, game.getMoney()
         ));
     }
 
     private void onCancel() {
-        // add your code here if necessary
         if (JOptionPane.showConfirmDialog(null,"Are you sure you want to leave the shop?",
                 "Leave SHOP?",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
             passBackVar();
@@ -528,7 +543,7 @@ public class Shop extends JDialog {
                 staticMethods.notEnoughMoney();
                 transactionCancelled();
             }
-            else if (money > costOfPurchase) {
+            else {
                 boolean yn = confirmBuy(itemName, costOfPurchase, quantity);
                 if (yn) {
                     money -= costOfPurchase;

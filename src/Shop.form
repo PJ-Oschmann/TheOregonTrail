@@ -48,6 +48,7 @@
               </grid>
             </constraints>
             <properties>
+              <focusable value="false"/>
               <model>
                 <item value="SELECT A SHOP ITEM"/>
                 <item value="F: FOOD"/>
