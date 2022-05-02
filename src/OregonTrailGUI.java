@@ -20,7 +20,7 @@ public class OregonTrailGUI {
     private JPanel AugustaPanel;
     private JPanel CharlesPanel;
     private JPanel HattiePanel;
-    private JTextArea storyTextArea;
+    public JTextArea storyTextArea;
     private JPanel JakePanel;
     private JTextField userInput;
     private JLabel mainInputLabel;
@@ -37,28 +37,25 @@ public class OregonTrailGUI {
     private Activities activities;
 
     //Our players
-    public Character hattie = new Character("Hattie Campbell", 100, 0, false);
-    public Character charles = new Character("Charles",100,0, true);
-    public Character augusta = new Character("Augusta",100,0, true);
-    public Character ben = new Character("Ben",100,0, false);
+    private Character hattie = new Character("Hattie Campbell", 100, 0, false);
+    private Character charles = new Character("Charles",100,0, true);
+    private Character augusta = new Character("Augusta",100,0, true);
+    private Character ben = new Character("Ben",100,0, false);
     private Character jake = new Character("Jake",100,0, false);
 
     public ArrayList<Character> characterArrayList = new ArrayList<>(List.of(hattie,charles,augusta,ben,jake));
-    //private ArrayList<Character> allCharacters = new ArrayList<>(List.of(hattie,charles,augusta,ben,jake));
 
     //game variables
-    public int money = 200, food = 0, ammunition = 0, medicine = 0, clothes = 0, wagonTools = 0, splints = 0, oxen = 4;
+    private int money = 200, food = 0, ammunition = 0, medicine = 0, clothes = 0, wagonTools = 0, splints = 0, oxen = 4,
+    currentPace = 0, sickCharacters = 0, dailyActions = 2, happiness = 75;
+
     private boolean isGameWon = false, isGameLost = false;
-    public int happiness = 75;
     private Weather weather = new Weather();
     private Wagon wagon = new Wagon();
     private Date date = new Date();
     private boolean isTraveling = false;
     private static boolean inMenu = true;
     private static boolean inGame = false;
-    private int currentPace = 0; //0=Steady, 1=Strenuous, 2=Grueling
-    private int sickCharacters = 0;
-    private int dailyActions = 2;
     private Timer travelClock = new Timer(5000, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -187,17 +184,16 @@ public class OregonTrailGUI {
     }
 
     private void introScene() {
-        stopContTravel();
         scene.loadScene("intro");
         inGame = true;
+        Activities activities = new Activities(this);
         updateStats();
         loadStatusPanels();
         openShop();
-        activities = new Activities(this);
         userInput.addActionListener(gameMenu);
         userInput.removeFocusListener(playHelp);
         userInput.addFocusListener(gameHelp);
-        ImageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/maingame.png"));
+        ImageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/mainGame.png"));
         weather.setRandomWeather();
         writeGameInfo();
     }
@@ -298,24 +294,6 @@ public class OregonTrailGUI {
         //anything else that changes on the day.
     }
 
-    /**
-     * Travel until the player says otherwise. A day passes every second.
-     */
-    public void continuousTravel() {
-        if (!isTraveling) {travelClock.start(); isTraveling=true;}
-        else {travelClock.stop(); isTraveling=false;}
-
-    }
-
-    /**
-     * Explicitly stop continuous travel. This method is not
-     * used by the player; rather, it is used in-code if the
-     * player must stop travelling.
-     */
-    public void stopContTravel() {
-        travelClock.stop();
-        isTraveling = false;
-    }
     //Check for scenarios to continue the story line.
     //Most things happen based on distance+location
     //Journal entries can appear based on the date.
@@ -326,13 +304,11 @@ public class OregonTrailGUI {
     public void doStoryLine() {
         //Journal for 3/19/1861
         if (date.toString().equals("March 19, 1861")) {
-            stopContTravel();
             scene.loadScene("1861-3-19");
         }
 
         //Journal for 3/20/1861
         if (date.toString().equals("March 20, 1861")) {
-            stopContTravel();
             scene.loadScene("1861-3-20");
         }
     }
@@ -416,6 +392,7 @@ public class OregonTrailGUI {
         }
         character.setHealth(newHealth);
     }
+
     public int calculateFood(int value) {
         int newFood = 0;
         if (value >=0) {
@@ -429,6 +406,7 @@ public class OregonTrailGUI {
         }
         return newFood;
     }
+
     public void dailyHealthBoost(int value) {
         for (Character character : characterArrayList) {
             calculateHealth(character, value);
@@ -454,7 +432,6 @@ public class OregonTrailGUI {
                 }
             }
         }
-
     }
 
     private void oxenInjured() {
@@ -649,26 +626,16 @@ public class OregonTrailGUI {
     private ActionListener gameMenu = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (userInput.getText().equalsIgnoreCase("I")) {
-                openInventory();
+            String input = userInput.getText().toUpperCase();
+            switch (input) {
+                case "I" ->  openInventory();
+                case "H" ->  displayHelpMenu();
+                case "P" ->  { currentPace = setPace(); writeGameInfo(); }
+                case "T" ->  travel();
+                case "A" -> activities.activitiesMenu();
+                case "/TEST" -> openRandomEvent();
+                default -> staticMethods.notValidInput();
             }
-            else if (userInput.getText().equalsIgnoreCase("H")) {
-                displayHelpMenu();
-            }
-            else if (userInput.getText().equalsIgnoreCase("P")) {
-                currentPace = setPace();
-                writeGameInfo();
-            }
-            else if (userInput.getText().equalsIgnoreCase("T")) {
-                travel();
-            }
-            else if (userInput.getText().equalsIgnoreCase("C")) {
-                continuousTravel();
-            }
-            else if (userInput.getText().equalsIgnoreCase("/test")) {
-                openRandomEvent();
-            }
-            userInput.setText("");
         }
     };
 

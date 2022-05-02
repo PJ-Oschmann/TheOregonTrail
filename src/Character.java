@@ -112,9 +112,9 @@ public class Character {
         this.daysSick = daysSick;
     }
     public String hasClothingToString() {
-        String clothingString = "Unprotected";
+        String clothingString = "Not protected from harsh weathers";
         if (hasClothing) {
-            clothingString = "Protected";
+            clothingString = "Protected from harsh weathers";
         }
         return clothingString;
     }

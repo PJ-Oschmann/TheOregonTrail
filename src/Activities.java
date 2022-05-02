@@ -47,6 +47,16 @@ public class Activities {
         return doAction;
     }
 
+    public void activitiesMenu() {
+        game.storyTextArea.setText(String.format(
+            """
+            
+            H: HUNTING
+                        
+            """
+        ));
+    }
+
     public void hunt() {
         int newFood = 0;
         String[] shootButton = {"Shoot!"};

@@ -388,7 +388,7 @@ public class Shop extends JDialog {
                 case "W" -> { displayWT(wagonTools); shopComboBox.setSelectedIndex(5); }
                 case "S" -> { displaySplints(splints); shopComboBox.setSelectedIndex(6); }
                 case "O" -> { displayOxen(oxen); shopComboBox.setSelectedIndex(7); }
-                default -> { staticMethods.notValidInput(); shopComboBox.setSelectedIndex(0);}
+                default -> staticMethods.notValidInput();
             }
             shopInput.setText("");
         }
@@ -399,8 +399,8 @@ public class Shop extends JDialog {
         public void actionPerformed(ActionEvent e) {
             String input = shopInput.getText().toUpperCase();
             switch (input) {
-                case "B" -> { buyItem(); shopComboBox.setSelectedIndex(0); inMenu(); }
-                case "S" -> { sellItem(); shopComboBox.setSelectedIndex(0); inMenu(); }
+                case "B" -> buyItem();
+                case "S" -> sellItem();
                 case "R" -> { shopComboBox.setSelectedIndex(0); inMenu(); }
                 default -> { staticMethods.notValidInput(); shopComboBox.setSelectedIndex(0); inMenu(); }
             }
@@ -454,10 +454,15 @@ public class Shop extends JDialog {
             try {
                 do {
                     quantity = Integer.parseInt(JOptionPane.showInputDialog(
-                            String.format("""
-                                    You have $%d available to spend. This item costs $%d.
-                                    How many %s would you like to purchase?
-                                    (Enter 0 to cancel):""", money, itemCost, item)));
+                            String.format(
+                                    """
+                                            You have $%d available to spend. This item costs $%d.
+                                            How many %s would you like to purchase?
+                                            (Enter 0 to cancel):
+                                            """, money, itemCost, item)));
+                            if (quantity * itemCost > money) {
+                                staticMethods.notEnoughMoney();
+                            }
                 } while (quantity * itemCost > money);
             }
             catch (InputMismatchException e) {
@@ -541,7 +546,6 @@ public class Shop extends JDialog {
             int costOfPurchase = quantity * buyPrice;
             if (money < costOfPurchase) {
                 staticMethods.notEnoughMoney();
-                transactionCancelled();
             }
             else {
                 boolean yn = confirmBuy(itemName, costOfPurchase, quantity);
