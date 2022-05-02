@@ -1,12 +1,15 @@
 import javax.swing.*;
+import java.util.ArrayList;
 
 public class RandomEvent {
     private final java.util.Random rand = new java.util.Random();
     private int happiness;
     private int type;
+    private OregonTrailGUI game;
 
-    RandomEvent (int happiness) {
+    RandomEvent (int happiness, OregonTrailGUI game) {
         int mood = eventChance(happiness);
+        this.game = game;
     }
 
    int eventChance (int happiness) {
@@ -83,6 +86,19 @@ public class RandomEvent {
             else {
                 return "illness"; //random party member falls ill
             }
+        }
+    }
+
+    void doEvent() {
+        ArrayList<Character> characterArrayList = game.getCharacterArrayList();
+        int characterIndex = rand.nextInt(4);
+        if (eventName().equals("encounterTraveler")) {
+
+        }
+        else if (eventName().equals("injury")) {
+            if (!characterArrayList.get(characterIndex).isInjured()) {
+                characterArrayList.get(characterIndex).setInjured(true);
+            } //No else cuz it just doesn't happen
         }
     }
 }
