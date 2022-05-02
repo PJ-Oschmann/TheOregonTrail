@@ -10,18 +10,21 @@ public class Location {
     private int milesTravd = 0;
     private String currentLocation = "Independence";
     private int markerCounter = 0; //Index of the milage marker we're at
-    ArrayList<Integer> mileMarkers = new ArrayList<Integer>(List.of(0,317,550, 591,620, 672 ,1063,1279, 1454, 1700, 1900, 2000));
-    ArrayList<String> names = new ArrayList<String>(List.of("Independence", "Fort Kearny", "Courthouse Rock",
-            "Scotts Bluff", "Fort Laramie", "Fort Bridger", "Fort Hall", "Three Island Crossing", "Fort Boise", "Oregon City"));
+    ArrayList<Integer> mileMarkers = new ArrayList<>(List.of(0,317,550, 591,620, 672 ,1063,1279, 1454, 1700, 1900, 2000));
+    ArrayList<String> names = new ArrayList<>(List.of("Independence", "Fort Kearny", "Courthouse Rock", "Chimney Rock",
+            "Scotts Bluff", "Fort Laramie", "Fort Bridger", "Fort Hall", "Three Island Crossing", "Fort Boise",
+            "Blue Mountains", "Oregon City"));
+
+    /**
+     * The location class is used to track the location of the character/party during
+     * their journey from Missouri to Nebraska (Ash Hollow). This object will hold
+     * the name of the location the party is at in the game and the location will change
+     * depending on how much distance they have traveled.
+     */
     public Location(OregonTrailGUI game) {
         this.game = game;
         this.pace = game.getCurrentPace();
-        /**
-         * The location class is used to track the location of the character/party during
-         * their journey from Missouri to Nebraska (Ash Hollow). This object will hold
-         * the name of the location the party is at in the game and the location will change
-         * depending on how much distance they have traveled.
-         */
+
 
         /*Fort Bridger //wyoming --
         Fort Kearney //nebraska --
