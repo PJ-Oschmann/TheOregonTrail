@@ -1,8 +1,5 @@
-import javax.swing.*;
-import java.util.Random;
 public class River {
     private OregonTrailGUI game;
-    private Random rand = new Random();
     private Wagon wagon;
     public River(OregonTrailGUI game) {
         this.game = game;
@@ -12,93 +9,95 @@ public class River {
     //Booleans: true = crossed; false = didn't. (Still true if someone gets hurt/sick/etc but crossed successfully)
 
     public boolean takeFerry() {
-        boolean crossed = true;
         if (game.getMoney() >= 20) {
             game.setMoney(game.getMoney() - 20);
-
+            return true;
         }
         else {
             staticMethods.notEnoughMoney();
-            crossed = false;
         }
-        return crossed;
+        return false;
     }
 
     public boolean buildRaft() {
-        boolean crossed = true;
-        if (game.getWagonTools()>=2) {
-            game.setWagonTools(game.getWagonTools()-2);
+        if (game.getWagonTools() >= 2) {
+            game.setWagonTools(game.getWagonTools() - 2);
 
             //10% 1 oxen dies
-            if (rand.nextInt(9)==0) {
-                game.setOxen(game.getOxen()-1);
-                if (game.getOxen()==0) {
-                    crossed = false;
+            if (game.rand.nextInt(9) == 0) {
+                game.setOxen(game.getOxen() - 1);
+                if (game.getOxen() == 0) {
+                    game.checkIfLost();
+                    return false;
                 }
             }
 
             //15% for someone to get sick
-            if (rand.nextInt(99)<=15) {
-                int characterIndex = rand.nextInt(4);
-                if (!game.characterArrayList.get(characterIndex).isSick()) {
+            if (game.rand.nextInt(99) <= 15) {
+                int characterIndex = game.rand.nextInt(game.characterArrayList.size());
                     game.characterArrayList.get(characterIndex).setSick(true);
-                }
             }
 
-            //10% wagon damage
-            if (rand.nextInt(9)==0) {
+            //5% wagon damage
+            if (game.rand.nextInt(20) == 0) {
                 wagon.setState(1);
             }
+            return true;
         }
-        return crossed;
+        else {
+            staticMethods.notEnoughItem("WAGON TOOLS");
+            return false;
+        }
     }
 
     public boolean crossAlone() {
-        boolean crossed = true;
         //10% chance 1 oxen dies
-        if (rand.nextInt(9)==0 && game.getOxen()>0) {
-            game.setOxen(game.getOxen()-1);
-            if (game.getOxen()==0) {
-                crossed = false;
+        if (game.rand.nextInt(9) == 0 && game.getOxen() > 0) {
+            game.setOxen(game.getOxen() - 1);
+            if (game.getOxen() <= 0) {
+                game.checkIfLost();
+                return false;
             }
         }
-
         //or 20% chance 2 oxen die
-        else if (rand.nextInt(4)==0) {
-            if (game.getOxen()==1) {
-                game.setOxen(game.getOxen()-1);
-                if (game.getOxen()==0) {
-                    crossed = false;
-                }
+        else if (game.rand.nextInt(4) == 0) {
+            if (game.getOxen() == 1) {
+                game.setOxen(game.getOxen() - 1);
             }
             else {
-                game.setOxen(game.getOxen()-2);
-                if (game.getOxen()==0) {
-                    crossed = false;
-                }
+                game.setOxen(game.getOxen() - 2);
+            }
+            if (game.getOxen() <= 0) {
+                game.checkIfLost();
+                return false;
             }
         }
 
         //5% chance someone drowns
-        if (rand.nextInt(19)==0) {
-            int characterIndex = rand.nextInt(4);
-            if (game.characterArrayList.get(characterIndex).getHealth()>0) {
-                game.characterArrayList.get(characterIndex).setHealth(0);
-            }
+        if (game.rand.nextInt(19) == 0) {
+            boolean someoneDrowns = false;
+            int characterIndex;
+            do {
+                characterIndex = game.rand.nextInt(game.characterArrayList.size());
+                if (!game.characterArrayList.get(characterIndex).getIsDead()) {
+                    game.characterArrayList.get(characterIndex).setIsDead(true);
+                    someoneDrowns = true;
+                    game.checkIfLost();
+                }
+            } while (!someoneDrowns);
         }
 
         //15% chance someone gets sick
-        if (rand.nextInt(99)<=15) {
-            int characterIndex = rand.nextInt(4);
-            if (game.characterArrayList.get(characterIndex).isSick() == false) {
+        if (game.rand.nextInt(99) <= 15) {
+            int characterIndex = game.rand.nextInt(game.characterArrayList.size());
                 game.characterArrayList.get(characterIndex).setSick(true);
-            }
         }
 
         //10% chance wagon breaks
-        if (rand.nextInt(9)==0) {
-            wagon.setState(1);
+        if (game.rand.nextInt(10) == 0) {
+            wagon.setState(wagon.getState() - 1);
+            game.checkIfLost();
         }
-        return crossed;
+        return true;
     }
 }

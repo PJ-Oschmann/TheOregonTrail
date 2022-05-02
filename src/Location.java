@@ -1,3 +1,4 @@
+import javax.management.RuntimeErrorException;
 import javax.swing.*;
 import java.sql.Array;
 import java.util.ArrayList;
@@ -6,8 +7,8 @@ import java.util.List;
 public class Location {
     private int pace;
     private OregonTrailGUI game;
-    private int milesTravd=0;
-    private String currentLocation="Independence";
+    private int milesTravd = 0;
+    private String currentLocation = "Independence";
     private int markerCounter = 0; //Index of the milage marker we're at
     ArrayList<Integer> mileMarkers = new ArrayList<Integer>(List.of(0,317,550, 591,620, 672 ,1063,1279, 1454, 1700, 1900, 2000));
     ArrayList<String> names = new ArrayList<String>(List.of("Independence", "Fort Kearny", "Courthouse Rock",
@@ -21,10 +22,6 @@ public class Location {
          * the name of the location the party is at in the game and the location will change
          * depending on how much distance they have traveled.
          */
-
-
-
-
 
         /*Fort Bridger //wyoming --
         Fort Kearney //nebraska --
@@ -44,30 +41,21 @@ public class Location {
 
     public void addMileage() {
         int miles;
-        pace=game.getCurrentPace();
-        if (pace==0) {miles = 15;}
+        pace = game.getCurrentPace();
+        if (pace == 0) {miles = 15;}
         else if (pace == 1) {miles = 20;}
         else {miles = 25;}
-        if (milesTravd+miles>=mileMarkers.get(markerCounter) && !names.get(markerCounter).equals(currentLocation)) {
-
-            String[] buttons = {"Stop here","Keep going"};
-            int stopOption = JOptionPane.showOptionDialog(null,"You reached " + names.get(markerCounter) + ", would "
-            + "you like to stop here?",names.get(markerCounter),JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,
-                    null,buttons,null);
-            if (stopOption==JOptionPane.YES_OPTION) {
-                milesTravd=mileMarkers.get(markerCounter);
+        milesTravd += miles;
+        try {
+            if (milesTravd >= mileMarkers.get(markerCounter) && !names.get(markerCounter).equals(currentLocation)) {
+                JOptionPane.showMessageDialog(null, "You reached " + names.get(markerCounter) +
+                        "!", "CHECKPOINT", JOptionPane.INFORMATION_MESSAGE);
+                currentLocation = names.get(markerCounter);
             }
-            else {
-                milesTravd+=miles;
-            }
-            markerCounter++;
-            currentLocation=names.get(markerCounter);
         }
-        else {
-            milesTravd+=miles;
+        catch (RuntimeErrorException e){
+            throw new RuntimeException("Location Class addMileage() method not measuring distance:markers correctly");
         }
-
-
     }
 
     public int getMilesTravd() {

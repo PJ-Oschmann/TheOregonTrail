@@ -33,9 +33,9 @@ public class OregonTrailGUI {
     private JLabel InventoryImagePanel;
     private final Scene scene = new Scene();
     //private final DebugGUI debug = new DebugGUI();
-    private Random rand = new Random();
-    private Activities activities = new Activities(this);
-    private Location location = new Location(this);
+    public final Random rand = new Random();
+    private final Activities activities = new Activities(this);
+    private final Location location = new Location(this);
 
     //Our players
     private Character hattie = new Character("Hattie Campbell", 100, 0, false);
@@ -289,17 +289,31 @@ public class OregonTrailGUI {
         impactHappiness();
         date.advanceDate();
         weather.setRandomWeather();
+        doStoryLine();
         if (sickCharacters>0) {handleSickCharacters();}
         writeGameInfo();
+        oxenInjured();
         killPlayer();
         checkIfLost();
-        oxenInjured();
-        doStoryLine();
+        updateLocation();
     }
 
     private void resetDailies() {
         dailyActions = 2;
         activities.setJournCounter(0);
+    }
+
+    private void updateLocation(){
+        //check to see if new distance takes you to a new location
+        //methods as appropriate to handle new locations and landmarks
+        if (location.getCurrentLocation().equals("OREGON CITY")) { //change this to read for last marker array index in future
+            gameWon();
+        }
+    }
+
+
+    public void gameWon() {
+        //nothing here yet @@KEN to fix@@
     }
 
     public int getCurrentPace() {
@@ -523,7 +537,7 @@ public class OregonTrailGUI {
      * - everyone dies
      * - no one has food available for 3 consecutive days.
      */
-    private void checkIfLost() {
+    public void checkIfLost() {
         boolean isLost = false;
         String message = "";
 
@@ -534,8 +548,7 @@ public class OregonTrailGUI {
         }
 
         //If there are no healthy oxen
-        //TODO: Re-implement oxen system
-        else if (oxen < 0) {
+        else if (oxen <= 0) {
             isLost = true;
             message = "You have no more healthy oxen to pull your wagon. You can't continue.";
         }
@@ -553,15 +566,15 @@ public class OregonTrailGUI {
         }
 
         //If the adults are dead
-        else if (augusta.getHealth()==0 && charles.getHealth()==0) {
+        else if (augusta.getIsDead() && charles.getIsDead()) {
             message = "Augusta and Charles died. Without the guidance of their elders, the young-lings find themselves " +
                     "confused. You can't continue";
             isLost = true;
         }
 
         //If everyone is dead
-        else if (hattie.getHealth()<=0 && charles.getHealth() <= 0 && augusta.getHealth() <= 0 && ben.getHealth() <= 0
-                && jake.getHealth() <= 0) {
+        else if (hattie.getIsDead() && charles.getIsDead() && augusta.getIsDead() && ben.getIsDead()
+                && jake.getIsDead()) {
             message = "Everyone literally died. Ghosts don't go to Oregon. You can't continue.";
             isLost = true;
         }
@@ -868,9 +881,10 @@ public class OregonTrailGUI {
                 Hunger: $Hunger
                 """;
         for (JTextPane stats : arrayOfPanes) {
-            if (characterArrayList.get(characterIndex).getHealth() <= 0) {
-                stats.setText("DEAD");
-
+            if (characterArrayList.get(characterIndex).getIsDead()) {
+                stats.setText(String.format("%s is dead.", characterArrayList.get(characterIndex).getName()));
+                arrayOfPanes.remove(characterIndex);
+                characterArrayList.remove(characterIndex);
             } else {
                 String newText = statsText;
                 newText = newText.replace("$HP", Integer.toString(characterArrayList.get(characterIndex).getHealth()));

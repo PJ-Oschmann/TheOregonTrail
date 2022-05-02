@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Random;
 
 public class Activities {
     private int food;
@@ -19,7 +18,6 @@ public class Activities {
     private int dailyActions;
     private int cloDACounter = 0;
     public int journCounter = 0;
-    private Random rand = new Random();
 
     public Activities(OregonTrailGUI game) {
         this.game = game;
@@ -130,7 +128,7 @@ public class Activities {
             String[] shootButton = {"Shoot!"};
             JOptionPane.showOptionDialog(null,"You point your gun into the woods...",
                     "Hunting Activity",JOptionPane.YES_OPTION,JOptionPane.PLAIN_MESSAGE,null,shootButton,null);
-            int n = rand.nextInt(99);
+            int n = game.rand.nextInt(99);
                 if (n < 9) {
                     newFood = 5;
                 } else if (n < 24) {
@@ -159,7 +157,7 @@ public class Activities {
         String[] searchButton = {"Look Around!"};
         JOptionPane.showOptionDialog(null,"You enter the woods, being careful to watch your step...",
                 "Foraging Activity",JOptionPane.YES_OPTION,JOptionPane.PLAIN_MESSAGE,null,searchButton,null);
-        int n = rand.nextInt(99);
+        int n = game.rand.nextInt(99);
             if (n < 9) {
                 newFood = 1;
             } else if (n < 24) {
