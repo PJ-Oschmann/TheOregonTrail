@@ -295,7 +295,6 @@ public class OregonTrailGUI {
         checkIfLost();
         oxenInjured();
         doStoryLine();
-        //anything else that changes on the day.
     }
 
     private void resetDailies() {
@@ -307,24 +306,18 @@ public class OregonTrailGUI {
         return currentPace;
     }
 
-    //Check for scenarios to continue the story line.
-    //Most things happen based on distance+location
-    //Journal entries can appear based on the date.
-    //When modifying this code, do so in chronological order
-    //instead of just appending to the end for readability.
-
-    //Important! If loading a scene, remember to stop continuous travel first! (stopContTravel())
-    public void doStoryLine() {
+    public void doStoryLine() { //Change to switch statement and move this method into location class
         //Journal for 3/19/1861
         if (date.toString().equals("March 19, 1861")) {
-            scene.loadScene("1861-3-19");
+            scene.loadScene("1861-3-19", date.toString());
         }
 
         //Journal for 3/20/1861
         if (date.toString().equals("March 20, 1861")) {
-            scene.loadScene("1861-3-20");
+            scene.loadScene("1861-3-20", date.toString());
         }
     }
+
     /**
      * Writes all game info to a text area. It includes:
      * The player's current location

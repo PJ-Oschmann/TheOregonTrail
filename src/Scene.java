@@ -1,3 +1,4 @@
+import javax.management.RuntimeErrorException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -67,16 +68,25 @@ public class Scene extends JDialog {
             this.setVisible(true);
         }
         else {
-            System.out.println("SceneManager.java: Attempted to load scene " + sceneName + ", but another scene is loaded. Unload the scene first.");
+            throw new RuntimeException("There was an error in unloading the previous scene.");
         }
     }
 
-    public void chainLoadScene(ArrayList<String> arrayOfScenes) {
-        chainLoadScene(arrayOfScenes);
-        this.pack();
-        this.setVisible(true);
+    public void loadScene(String sceneName, String currentDate) {
+        if (!sceneIsLoaded) {
+            sceneToRead = ReadText.readScene(sceneName);
+            sceneToRead.add(0, currentDate);
+            imageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/"+sceneName+".png"));
+            sceneIsLoaded = true;
+            continueButton.setVisible(true);
+            continueScene();
+            this.pack();
+            this.setVisible(true);
+        }
+        else {
+            throw new RuntimeException("There was an error in unloading the previous scene.");
+        }
     }
-    //Continue reading a scene.
     int readTextCounter = 0;
     public void continueScene() {
         try {
