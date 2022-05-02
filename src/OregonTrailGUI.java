@@ -654,7 +654,7 @@ public class OregonTrailGUI {
                 continuousTravel();
             }
             else if (userInput.getText().equalsIgnoreCase("/test")) {
-                activities.makeClothes();
+                openRandomEvent();
             }
             userInput.setText("");
         }
@@ -664,6 +664,14 @@ public class OregonTrailGUI {
         Inventory inv = new Inventory(this);
         inv.pack();
         inv.setVisible(true);
+    }
+
+    private void openRandomEvent() {
+        RandomEventGUI reg = new RandomEventGUI(this);
+        reg.encounterTraveler();
+        reg.pack();
+        reg.setVisible(true);
+
     }
 
     private void openShop() {
