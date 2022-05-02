@@ -435,12 +435,8 @@ public class Inventory extends JDialog {
             staticMethods.notEnoughItem("OXEN");
         }
         else if (reply == JOptionPane.NO_OPTION){
-            invInfo.setText(
-                    """
-                    You did not consume an OXEN. Good for you.
-                    
-                    Enter "I" to return to the inventory menu.
-                    """);
+            JOptionPane.showMessageDialog(null, "You did not consume an OXEN.\nGood for you.",
+                    "Your oxen live another day", JOptionPane.PLAIN_MESSAGE);
         }
     }
 
