@@ -1,3 +1,9 @@
+/**
+ * The location class is used to track the location of the character/party during
+ * their journey from Missouri to Nebraska (Ash Hollow). This object will hold
+ * the name of the location the party is at in the game and the location will change
+ * depending on how much distance they have traveled.
+ */
 import javax.management.RuntimeErrorException;
 import javax.swing.*;
 import java.sql.Array;
@@ -9,22 +15,25 @@ public class Location {
     private OregonTrailGUI game;
     private int milesTravd = 0;
     private String currentLocation = "Independence";
-    private int markerCounter = 0; //Index of the milage marker we're at
-    ArrayList<Integer> mileMarkers = new ArrayList<>(List.of(0,317,550, 591,620, 672 ,1063,1279, 1454, 1700, 1900, 2000));
-    ArrayList<String> names = new ArrayList<>(List.of("Independence", "Fort Kearny", "Courthouse Rock", "Chimney Rock",
+    private int markerCounter = 1; //Index of the milage marker we're at
+    ArrayList<Integer> mileMarkers = new ArrayList<>(List.of(0,17, 50, 80, 108, 221, 273, 550, 591,620, 672 ,1063,1279, 1454, 1700, 1900, 2000));
+    ArrayList<String> names = new ArrayList<>(List.of("Independence", "Blue River", "Wakarusa River", "Kansas River", "Vermilion", "Little Blue River", "Big Blue River","Fort Kearny", "Courthouse Rock", "Chimney Rock",
             "Scotts Bluff", "Fort Laramie", "Fort Bridger", "Fort Hall", "Three Island Crossing", "Fort Boise",
             "Blue Mountains", "Oregon City"));
 
-    /**
-     * The location class is used to track the location of the character/party during
-     * their journey from Missouri to Nebraska (Ash Hollow). This object will hold
-     * the name of the location the party is at in the game and the location will change
-     * depending on how much distance they have traveled.
+    /*
+    Blue //kansas 17
+    Wakarusa //kansas
+    Kansas //kansas 80
+    Big Blue //nebraska 273
+    Little Blue //Nebraska 221
+    Vermilion //kansas 108
+    Platte River //Nebraska
+
      */
     public Location(OregonTrailGUI game) {
         this.game = game;
         this.pace = game.getCurrentPace();
-
 
         /*Fort Bridger //wyoming --
         Fort Kearney //nebraska --
@@ -54,6 +63,7 @@ public class Location {
                 JOptionPane.showMessageDialog(null, "You reached " + names.get(markerCounter) +
                         "!", "CHECKPOINT", JOptionPane.INFORMATION_MESSAGE);
                 currentLocation = names.get(markerCounter);
+                milesTravd=mileMarkers.get(markerCounter);
             }
         }
         catch (RuntimeErrorException e){
