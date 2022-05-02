@@ -158,10 +158,12 @@ public class RandomEventGUI extends JDialog {
     String traderItem = itemArrayList.get(rand.nextInt(5));
     int halfOff=99;
     private void trade(int step) {
+
         if (step==1) {
             inputField.removeActionListener(encounterAL);
             promptLabel.setText("What would you like to trade? Enter it in the format 'Number' 'Item' (E.g., 5 F for 5 Food)");
             inputField.addActionListener(tradeALWant);
+            inputField.setText("");
         }
         else if (step==2) {
             inputField.setText("");
@@ -216,6 +218,7 @@ public class RandomEventGUI extends JDialog {
             }
             else if (inputField.getText().equalsIgnoreCase("S")) {
                 shareStories();
+                dispose();
             }
         }
     };
@@ -275,6 +278,17 @@ public class RandomEventGUI extends JDialog {
                 //TODO: make string about not having enough lmao
                 if (tradeGiveAmt*price>=halfOff && tradeGiveAmt<=invAmt){
                     trade(4);
+                }
+                else if (tradeGiveAmt>=invAmt) {
+                    String[] buttons = {"Abandon Trade","Change value"};
+                    int choice = JOptionPane.showOptionDialog(null,"You don't have enough of this item to trade.","Not enough items",JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,null,buttons,null);
+                    if (choice==JOptionPane.YES_OPTION) {
+                        JOptionPane.showMessageDialog(null,"You abandoned the trade.","Abandoning trade",JOptionPane.PLAIN_MESSAGE);
+                        dispose();
+                    }
+                    else {
+                        inputField.setText("");
+                    }
                 }
                 else {
                     JOptionPane.showMessageDialog(null,"You need to trade at least $" +
@@ -359,8 +373,7 @@ public class RandomEventGUI extends JDialog {
     }
 
     public void testEvent() {
-        inputField.addActionListener(streamAL);
-        promptLabel.setText("You found a small stream! Press S to swim, F to fish.");
+        encounterTraveler();
     }
 
     private void doEvent() {
