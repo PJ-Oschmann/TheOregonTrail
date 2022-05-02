@@ -1,3 +1,7 @@
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Location {
 
     public Location() {
@@ -8,6 +12,9 @@ public class Location {
  * depending on how much distance they have traveled.
  */
 
+        ArrayList<Integer> mileMarkers = new ArrayList<Integer>(List.of(0,317,550, 591,620, 672 ,1063,1279, 1454, 1700, 1900, 2000));
+        ArrayList<String> names = new ArrayList<String>(List.of("Independence", "Fort Kearny", "Courthouse Rock",
+                "Scotts Bluff", "Fort Laramie", "Fort Bridger", "Fort Hall", "Three Island Crossing", "Fort Boise", "Oregon City"));
 
     /*Fort Bridger //wyoming --
     Fort Kearney //nebraska --
