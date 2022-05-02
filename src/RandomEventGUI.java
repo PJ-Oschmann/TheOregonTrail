@@ -303,8 +303,14 @@ public class RandomEventGUI extends JDialog {
     private final ActionListener streamAL = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (inputField.getText()=="S") {
+            if (inputField.getText().equals("S'")) {
                 swim();
+            }
+            else if (inputField.getText().equals("F")) {
+                fish();
+            }
+            else {
+                staticMethods.notValidInput();
             }
         }
     };
@@ -339,12 +345,12 @@ public class RandomEventGUI extends JDialog {
             fishAmount=rand.nextInt(4)+5;
             inputField.removeActionListener(streamAL);
             inputField.addActionListener(closeAL);
-            promptLabel.setText("You caught " + fishAmount + " fish!");
+            promptLabel.setText("You caught " + fishAmount + " fish! Press 'C' to continue.");
         }
         else {
             inputField.removeActionListener(streamAL);
             inputField.addActionListener(closeAL);
-            promptLabel.setText("no fish c");
+            promptLabel.setText("You caught no fish. Press 'C' to continue.");
         }
     }
     private void shareStories() {
@@ -372,6 +378,21 @@ public class RandomEventGUI extends JDialog {
             encounterTraveler();
         }
         else if (eventName().equals("smallStream")) {
+            inputField.addActionListener(streamAL);
+            promptLabel.setText("You found a small stream! Press S to swim, F to fish.");
+        }
+        else if (eventName().equals("wagonFound")) {
+            int newItem = rand.nextInt(5);
+            int amount = rand.nextInt(3)+1;
+            String newItemName = "";
+            if (newItem==0){newItemName="Clothes";}
+            else if (newItem==1){newItemName="Ammunition";}
+            else if (newItem==2){newItemName="Medicine";}
+            else if (newItem==3){newItemName="Splints";}
+            else if (newItem==4){newItemName="Wagon Tools";}
+            promptLabel.setText("You found " + amount + " " + newItemName + "! Press 'C' to continue");
+            game.calculateHappiness(5);
+            inputField.addActionListener(closeAL);
 
         }
 
