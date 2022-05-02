@@ -25,6 +25,10 @@ public class staticMethods {
                 "INVALID", JOptionPane.ERROR_MESSAGE);
     }
 
+    public static void cantCross(String message) {
+        JOptionPane.showMessageDialog(null,message,"COULDN'T CROSS",JOptionPane.ERROR_MESSAGE);
+    }
+
     public static void notEnoughItem(String item) {
         JOptionPane.showMessageDialog(null,"You don't have enough " + item + " to do this.",
                 "INVALID",JOptionPane.ERROR_MESSAGE);

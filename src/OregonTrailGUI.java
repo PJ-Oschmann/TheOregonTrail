@@ -288,7 +288,7 @@ public class OregonTrailGUI {
         impactHappiness();
         date.advanceDate();
         weather.setRandomWeather();
-        doStoryLine();
+        //doStoryLine();
         if (sickCharacters>0) {handleSickCharacters();}
         writeGameInfo();
         oxenInjured();

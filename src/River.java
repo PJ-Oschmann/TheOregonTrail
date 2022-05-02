@@ -28,6 +28,7 @@ public class River {
                 game.setOxen(game.getOxen() - 1);
                 if (game.getOxen() == 0) {
                     game.checkIfLost();
+                    staticMethods.cantCross("All your oxen died while crossing. Everyone drowned.");
                     return false;
                 }
             }
@@ -56,6 +57,7 @@ public class River {
             game.setOxen(game.getOxen() - 1);
             if (game.getOxen() <= 0) {
                 game.checkIfLost();
+                staticMethods.cantCross("All your oxen died while crossing. Everyone drowned.");
                 return false;
             }
         }
@@ -69,6 +71,7 @@ public class River {
             }
             if (game.getOxen() <= 0) {
                 game.checkIfLost();
+                staticMethods.cantCross("All your oxen died while crossing. Everyone drowned.");
                 return false;
             }
         }
@@ -95,7 +98,7 @@ public class River {
 
         //10% chance wagon breaks
         if (game.rand.nextInt(10) == 0) {
-            wagon.setState(wagon.getState() - 1);
+            wagon.setState(wagon.getState() + 1);
             game.checkIfLost();
         }
         return true;

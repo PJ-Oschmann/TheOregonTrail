@@ -11,8 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Location {
+
     private int pace;
     private OregonTrailGUI game;
+    private River river;
     private int milesTravd = 0;
     private String currentLocation = "Independence";
     private int markerCounter = 1; //Index of the milage marker we're at
@@ -34,7 +36,7 @@ public class Location {
     public Location(OregonTrailGUI game) {
         this.game = game;
         this.pace = game.getCurrentPace();
-
+        this.river = new River(game);
         /*Fort Bridger //wyoming --
         Fort Kearney //nebraska --
         Fort Laramie //wyoming --
@@ -50,7 +52,40 @@ public class Location {
         Vermilion // ??
         Platte River //Nebraska*/
     }
+    public void crossRiver() {
+        String crossChoice = JOptionPane.showInputDialog(null, "You reached " + names.get(markerCounter) +
+                "! How would you like to cross? You can:\n1 - Take the Ferry for $20\n2 - Build a raft using 2 " +
+                "of your wagon tools\n3 - Attempt to swim across", "CHECKPOINT", JOptionPane.INFORMATION_MESSAGE);
+        switch (crossChoice) {
+            case "1":
+                if(river.takeFerry()){
+                    break;
+                }
+                else {
+                    crossRiver();
+                }
+            case "2":
+                if(river.buildRaft()){
+                    break;
+                }
+                else {
+                    crossRiver();
+                }
 
+            case "3":
+                if(river.crossAlone()){
+                    break;
+                }
+                else {
+                    crossRiver();
+                }
+
+            default:
+                staticMethods.notValidInput();
+                crossRiver();
+                break;
+        }
+    }
     public void addMileage() {
         int miles;
         pace = game.getCurrentPace();
@@ -59,7 +94,13 @@ public class Location {
         else {miles = 25;}
         milesTravd += miles;
         try {
-            if (milesTravd >= mileMarkers.get(markerCounter) && !names.get(markerCounter).equals(currentLocation)) {
+            if (milesTravd >= mileMarkers.get(markerCounter) && !names.get(markerCounter).equals(currentLocation) &&
+                    names.get(markerCounter).contains("River")) {
+                crossRiver();
+                currentLocation = names.get(markerCounter);
+                milesTravd=mileMarkers.get(markerCounter);
+            }
+            else if (milesTravd >= mileMarkers.get(markerCounter) && !names.get(markerCounter).equals(currentLocation)) {
                 JOptionPane.showMessageDialog(null, "You reached " + names.get(markerCounter) +
                         "!", "CHECKPOINT", JOptionPane.INFORMATION_MESSAGE);
                 currentLocation = names.get(markerCounter);
