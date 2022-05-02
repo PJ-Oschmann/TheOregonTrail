@@ -16,6 +16,7 @@ public class Inventory extends JDialog {
     private ArrayList<Character> characterArrayList;
     private int food, ammunition, medicine, clothes, wagonTools, splints, oxen, money, happiness;
     private final OregonTrailGUI game;
+    private boolean inMenu, inItem, menuActionListener, itemActionListener;
 
     public Inventory(OregonTrailGUI game) {
         //instantiating private vars
@@ -38,58 +39,29 @@ public class Inventory extends JDialog {
             public void itemStateChanged(ItemEvent e) {
                 int input = invComboBox.getSelectedIndex();
                 switch (input) {
-                    case 0 -> displayMenu();
-                    case 1 -> displayFood(food);
-                    case 2 -> displayAmmo(ammunition);
-                    case 3 -> displayMed(medicine);
-                    case 4 -> displayClothes(clothes);
-                    case 5 -> displayWT(wagonTools);
-                    case 6 -> displaySplints(splints);
-                    case 7 -> displayOxen(oxen);
-                    default -> invInfo.setText("ERROR IN SWITCH");
+                    case 0 -> { displayMenu(); inMenu(); }
+                    case 1 -> { displayFood(food); inItem(); }
+                    case 2 -> { displayAmmo(ammunition); inItem(); }
+                    case 3 -> { displayMed(medicine);inItem();  }
+                    case 4 -> { displayClothes(clothes); inItem(); }
+                    case 5 -> { displayWT(wagonTools); inItem(); }
+                    case 6 -> { displaySplints(splints); inItem(); }
+                    case 7 -> { displayOxen(oxen); inItem(); }
+                    default -> { invInfo.setText("ERROR IN SWITCH"); }
+                }
+                if (inItem && !itemActionListener) {
+                    userInput.removeActionListener(menuInputListener);
+                    userInput.addActionListener(itemInputListener);
+                }
+                else if (inMenu && !menuActionListener) {
+                    userInput.removeActionListener(itemInputListener);
+                    userInput.addActionListener(menuInputListener);
                 }
         }});
 
         //Action listener for userInput
-        userInput.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String input = userInput.getText().toUpperCase();
-                switch (input) {
-                    case "I" -> { displayMenu(); invComboBox.setSelectedIndex(0); }
-                    case "F" -> { displayFood(food); invComboBox.setSelectedIndex(1); }
-                    case "A" -> { displayAmmo(ammunition); invComboBox.setSelectedIndex(2); }
-                    case "M" -> { displayMed(medicine); invComboBox.setSelectedIndex(3); }
-                    case "C" -> { displayClothes(clothes); invComboBox.setSelectedIndex(4); }
-                    case "W" -> { displayWT(wagonTools); invComboBox.setSelectedIndex(5); }
-                    case "S" -> { displaySplints(splints); invComboBox.setSelectedIndex(6); }
-                    case "O" -> { displayOxen(oxen); invComboBox.setSelectedIndex(7); }
-                    default -> displayMenu();
-                }
+        userInput.addActionListener(menuInputListener);
 
-                if (userInput.getText().equalsIgnoreCase("U") && invComboBox.getSelectedIndex() == 1) {
-                    useFood();
-                    //updateInv(food, ammunition, medicine, clothes, wagonTools, splints, oxen);
-                }
-                else if (userInput.getText().equalsIgnoreCase("U") && invComboBox.getSelectedIndex() == 3) {
-                    useMedicine();
-                    //updateInv(food, ammunition, medicine, clothes, wagonTools, splints, oxen);
-                }
-                else if (userInput.getText().equalsIgnoreCase("E") && invComboBox.getSelectedIndex() == 4) {
-                    equipClothes();
-                    //updateInv(food, ammunition, medicine, clothes, wagonTools, splints, oxen);
-                }
-                else if (userInput.getText().equalsIgnoreCase("U") && invComboBox.getSelectedIndex() == 6) {
-                    useSplints();
-                    //updateInv(food, ammunition, medicine, clothes, wagonTools, splints, oxen);
-                }
-                else if (userInput.getText().equalsIgnoreCase("C") && invComboBox.getSelectedIndex() == 7) {
-                    consumeOxen();
-                    //updateInv(food, ammunition, medicine, clothes, wagonTools, splints, oxen);
-                }
-                userInput.setText("");
-            }
-        });
         userInput.addFocusListener(inputHelp);
 
         // call onCancel() when cross is clicked
@@ -103,6 +75,54 @@ public class Inventory extends JDialog {
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
+
+    private ActionListener menuInputListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String input = userInput.getText().toUpperCase();
+            switch (input) {
+                case "I" -> { displayMenu(); invComboBox.setSelectedIndex(0); }
+                case "F" -> { displayFood(food); invComboBox.setSelectedIndex(1); }
+                case "A" -> { displayAmmo(ammunition); invComboBox.setSelectedIndex(2); }
+                case "M" -> { displayMed(medicine); invComboBox.setSelectedIndex(3); }
+                case "C" -> { displayClothes(clothes); invComboBox.setSelectedIndex(4); }
+                case "W" -> { displayWT(wagonTools); invComboBox.setSelectedIndex(5); }
+                case "S" -> { displaySplints(splints); invComboBox.setSelectedIndex(6); }
+                case "O" -> { displayOxen(oxen); invComboBox.setSelectedIndex(7); }
+                default -> { staticMethods.notValidInput(); invComboBox.setSelectedIndex(0); }
+            }
+            userInput.setText("");
+        }
+    };
+
+    private ActionListener itemInputListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int index = invComboBox.getSelectedIndex();
+
+
+
+
+
+
+            if (userInput.getText().equalsIgnoreCase("U") && invComboBox.getSelectedIndex() == 1) {
+                useFood();
+            }
+            else if (userInput.getText().equalsIgnoreCase("U") && invComboBox.getSelectedIndex() == 3) {
+                useMedicine();
+            }
+            else if (userInput.getText().equalsIgnoreCase("E") && invComboBox.getSelectedIndex() == 4) {
+                equipClothes();
+            }
+            else if (userInput.getText().equalsIgnoreCase("U") && invComboBox.getSelectedIndex() == 6) {
+                useSplints();
+            }
+            else if (userInput.getText().equalsIgnoreCase("C") && invComboBox.getSelectedIndex() == 7) {
+                consumeOxen();
+            }
+            userInput.setText("");
+        }
+    };
 
     private void setGlobalVar() {
         this.food = game.getFood();
@@ -400,4 +420,13 @@ public class Inventory extends JDialog {
         party.setVisible(true);
     }
 
+    private void inMenu() {
+        inMenu = true;
+        inItem = false;
+    }
+
+    private void inItem() {
+        inItem = true;
+        inMenu = false;
+    }
 }

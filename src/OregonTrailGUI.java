@@ -89,7 +89,7 @@ public class OregonTrailGUI {
     public OregonTrailGUI() {
         userInput.addFocusListener(playHelp);
         if(inMenu) {
-            ImageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/MainMenu.png"));
+            ImageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/mainMenu.png"));
             displayMainMenu();
             userInput.addActionListener(menuListener);
         }
@@ -197,7 +197,7 @@ public class OregonTrailGUI {
         userInput.addActionListener(gameMenu);
         userInput.removeFocusListener(playHelp);
         userInput.addFocusListener(gameHelp);
-        ImageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/MainGame.png"));
+        ImageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/maingame.png"));
         weather.setRandomWeather();
         writeGameInfo();
     }
