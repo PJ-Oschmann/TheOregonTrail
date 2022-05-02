@@ -52,7 +52,7 @@ public class OregonTrailGUI {
 
     private boolean isGameWon = false, isGameLost = false;
     private Weather weather = new Weather();
-    private Wagon wagon = new Wagon();
+    public Wagon wagon = new Wagon();
     private Date date = new Date();
     private boolean isTraveling = false;
     private static boolean inMenu = true;
@@ -284,7 +284,7 @@ public class OregonTrailGUI {
         dailyHealthBoost(5);
         staticMethods.incrementNFC();
         sickCharacters = countSickCharacters();
-        dailyActions = 2;
+        resetDailies();
         weatherAffectPlayer();
         impactHappiness();
         date.advanceDate();
@@ -296,6 +296,11 @@ public class OregonTrailGUI {
         oxenInjured();
         doStoryLine();
         //anything else that changes on the day.
+    }
+
+    private void resetDailies() {
+        dailyActions = 2;
+        activities.setJournCounter(0);
     }
 
     public int getCurrentPace() {
