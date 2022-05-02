@@ -349,7 +349,7 @@ public class OregonTrailGUI {
     //Call this function whenever the game info is updated.
     public void writeGameInfo() {
         String gameInfo = """
-                Last Location: $location
+                Last Location: $location, $state
                 Distance Travelled: $distTraveled
                 Date: $date
                 -----------------
@@ -363,6 +363,7 @@ public class OregonTrailGUI {
                 Enter "H" to see available input options.
                 """;
         gameInfo = gameInfo.replace("$location",location.getCurrentLocation());
+        gameInfo = gameInfo.replace("$state",location.getCurrentState());
         gameInfo = gameInfo.replace("$date",date.toString());
         gameInfo = gameInfo.replace("$weather",weather.toString());
         gameInfo = gameInfo.replace("$happiness",Integer.toString(happiness));

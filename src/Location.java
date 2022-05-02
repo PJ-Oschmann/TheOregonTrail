@@ -52,10 +52,11 @@ public class Location {
         Vermilion // ??
         Platte River //Nebraska*/
     }
+    //TODO: no more cancel button
     public void crossRiver() {
         String crossChoice = JOptionPane.showInputDialog(null, "You reached " + names.get(markerCounter) +
                 "! How would you like to cross? You can:\n1 - Take the Ferry for $20\n2 - Build a raft using 2 " +
-                "of your wagon tools\n3 - Attempt to swim across", "CHECKPOINT", JOptionPane.INFORMATION_MESSAGE);
+                "of your wagon tools\n3 - Attempt to swim across", "CHECKPOINT", JOptionPane.PLAIN_MESSAGE);
         switch (crossChoice) {
             case "1":
                 if(river.takeFerry()){
@@ -87,6 +88,28 @@ public class Location {
                 break;
         }
     }
+
+    public String getCurrentState() {
+        int counter = markerCounter-1;
+        if(counter==0){
+            return "Missouri";
+        }
+        else if (counter>=1&&counter<4){
+            return "Kansas";
+        }
+        else if (counter>=4&&counter<10) {
+            return "Nebraska";
+        }
+        else if (counter>=10&&counter<12){
+            return "Wyoming";
+        }
+        else if (counter>=12&&counter<15) {
+            return "Idaho";
+        }
+        else {
+            return "Oregon";
+        }
+    }
     public void addMileage() {
         int miles;
         pace = game.getCurrentPace();
@@ -95,17 +118,20 @@ public class Location {
         else {miles = 25;}
         milesTravd += miles;
         try {
-            if (milesTravd >= mileMarkers.get(markerCounter) && !names.get(markerCounter).equals(currentLocation) &&
-                    names.get(markerCounter).contains("River")) {
+            //River
+            if (milesTravd >= mileMarkers.get(markerCounter)  && names.get(markerCounter).contains("River")) {
                 crossRiver();
                 currentLocation = names.get(markerCounter);
                 milesTravd=mileMarkers.get(markerCounter);
+                markerCounter++;
             }
-            else if (milesTravd >= mileMarkers.get(markerCounter) && !names.get(markerCounter).equals(currentLocation)) {
+
+            //Landmark
+            else if (milesTravd >= mileMarkers.get(markerCounter) && !names.get(markerCounter).equals("Independence")) {
                 JOptionPane.showMessageDialog(null, "You reached " + names.get(markerCounter) +
                         "!", "CHECKPOINT", JOptionPane.INFORMATION_MESSAGE);
                 currentLocation = names.get(markerCounter);
-                milesTravd=mileMarkers.get(markerCounter);
+                markerCounter++;
             }
         }
         catch (RuntimeErrorException e){
