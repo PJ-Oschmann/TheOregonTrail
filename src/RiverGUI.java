@@ -1,4 +1,6 @@
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class RiverGUI extends JDialog {
     private JPanel contentPane;
@@ -8,13 +10,21 @@ public class RiverGUI extends JDialog {
     private JButton buttonOK;
     private OregonTrailGUI game;
     private Wagon wagon;
+    private Location location;
 
-    public RiverGUI(OregonTrailGUI game) {
+    public RiverGUI(Location location, OregonTrailGUI game) {
         this.game = game;
+        this.location = location;
         this.wagon = game.getWagon();
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
+        inputText.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                getText();
+            }
+        });
     }
 
 
@@ -23,9 +33,9 @@ public class RiverGUI extends JDialog {
         promptTextArea.setText(message);
     }
 
-    public String getText() {
+    public void getText() {
+        location.setRiverChoice(inputText.getText());
         dispose();
-        return inputText.getText();
     }
 
     //Booleans: true = crossed; false = didn't. (Still true if someone gets hurt/sick/etc but crossed successfully)
@@ -39,6 +49,7 @@ public class RiverGUI extends JDialog {
         }
         return false;
     }
+
 
     public boolean buildRaft() {
         if (game.getWagonTools() >= 2) {
