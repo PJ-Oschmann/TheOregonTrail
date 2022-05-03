@@ -21,7 +21,6 @@ public class Shop extends JDialog {
     private static final int splintBuyPrice = 8;
     private static final int toolsBuyPrice = 10;
     private static final int oxenBuyPrice = 10;
-
     private static final int clothesSellPrice = 8;
     private static final int ammoSellPrice = 3;
     private static final int foodSellPrice = 2; // for 5 units of food

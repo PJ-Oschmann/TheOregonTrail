@@ -36,7 +36,6 @@ public class OregonTrailGUI {
     public final Random rand = new Random();
     private final Activities activities = new Activities(this);
     private final Location location = new Location(this);
-
     //Our players
     private Character hattie = new Character("Hattie Campbell", 100, 0, false);
     private Character charles = new Character("Charles",100,0, true);
@@ -49,7 +48,7 @@ public class OregonTrailGUI {
     //game variables
     private int money = 200, food = 0, ammunition = 0, medicine = 0, clothes = 0, wagonTools = 0, splints = 0, oxen = 4,
     currentPace = 0, sickCharacters = 0, dailyActions = 2, happiness = 75;
-
+    private boolean godModeOn;
     private Weather weather = new Weather();
     public Wagon wagon = new Wagon();
     private Date date = new Date();
@@ -185,16 +184,16 @@ public class OregonTrailGUI {
     private void introScene() {
         scene.loadScene("intro");
         inGame = true;
-        Activities activities = new Activities(this);
-        updateStats();
-        loadStatusPanels();
+        ImageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/mainGame.png"));
         openShop();
+        loadStatusPanels();
+        updateStats();
         reg = new RandomEventGUI(this);
         userInput.addActionListener(gameMenu);
         userInput.removeFocusListener(playHelp);
         userInput.addFocusListener(gameHelp);
-        ImageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/mainGame.png"));
         weather.setRandomWeather();
+        Activities activities = new Activities(this);
         writeGameInfo();
     }
 
@@ -282,7 +281,7 @@ public class OregonTrailGUI {
         location.addMileage();
         checkForRandomEvent();
         dailyHealthBoost(5);
-        staticMethods.incrementNFC();
+        if (!godModeOn) { staticMethods.incrementNFC(); }
         sickCharacters = countSickCharacters();
         resetDailies();
         weatherAffectPlayer();
@@ -321,14 +320,17 @@ public class OregonTrailGUI {
     private void updateLocation(){
         //check to see if new distance takes you to a new location
         //methods as appropriate to handle new locations and landmarks
-        if (location.getCurrentLocation().equals("OREGON CITY")) { //change this to read for last marker array index in future
+        if (location.getMilesTravd() >= (location.mileMarkers.size() - 1)) {
             gameWon();
         }
     }
 
 
     public void gameWon() {
-        //nothing here yet @@KEN to fix@@
+        //create game win scene + ending monologue
+        JOptionPane.showMessageDialog(null, "Congratulation on making it to Oregon City!\nYou" +
+                "have succeeded in traveling across the country and migrating West.", "YOU WIN", JOptionPane.INFORMATION_MESSAGE);
+        resetGame();
     }
 
     public int getCurrentPace() {
@@ -360,31 +362,23 @@ public class OregonTrailGUI {
     //TODO: Implement Strings for location, pace, and rations
     //Call this function whenever the game info is updated.
     public void writeGameInfo() {
-        String gameInfo = """
-                Last Location: $location, $state
-                Distance Travelled: $distTraveled
-                Date: $date
+        storyTextArea.setText(String.format(
+                """
+                Last Location: %s, %s
+                Distance Travelled: %d
+                Date: %s
                 -----------------
-                Weather: $weather
-                Party Happiness: $happiness
-                Pace: $pace
-                Rations: $rations
-                Days without Eating: $daysNoEat/3
-                Daily Actions Available: $daily actions
+                Weather: %s
+                Party Happiness: %d
+                Pace: %s
+                Rations Available: %d
+                Days without Eating: %d/3
+                Daily Actions Available: %d
                 
                 Enter "H" to see available input options.
-                """;
-        gameInfo = gameInfo.replace("$location",location.getCurrentLocation());
-        gameInfo = gameInfo.replace("$state",location.getCurrentState());
-        gameInfo = gameInfo.replace("$date",date.toString());
-        gameInfo = gameInfo.replace("$weather",weather.toString());
-        gameInfo = gameInfo.replace("$happiness",Integer.toString(happiness));
-        gameInfo = gameInfo.replace("$pace",currPaceToString());
-        gameInfo = gameInfo.replace("$rations", String.valueOf(getFood()));
-        gameInfo = gameInfo.replace("$daily actions", Integer.toString(dailyActions));
-        gameInfo = gameInfo.replace("$distTraveled",Integer.toString(location.getMilesTravd()));
-        gameInfo = gameInfo.replace("$daysNoEat",Integer.toString(staticMethods.getNFC()));
-        storyTextArea.setText(gameInfo);
+                """, location.getCurrentLocation(), location.getCurrentState(), location.getMilesTravd(), date.toString(), weather.toString(),
+                happiness, currPaceToString(), food, staticMethods.getNFC(), dailyActions
+            ));
         updateStats();
     }
 
@@ -664,7 +658,19 @@ public class OregonTrailGUI {
         );
     }
 
-    private ActionListener gameMenu = new ActionListener() {
+    private void thanos() {
+        money = 999999;
+        oxen = 999999;
+        food = 999999;
+        ammunition = 999999;
+        medicine = 999999;
+        clothes = 999999;
+        wagonTools = 999999;
+        splints = 999999;
+        godModeOn = true;
+    }
+
+    public ActionListener gameMenu = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             String input = userInput.getText().toUpperCase();
@@ -673,9 +679,19 @@ public class OregonTrailGUI {
                 case "H" -> displayHelpMenu();
                 case "P" -> { currentPace = setPace(); writeGameInfo(); }
                 case "T" -> travel();
-                case "A" -> activities.displayActivitiesMenu();
+                case "A" -> {
+                    activities.displayActivitiesMenu(); userInput.addActionListener(activities.activityMenuListener);
+                    userInput.removeActionListener(gameMenu);
+                }
                 case "F" -> reg.forceRandomEvent();
                 case "M" -> writeGameInfo();
+                //For debugging
+                case "THANOS" -> {
+                    for (Character character : characterArrayList) {
+                        character.godMode();
+                    }
+                    thanos();
+                }
                 default -> staticMethods.notValidInput();
             }
             userInput.setText("");
@@ -835,7 +851,6 @@ public class OregonTrailGUI {
         ben = new Character("Ben",100,0, false);
         jake = new Character("Jake",100,0, false);
         characterArrayList = new ArrayList<>(List.of(hattie,charles,augusta,ben,jake));
-        //allCharacters = new ArrayList<>(List.of(hattie,charles,augusta,ben,jake));
         money = 200; food = 0; ammunition = 0; medicine = 0; clothes = 0; wagonTools = 0; splints = 0; oxen = 4;
         isGameWon = false; isGameLost = false; inMenu = true; inGame = false;
         happiness = 75;
@@ -857,9 +872,9 @@ public class OregonTrailGUI {
 
     public String currPaceToString() {
         String pace;
-        if (currentPace==0) {pace="Steady";}
-        else if (currentPace==1) {pace="Strenuous";}
-        else {pace="Grueling";}
+        if (currentPace == 0) {pace = "Steady";}
+        else if (currentPace == 1) {pace = "Strenuous";}
+        else {pace = "Grueling";}
         return pace;
     }
 

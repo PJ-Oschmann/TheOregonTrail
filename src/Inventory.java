@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.Random;
 
 public class Inventory extends JDialog {
     private JPanel contentPane;
@@ -196,9 +195,6 @@ public class Inventory extends JDialog {
     }
 
     private void passBackVar() {
-
-
-
         game.setFood(this.food);
         game.setAmmunition(this.ammunition);
         game.setMedicine(this.medicine);
@@ -380,10 +376,8 @@ public class Inventory extends JDialog {
         ));
     }
 
-
-//TODO: THESE ALL NEED IMPLEMENTATION AND EDITING
     private void useFood() {
-        if (game.getFood() > 0) {
+        if (food > 0) {
             openParty("FOOD");
         }
         else {
@@ -392,7 +386,7 @@ public class Inventory extends JDialog {
     }
 
     private void useMedicine() {
-        if (game.getMedicine() > 0) {
+        if (medicine > 0) {
             openParty("MEDICINE");
         }
         else {
@@ -401,7 +395,7 @@ public class Inventory extends JDialog {
     }
 
     private void equipClothes() {
-        if (game.getClothes() > 0) {
+        if (clothes > 0) {
             openParty("CLOTHES");
         }
         else {
@@ -410,7 +404,7 @@ public class Inventory extends JDialog {
     }
 
     private void useSplints() {
-        if (game.getSplints() > 0) {
+        if (splints > 0) {
             openParty("SPLINTS");
         }
         else {
@@ -422,10 +416,10 @@ public class Inventory extends JDialog {
         //TODO: ARE YOU SURE YOU WANT TO CONSUME AN OXEN DIALOGUE Y/N
         int reply = JOptionPane.showConfirmDialog(null, "Would you like to consume an oxen?\nYou " +
                 "must have at least 5 oxen to consume 1.", "Consume an Oxen", JOptionPane.YES_NO_OPTION);
-        if (reply == JOptionPane.YES_OPTION && game.getOxen() > 4) {
+        if (reply == JOptionPane.YES_OPTION && oxen > 4) {
             int happinessLost;
-            game.setOxen(game.getOxen() - 1 );
-            game.setFood(game.getFood() + 10);
+            oxen -= 1;
+            food += 10;
             if(happiness >= 7) { happinessLost = 7; happiness -= 7; }
             else { happinessLost = happiness; happiness = 0; }
 
@@ -436,12 +430,10 @@ public class Inventory extends JDialog {
                     Rest in peace(s of food), %s.
                     
                     %s will be missed dearly, and your party lose %d happiness.
-                    
-                    Enter "I" to return to the inventory menu.
                     """, oxenName, oxenName, happinessLost
             ), String.format("RIP %s", oxenName), JOptionPane.INFORMATION_MESSAGE);
         }
-        else if (reply == JOptionPane.YES_OPTION && game.getOxen() <= 4) {
+        else if (reply == JOptionPane.YES_OPTION && oxen <= 4) {
             staticMethods.notEnoughItem("OXEN");
         }
         else if (reply == JOptionPane.NO_OPTION){

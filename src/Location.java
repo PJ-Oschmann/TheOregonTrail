@@ -18,8 +18,10 @@ public class Location {
     private int milesTravd = 0;
     private String currentLocation = "Independence";
     private int markerCounter = 1; //Index of the milage marker we're at
-    ArrayList<Integer> mileMarkers = new ArrayList<>(List.of(0,17, 50, 80, 108, 221, 273, 550, 591,620, 672 ,1063,1279, 1454, 1700, 1900, 2000));
-    ArrayList<String> names = new ArrayList<>(List.of("Independence", "Blue River", "Wakarusa River", "Kansas River", "Vermilion", "Little Blue River", "Big Blue River","Fort Kearny", "Courthouse Rock", "Chimney Rock",
+    ArrayList<Integer> mileMarkers = new ArrayList<>(List.of(0,17, 50, 80, 108, 221, 273, 550, 591, 620, 672,
+            1063, 1279, 1454, 1700, 1900, 2000, 2170));
+    ArrayList<String> names = new ArrayList<>(List.of("Independence", "Blue River", "Wakarusa River",
+            "Kansas River", "Vermilion", "Little Blue River", "Big Blue River","Fort Kearny", "Courthouse Rock", "Chimney Rock",
             "Scotts Bluff", "Fort Laramie", "Fort Bridger", "Fort Hall", "Three Island Crossing", "Fort Boise",
             "Blue Mountains", "Oregon City"));
 

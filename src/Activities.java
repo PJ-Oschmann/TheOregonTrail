@@ -23,6 +23,7 @@ public class Activities {
         this.game = game;
         setGlobalVar();
     }
+    private boolean inActivitiesMenu, inGameMenu = false, activitiesMenuListener = true, gameMenulistener = false;
 
     private void setGlobalVar() {
         this.food = game.getFood();
@@ -49,12 +50,14 @@ public class Activities {
         game.setMoney(this.money);
         game.setCharacterArrayList(this.game.getCharacterArrayList());
         game.setHappiness(this.happiness);
+        game.setDailyActions(this.dailyActions);
     }
 
     public void displayActivitiesMenu() {
+        inActivitiesMenu();
         game.storyTextArea.setText(String.format(
             """
-            DAILY ACTIVITIES SELECTION (COSTS)
+            DAILY ACTIVITIES SELECTION (CONSUMES)
             You have %d daily actions remaining.
             
             H: Hunting (ONE ACTION, ONE AMMO BOX)
@@ -66,37 +69,62 @@ public class Activities {
             
             A: ADDITIONAL INFORMATION ON THE DAILY ACTIVITIES
             
-            Enter R to return to the previous menu.
+            R: RETURN TO PREVIOUS MENU
             """, game.getDailyActions()
         ));
-        game.userInput.removeActionListener(game.menuListener);
-        game.userInput.addActionListener(activityMenuListener);
+        manageListeners();
     }
 
-    private ActionListener activityMenuListener = new ActionListener() {
+    private void inActivitiesMenu() {
+        inActivitiesMenu = true;
+        inGameMenu = false;
+    }
+
+    private void inGameMenu() {
+        inActivitiesMenu = false;
+        inGameMenu = true;
+    }
+
+    private void manageListeners() {
+        if (inActivitiesMenu && !activitiesMenuListener) {
+            game.userInput.addActionListener(activityMenuListener);
+            game.userInput.removeActionListener(game.gameMenu);
+            inActivitiesMenu();
+        }
+        else if (inGameMenu && !gameMenulistener) {
+            game.userInput.removeActionListener(activityMenuListener);
+            game.userInput.addActionListener(game.gameMenu);
+            inGameMenu();
+        }
+    }
+
+    public  ActionListener activityMenuListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             String input = game.userInput.getText().toUpperCase();
             switch (input) {
-                case "H" -> { hunt(); } //hunting
-                case "F" -> { forage(); } //foraging
-                case "C" -> { makeClothes(); } //clothes
-                case "W" -> { repairWagon(); } //wagon repairs
-                case "J" -> { writeJournal(); } //journaling
-                case "S" -> { sleep(); } //sleep
-                case "A" -> { displayAdditionalInfo(); } //get additional info
+                case "H" -> hunt(); //hunting
+                case "F" -> forage(); //foraging
+                case "C" -> makeClothes(); //clothes
+                case "W" -> repairWagon(); //wagon repairs
+                case "J" -> writeJournal(); //journaling
+                case "S" -> sleep(); //sleep
+                case "A" -> displayAdditionalInfo(); //get additional info
                 case "R" -> returnToGameMenu();
-                default -> { staticMethods.notValidInput(); }
+                default -> staticMethods.notValidInput();
             }
+            passBackVar();
+            displayActivitiesMenu();
+            game.userInput.setText("");
         }
     };
 
     public void returnToGameMenu() {
-        game.userInput.removeActionListener(activityMenuListener);
-        game.userInput.addActionListener(game.menuListener);
+        passBackVar();
         game.updateStats();
         game.writeGameInfo();
-        passBackVar();
+        inGameMenu();
+        manageListeners();
     }
 
     private void displayAdditionalInfo(){
@@ -207,7 +235,7 @@ public class Activities {
             journCounter++;
             JOptionPane.showMessageDialog(null,"You take out your journal and pen and begin to write",
                     "Writing Activity",JOptionPane.PLAIN_MESSAGE);
-            happiness = game.calculateHappiness(5);
+            happiness += 5;
             dailyActions -= 1;
         }
         else {

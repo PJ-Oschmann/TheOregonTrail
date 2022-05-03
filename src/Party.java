@@ -77,7 +77,8 @@ public class Party extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 onCancel();
             }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,
+                0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     private void initializePartyTextArea(String itemName) {
@@ -94,6 +95,30 @@ public class Party extends JDialog {
                 Press ESC at anytime to exit this menu.
                 """, itemName));
     }
+
+    /*private String printChar(String i) {
+        switch (toString().toUpperCase()) {
+            case "H" -> {
+                if (!characterArrayList.get(0).isDead) {
+                    return "H: Hattie";
+                }
+                else { return ""; }
+            }
+            case "C" -> {
+
+            }
+            case "A" -> {
+
+            }
+            case "B" -> {
+
+            }
+            case "J" -> {
+
+            }
+            default -> throw new RuntimeException("There was an error in printing the character in Party initializePartyTextArea");
+        }
+    }*/
 
     /**
      * Selects a character to use for the desired action.
@@ -203,7 +228,6 @@ public class Party extends JDialog {
         dispose();
     }
 
-
     private int calculateHunger(Character character, int hungerVal) {
         int newHunger;
         if (character.getHunger()-hungerVal < 0) {
@@ -226,8 +250,8 @@ public class Party extends JDialog {
 
     }
     private void eatFood() {
-        if (game.getFood()>0) {
-            game.setFood(game.getFood()-1);
+        if (food > 0) {
+            food -= 1;
             selectedCharacter.setHunger(calculateHunger(selectedCharacter,2));
             promptTextArea.setText(selectedCharacter.getName() + " ate some food!");
             staticMethods.resetNFC();

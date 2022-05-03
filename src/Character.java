@@ -12,6 +12,7 @@ public class Character {
     private int daysInjured;
     private boolean isAdult = false;
     public boolean isDead;
+    private boolean canDie;
 
     /**
      * Constructor for the Player class. Every player shall have a default health count,
@@ -26,6 +27,7 @@ public class Character {
         this.hunger = hunger;
         this.isAdult = isAdult;
         this.isDead = false;
+        this.canDie = true;
     }
 
     //Getters
@@ -63,6 +65,10 @@ public class Character {
         this.health = health;
     }
 
+    public void godMode() {
+        this.canDie = false;
+    }
+
     public void setDaysInjured(int daysInjured) {
         this.daysInjured = daysInjured;
     }
@@ -76,7 +82,15 @@ public class Character {
     }
 
     public void setIsDead(boolean isDead) {
-        this.isDead = isDead;
+        if (this.canDie) {
+            this.isDead = isDead;
+        }
+        else {
+            this.health = 100;
+            this.hunger = 0;
+            this.isSick = false;
+            this.isInjured = false;
+        }
     }
 
     /**
