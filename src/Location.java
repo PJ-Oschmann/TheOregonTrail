@@ -57,8 +57,10 @@ public class Location {
         String crossChoice = JOptionPane.showInputDialog(null, "You reached " + names.get(markerCounter) +
                 "! How would you like to cross? You can:\n1 - Take the Ferry for $20\n2 - Build a raft using 2 " +
                 "of your wagon tools\n3 - Attempt to swim across", "CHECKPOINT", JOptionPane.PLAIN_MESSAGE);
+        System.out.println("Location: crossChoice="+crossChoice);
         switch (crossChoice) {
             case "1":
+                System.out.println("1");
                 if(river.takeFerry()){
                     break;
                 }
@@ -66,6 +68,7 @@ public class Location {
                     crossRiver();
                 }
             case "2":
+                System.out.println("2");
                 if(river.buildRaft()){
                     break;
                 }
@@ -75,6 +78,7 @@ public class Location {
                 }
 
             case "3":
+                System.out.println("3");
                 if(river.crossAlone()){
                     break;
                 }
@@ -83,6 +87,7 @@ public class Location {
                 }
 
             default:
+                System.out.println("DEFAULT");
                 staticMethods.notValidInput();
                 crossRiver();
                 break;

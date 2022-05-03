@@ -40,7 +40,7 @@ public class Shop extends JDialog {
     public int money; int food; int ammunition; int medicine; int clothes; int wagonTools; int splints; int oxen;
 
     public Shop(OregonTrailGUI game){
-        this.setMinimumSize(new Dimension(1000,650));
+        maximize();
         this.game = game;
         setGlobalVar();
         setContentPane(shopPane);
@@ -99,6 +99,14 @@ public class Shop extends JDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    }
+
+    private void maximize() {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setMinimumSize(new Dimension(screenSize.width-100,screenSize.height-100));
+        int width = screenSize.width/2-this.getWidth()/2;
+        int height = screenSize.height/2-this.getHeight()/2;
+        this.setLocation(width, height);
     }
 
     private void inMenu() {

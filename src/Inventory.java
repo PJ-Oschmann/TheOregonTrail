@@ -21,7 +21,7 @@ public class Inventory extends JDialog {
     public Inventory(OregonTrailGUI game) {
         //instantiating private vars
         this.game = game;
-        this.setMinimumSize(new Dimension(1000,600));
+        maximize();
         setGlobalVar();
 
         this.setTitle("INVENTORY");
@@ -111,6 +111,13 @@ public class Inventory extends JDialog {
             userInput.setText("");
         }
     };
+    private void maximize() {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setMinimumSize(new Dimension(screenSize.width-100,screenSize.height-100));
+        int width = screenSize.width/2-this.getWidth()/2;
+        int height = screenSize.height/2-this.getHeight()/2;
+        this.setLocation(width, height);
+    }
 
     private ActionListener itemInputListener = new ActionListener() {
         @Override
