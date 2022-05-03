@@ -195,6 +195,7 @@ public class RandomEventGUI extends JDialog {
                         """);
             }
             case "wagonFound" -> {
+                this.imageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/abandonedWagon.png"));
                 int dollars = wagonFound("D");
                 int ammo = wagonFound("A");
                 int clothes = wagonFound("C");
@@ -220,6 +221,7 @@ public class RandomEventGUI extends JDialog {
                 inputField.addActionListener(closeAL);
             }
             case "nativeAmericanEncounter" -> {
+                this.imageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/encounterNative.png"));
                 promptPane.setText(
                         """
                         You encounter a Native American traveling to Oklahoma in
@@ -234,6 +236,7 @@ public class RandomEventGUI extends JDialog {
 
             //Bad events
             case "injury" -> {
+                this.imageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/injury.png"));
                 if (!characterArrayList.get(characterIndex).isInjured()) {
                     characterArrayList.get(characterIndex).setInjured(true);
                     promptPane.setText(characterArrayList.get(characterIndex).getName() + " got injured. Press \"C\" to continue.");
@@ -245,6 +248,7 @@ public class RandomEventGUI extends JDialog {
                 }
             }
             case "wagonDamage" -> {
+                this.imageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/wagonDamage.png"));
                 game.calculateHappiness(-5);
                 game.wagon.setState(game.wagon.getState() + 1);
                 if (game.wagon.getState() == 0) {
@@ -255,6 +259,7 @@ public class RandomEventGUI extends JDialog {
                 inputField.addActionListener(closeAL);
             }
             case "foodSpoiled" -> {
+                this.imageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/spoiledFood.png"));
                 double spoiledFoodDb = game.getFood() * .2;
                 int spoiledFood = (int) spoiledFoodDb;
                 game.calculateFood(-spoiledFood);
@@ -262,6 +267,7 @@ public class RandomEventGUI extends JDialog {
                 inputField.addActionListener(closeAL);
             }
             case "illness" -> {
+                this.imageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/illness.png"));
                 if (!characterArrayList.get(characterIndex).isSick()) {
                     promptPane.setText(characterArrayList.get(characterIndex).getName() + " has fallen sick! Press \"C\" to continue.");
                     characterArrayList.get(characterIndex).setSick(true);
