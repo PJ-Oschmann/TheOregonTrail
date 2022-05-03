@@ -317,13 +317,16 @@ public class RandomEventGUI extends JDialog {
     private final ActionListener encounterAL = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
+            inputField.addFocusListener(inputHelp);
             isEncounterAL = true;
             String i = inputField.getText().toUpperCase();
+            inputField.removeActionListener(encounterAL);
             switch (i) {
-                case "T" -> { inputField.removeActionListener(encounterAL); initiateTrade(); }
-                case "S" -> { inputField.removeActionListener(encounterAL); shareStories(); onCancel(); }
+                case "T" -> initiateTrade();
+                case "S" -> {  shareStories(); onCancel(); }
                 default -> staticMethods.notValidInput();
             }
+            inputField.setText("");
         }
     };
 
@@ -504,6 +507,7 @@ public class RandomEventGUI extends JDialog {
                 }
                 default -> staticMethods.notValidInput();
             }
+            inputField.removeActionListener((ActionListener) e);
         });
     }
 
@@ -555,11 +559,13 @@ public class RandomEventGUI extends JDialog {
                 and wish them safety for their future endeavors.
                 """, amount, name, received, getItem
         ), "TRADE SUCCESS", JOptionPane.INFORMATION_MESSAGE);
+        onCancel();
     }
 
     private void makeTrade(String n, int amt, String get, int received) {
         inputField.addActionListener(e2 -> {
             String yn = inputField.getText().toUpperCase();
+            inputField.removeActionListener((ActionListener) e2);
             if (yn.equals("N")) {
                 tradeCancelled();
             }
@@ -678,6 +684,7 @@ public class RandomEventGUI extends JDialog {
             inputField.removeActionListener(nativeAL);
             isNativeAL = false;
         }
+
     }
 
     private final ActionListener closeAL = new ActionListener() {

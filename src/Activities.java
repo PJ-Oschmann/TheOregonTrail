@@ -14,8 +14,7 @@ public class Activities {
     private int money;
     private ArrayList<Character> characterArrayList;
     private int happiness;
-    private OregonTrailGUI game;
-    private int dailyActions;
+    private final OregonTrailGUI game;
     private int cloDACounter = 0;
     public int journCounter = 0;
 
@@ -35,7 +34,6 @@ public class Activities {
         this.money = game.getMoney();
         this.characterArrayList = game.getCharacterArrayList();
         this.happiness = game.getHappiness();
-        this.dailyActions = game.getDailyActions();
     }
 
     private void passBackVar() {
@@ -49,22 +47,22 @@ public class Activities {
         game.setMoney(this.money);
         game.setCharacterArrayList(this.game.getCharacterArrayList());
         game.setHappiness(this.happiness);
-        game.setDailyActions(this.dailyActions);
     }
 
     public void displayActivitiesMenu() {
         inActivitiesMenu();
+        setGlobalVar();
         game.storyTextArea.setText(String.format(
             """
             DAILY ACTIVITIES SELECTION (CONSUMES)
             You have %d daily actions remaining.
             
-            H: Hunting (ONE ACTION, ONE AMMO BOX)
-            F: Foraging (TWO ACTIONS)
-            C: Sowing a set of clothes (ONE ACTION)
-            W: Repairing the wagon (ONE ACTION, ONE WAGON TOOL)
-            J: Write in your Journal (ONE ACTION, LIMIT ONCE A DAY)
-            S: Sleep (ONE ACTION)
+            H: Hunting                  (ONE ACTION, ONE AMMO BOX)
+            F: Foraging                 (TWO ACTIONS)
+            C: Sowing a set of clothes  (ONE ACTION)
+            W: Repairing the wagon      (ONE ACTION, ONE WAGON TOOL)
+            J: Write in your Journal    (ONE ACTION, LIMIT ONCE A DAY)
+            S: Sleep                    (ONE ACTION)
             
             A: ADDITIONAL INFORMATION ON THE DAILY ACTIVITIES
             
@@ -100,7 +98,6 @@ public class Activities {
     public  ActionListener activityMenuListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            setGlobalVar();
             String input = game.userInput.getText().toUpperCase();
             switch (input) {
                 case "H" -> { hunt(); displayActivitiesMenu(); } //hunting
@@ -148,12 +145,12 @@ public class Activities {
 
     private void repairWagon() {
         if (checkDailyActions()) {
-            if (wagonTools >= 1 && game.wagon.getState()==1) {
+            if (wagonTools >= 1 && game.wagon.getState() == 1) {
                 game.wagon.setState(0);
-                wagonTools -= 1;
-                dailyActions -= 1;
+                this.wagonTools -= 1;
+                game.setDailyActions(game.getDailyActions() -1 );
             }
-            else if (game.wagon.getState()==0) {
+            else if (game.wagon.getState() == 0) {
                 JOptionPane.showMessageDialog(null,"Your wagon is already in good shape!","WAGON " +
                         "IS FINE",JOptionPane.PLAIN_MESSAGE);
             }
@@ -186,8 +183,8 @@ public class Activities {
                 }
                 JOptionPane.showMessageDialog(null, "You found " + newFood + " food!", "Hunting activity",
                         JOptionPane.PLAIN_MESSAGE);
-                food = newFood;
-                game.setDailyActions(dailyActions -= 1);
+                this.food = newFood;
+                game.setDailyActions(game.getDailyActions() - 1);
             } else {
                 staticMethods.notEnoughItem("AMMUNITION");
             }
@@ -195,7 +192,7 @@ public class Activities {
     }
 
     public void forage() {
-        if (checkDailyActions()) {
+        if (checkDailyActions() && game.getDailyActions() >= 2) {
             int newFood;
             String[] searchButton = {"Look Around!"};
             JOptionPane.showOptionDialog(null, "You enter the woods, being careful to watch your step...",
@@ -216,24 +213,30 @@ public class Activities {
             }
             JOptionPane.showMessageDialog(null, "You found " + newFood + " food!",
                     "Foraging activity", JOptionPane.PLAIN_MESSAGE);
-            food = newFood;
-            game.setDailyActions(dailyActions -= 2);
+            this.food = newFood;
+            game.setDailyActions(game.getDailyActions() - 2);
+        }
+        else {
+            staticMethods.notEnoughItem("DAILY ACTIONS");
         }
     }
 
     public void makeClothes() {
         if (checkDailyActions()) {
-            if (cloDACounter <= 2) {
-                cloDACounter++;
+            if (this.cloDACounter <= 2) {
+               this.cloDACounter++;
                 JOptionPane.showMessageDialog(null, "You have begun making a set of clothes. " +
                         "Tired, you decide to finish making the clothes later.", "Clothes-making Activity", JOptionPane.PLAIN_MESSAGE);
             } else if (cloDACounter == 3) {
                 cloDACounter = 0;
                 JOptionPane.showMessageDialog(null, "You made a fresh set of clothes. " +
                         "They have been added ot your inventory.", "Clothes-making Activity", JOptionPane.PLAIN_MESSAGE);
-                clothes += 1;
+                this.clothes += 1;
             }
-            game.setDailyActions(dailyActions -= 1);
+            game.setDailyActions(game.getDailyActions() - 1);
+        }
+        else {
+            staticMethods.notEnoughItem("DAILY ACTIONS");
         }
     }
 
@@ -251,17 +254,20 @@ public class Activities {
                 journCounter++;
                 JOptionPane.showMessageDialog(null, "You take out your journal and pen and begin to write",
                         "Writing Activity", JOptionPane.PLAIN_MESSAGE);
-                happiness += 5;
-                game.setDailyActions(dailyActions -= 1);
+                this.happiness += 5;
+                game.setDailyActions(game.getDailyActions() - 1);
             } else {
                 JOptionPane.showMessageDialog(null, "You have already written in your Journal today.",
                         "Nothing to write, head empty", JOptionPane.ERROR_MESSAGE);
             }
         }
+        else {
+            staticMethods.notEnoughItem("DAILY ACTIONS");
+        }
     }
 
     private boolean checkDailyActions() {
-        if (dailyActions>0) {
+        if (game.getDailyActions() > 0) {
             return true;
         }
         else {
@@ -278,7 +284,7 @@ public class Activities {
             for (Character character : characterArrayList) {
                 game.calculateHealth(character, 5);
             }
-            game.setDailyActions(dailyActions -= 1);
+            game.setDailyActions(game.getDailyActions() - 1);
         }
     }
 }
