@@ -122,7 +122,8 @@ public class Location {
         pace = game.getCurrentPace();
         if (pace == 0) {miles = 15;}
         else if (pace == 1) {miles = 20;}
-        else {miles = 25;}
+        else if (pace == 2) {miles = 25;}
+        else  {miles = 100;}
         milesTravd += miles;
         try {
             //River
