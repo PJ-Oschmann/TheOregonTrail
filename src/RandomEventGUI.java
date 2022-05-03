@@ -14,25 +14,12 @@ public class RandomEventGUI extends JDialog {
     private JLabel imageLabel;
     private JTextPane promptPane;
     private final OregonTrailGUI game;
-
-    private int clothesAmt = 8;
-    private int ammoAmt = 2;
-    private int foodAmt = 2;
-    private int medsAmt = 2;
-    private int splintAmt = 5;
-    private int toolsAmt = 8;
-    private Object traderAsk;
-    private int halfOff;
     private ArrayList<String> nameArrayList = new ArrayList<>(List.of("Felicia","Mia","Kristin","Katrina","Janet",
             "Almudena","Chika","Mary","Nicole","Jessica","Maxine","Stephany","Kendra","Kendall","Kenifer","Elise",
             "Anna","Lizzy","Minnie","Ida","Florence","Martha","Nellie","Lena","Agnes","Candace","Jane","April", "Jordan",
             "Skyler","Sonia","Joanne","Crystal","Melissa","Amy","Sharron","Kelly","Shelly","Chrysanthemum","Ally",
             "Sally","Maria"));
     private ArrayList itemArrayList;
-    private int tradeAmt;
-    private String tradeItem;
-
-    private int tradeGiveAmt;
     private int food, ammunition, medicine, clothes, wagonTools, splints, oxen, money, happiness;
     private ArrayList<Character> characterArrayList;
     private boolean isStreamAL = false, isEncounterAL = false, isCloseAL = false,  isNativeAL = false;
@@ -312,11 +299,6 @@ public class RandomEventGUI extends JDialog {
         inputField.addActionListener(encounterAL);
     }
 
-    private void trade(int step) {
-        resetTraderItems();
-        traderAsk = itemArrayList.get(game.rand.nextInt(8));
-    }
-
     private void resetTraderItems() {
         itemArrayList = new ArrayList<>(List.of("money", "clothes", "ammunition","food","medicine",
                 "splints","tools", "oxen"));
@@ -326,37 +308,249 @@ public class RandomEventGUI extends JDialog {
         itemArrayList = new ArrayList<>(List.of("money", "clothes", "ammunition","food","medicine"));
     }
 
-    private void removeItemfromList(String i) {
-        try {
-            switch (i.toUpperCase()) {
-                case "MONEY" -> itemArrayList.remove(0);
-                case "CLOTHES" -> itemArrayList.remove(1);
-                case "AMMO" -> itemArrayList.remove(2);
-                case "FOOD" -> itemArrayList.remove(3);
-                case "MEDICINE" -> itemArrayList.remove(4);
-                case "SPLINTS" -> itemArrayList.remove(5);
-                case "TOOLS" -> itemArrayList.remove(6);
-                case "OXEN" -> itemArrayList.remove(7);
-                default -> staticMethods.notValidInput();
-            }
-        }
-        catch (RuntimeErrorException e) {
-            throw new RuntimeException("RandomEventGUI removing item from list in trader encounter broken.");
-        }
-    }
-
     private final ActionListener encounterAL = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             isEncounterAL = true;
             String i = inputField.getText().toUpperCase();
             switch (i) {
-                case "T" -> {} //trade here
-                case "S" -> { shareStories(); onCancel(); }
+                case "T" -> { inputField.removeActionListener(encounterAL); initiateTrade(); onCancel(); }
+                case "S" -> { inputField.removeActionListener(encounterAL); shareStories(); onCancel(); }
                 default -> staticMethods.notValidInput();
             }
         }
     };
+
+    private void initiateTrade() {
+        promptPane.setText(
+                """
+                The travelers you encountered are generous enough to
+                offer a beneficial trade for a resource you may need
+                more of. Enter the resource you want more of:
+                
+                F: FOOD
+                A: AMMO
+                M: MEDICINE
+                C: CLOTHES
+                W: WAGON TOOLS
+                S: SPLINTS
+                O: OXEN
+                
+                R: CANCEL THE TRADE
+                """
+        );
+        inputField.addActionListener(e -> {
+            String in = inputField.getText().toUpperCase();
+            inputField.setText("");
+            int r = game.rand.nextInt(7);
+            int itemCount = 0;
+            String item = "";
+            switch (in) {
+                case "F" -> {
+                    switch (r) { //$12
+                        case 0 -> { item = "MONEY"; itemCount = 6; }
+                        case 1 -> { item = "AMMO"; itemCount = 2; }
+                        case 2 -> { item = "MEDICINE"; itemCount = 2; }
+                        case 3 -> { item = "CLOTHES"; itemCount = 1; }
+                        case 4 -> { item = "WAGON TOOLS"; itemCount = 1;}
+                        case 5 -> { item = "SPLINTS"; itemCount = 1; }
+                        case 6 -> { item = "OXEN"; itemCount = 1; }
+                    }
+                    promptPane.setText(String.format(
+                            """
+                            The other party is happy to provide you with some food.
+                            They offer you 20 units of food for %d %s.
+                            
+                            Y: ACCEPT THE TRADE
+                            N: DECLINE THE TRADE
+                            """, itemCount, item
+                    ));
+                    makeTrade(item, itemCount);
+                }
+                case "A" -> {
+                    switch (r) { //$18
+                        case 0 -> { item = "MONEY"; itemCount = 10; }
+                        case 1 -> { item = "FOOD"; itemCount = 15; }
+                        case 2 -> { item = "MEDICINE"; itemCount = 4; }
+                        case 3 -> { item = "CLOTHES"; itemCount = 1; }
+                        case 4 -> { item = "WAGON TOOLS"; itemCount = 1;}
+                        case 5 -> { item = "SPLINTS"; itemCount = 1; }
+                        case 6 -> { item = "OXEN"; itemCount = 1; }
+                    }
+                    promptPane.setText(String.format(
+                            """
+                            The other party is happy to provide you with some AMMUNITION.
+                            They offer you 6 boxes of AMMUNITION for %d %s.
+                            
+                            Y: ACCEPT THE TRADE
+                            N: DECLINE THE TRADE
+                            """, itemCount, item
+                    ));
+                    makeTrade(item, itemCount);
+                }
+                case "M" -> {
+                    switch (r) { //$15
+                        case 0 -> { item = "MONEY"; itemCount = 9; }
+                        case 1 -> { item = "FOOD"; itemCount = 15; }
+                        case 2 -> { item = "AMMO"; itemCount = 4; }
+                        case 3 -> { item = "CLOTHES"; itemCount = 1; }
+                        case 4 -> { item = "WAGON TOOLS"; itemCount = 1;}
+                        case 5 -> { item = "SPLINTS"; itemCount = 1; }
+                        case 6 -> { item = "OXEN"; itemCount = 1; }
+                    }
+                    promptPane.setText(String.format(
+                            """
+                            The other party is happy to provide you with some MEDICINE.
+                            They offer you 5 vials of MEDICINE for %d %s.
+                            
+                            Y: ACCEPT THE TRADE
+                            N: DECLINE THE TRADE
+                            """, itemCount, item
+                    ));
+                    makeTrade(item, itemCount);
+                }
+                case "C" -> {
+                    switch (r) { //$20
+                        case 0 -> { item = "MONEY"; itemCount = 12; }
+                        case 1 -> { item = "FOOD"; itemCount = 20; }
+                        case 2 -> { item = "AMMO"; itemCount = 5; }
+                        case 3 -> { item = "MEDICINE"; itemCount = 4; }
+                        case 4 -> { item = "WAGON TOOLS"; itemCount = 1;}
+                        case 5 -> { item = "SPLINTS"; itemCount = 2; }
+                        case 6 -> { item = "OXEN"; itemCount = 1; }
+                    }
+                    promptPane.setText(String.format(
+                            """
+                            The other party is happy to provide you with some CLOTHES.
+                            They offer you 2 sets of CLOTHES for %d %s.
+                            
+                            Y: ACCEPT THE TRADE
+                            N: DECLINE THE TRADE
+                            """, itemCount, item
+                    ));
+                    makeTrade(item, itemCount);
+                }
+                case "W" -> {
+                    switch (r) { // $20
+                        case 0 -> { item = "MONEY"; itemCount = 14; }
+                        case 1 -> { item = "FOOD"; itemCount = 22; }
+                        case 2 -> { item = "AMMO"; itemCount = 5; }
+                        case 3 -> { item = "MEDICINE"; itemCount = 4; }
+                        case 4 -> { item = "CLOTHES"; itemCount = 1;}
+                        case 5 -> { item = "SPLINTS"; itemCount = 2; }
+                        case 6 -> { item = "OXEN"; itemCount = 1; }
+                    }
+                    promptPane.setText(String.format(
+                            """
+                            The other party is happy to provide you with some WAGON TOOLS.
+                            They offer you 2 sets of WAGON TOOLS for %d %s.
+                            
+                            Y: ACCEPT THE TRADE
+                            N: DECLINE THE TRADE
+                            """, itemCount, item
+                    ));
+                    makeTrade(item, itemCount);
+                }
+                case "S" -> {
+                    switch (r) { //$24
+                        case 0 -> { item = "MONEY"; itemCount = 15; }
+                        case 1 -> { item = "FOOD"; itemCount = 25; }
+                        case 2 -> { item = "AMMO"; itemCount = 4; }
+                        case 3 -> { item = "MEDICINE"; itemCount = 6; }
+                        case 4 -> { item = "CLOTHES"; itemCount = 2;}
+                        case 5 -> { item = "WAGON TOOLS"; itemCount = 2; }
+                        case 6 -> { item = "OXEN"; itemCount = 1; }
+                    }
+                    promptPane.setText(String.format(
+                            """
+                            The other party is happy to provide you with some SPLINTS.
+                            They offer you 3 SPLINTS for %d %s.
+                            
+                            Y: ACCEPT THE TRADE
+                            N: DECLINE THE TRADE
+                            """, itemCount, item
+                    ));
+                    makeTrade(item, itemCount);
+                }
+                case "O" -> {
+                    switch (r) { //$20
+                        case 0 -> { item = "MONEY"; itemCount = 12; }
+                        case 1 -> { item = "FOOD"; itemCount = 23; }
+                        case 2 -> { item = "AMMO"; itemCount = 4; }
+                        case 3 -> { item = "MEDICINE"; itemCount = 4; }
+                        case 4 -> { item = "CLOTHES"; itemCount = 2;}
+                        case 5 -> { item = "WAGON TOOLS"; itemCount = 1; }
+                        case 6 -> { item = "SPLINTS"; itemCount = 2; }
+                    }
+                    promptPane.setText(String.format(
+                            """
+                            The other party is happy to provide you with some OXEN.
+                            They offer you 2 OXEN for %d %s.
+                            
+                            Y: ACCEPT THE TRADE
+                            N: DECLINE THE TRADE
+                            """, itemCount, item
+                    ));
+                    makeTrade(item, itemCount);
+                }
+                case "R" -> {
+                    tradeCancelled();
+                }
+                default -> staticMethods.notValidInput();
+            }
+        });
+    }
+
+    private int checkQuantity(String n) {
+        int q = 0;
+        switch (n) {
+            case "MONEY" -> { q = money; }
+            case "FOOD" -> { q = food; }
+            case "AMMUNITION" -> { q = ammunition; }
+            case "MEDICINE" -> { q = medicine;}
+            case "CLOTHES" -> { q = clothes; }
+            case "WAGON TOOLS" -> { q = wagonTools; }
+            case "SPLINTS" -> { q = splints; }
+            case "OXEN" -> { q = oxen; }
+        }
+        return q;
+    }
+
+    private void setQuantity(String n, int amt) {
+        switch (n) {
+            case "MONEY" -> { money -= amt; }
+            case "FOOD" -> { food -= amt; }
+            case "AMMUNITION" -> { ammunition -= amt; }
+            case "MEDICINE" -> { medicine -= amt; }
+            case "CLOTHES" -> { clothes -= amt; }
+            case "WAGON TOOLS" -> { wagonTools -= amt; }
+            case "SPLINTS" -> { splints -= amt; }
+            case "OXEN" -> { oxen -= amt; }
+        }
+    }
+
+    private void makeTrade(String n, int amt) {
+        inputField.addActionListener(e2 -> {
+            String yn = inputField.getText().toUpperCase();
+            if (yn.equals("N")) {
+                tradeCancelled();
+            }
+            else if (checkQuantity(n) >= amt){
+                setQuantity(n, amt);
+            }
+            else {
+                staticMethods.notEnoughItem(n);
+                tradeCancelled();
+            }
+        });
+    }
+
+    private void tradeCancelled() {
+        JOptionPane.showMessageDialog(null, "You thank the other travelers for their " +
+                        "time and wish them safety during their journey.", "TRADE CANCELLED",
+                JOptionPane.PLAIN_MESSAGE);
+        onCancel();
+    }
 
     private final ActionListener nativeAL = new ActionListener() {
         @Override
@@ -515,9 +709,9 @@ public class RandomEventGUI extends JDialog {
     }
 
     private void shareStories() {
-        JOptionPane.showMessageDialog(null,"You had a jolly old time sharing stories and earned " +
+        JOptionPane.showMessageDialog(null,"You had a wonderful time sharing stories and earned " +
                 "10 happiness!","Share Stories",JOptionPane.PLAIN_MESSAGE);
-        game.setHappiness(game.calculateHappiness(10));
+        happiness += 10;
     }
 
     private final FocusAdapter inputHelp = new FocusAdapter() { //Grey text for input box when not focused on
