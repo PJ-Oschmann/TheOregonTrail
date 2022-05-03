@@ -29,6 +29,7 @@ public class RiverGUI extends JDialog {
     }
     private void resetRiver() {
         inputText.setText("");
+
     }
 
     public void crossRiver() {
