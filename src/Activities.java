@@ -92,6 +92,8 @@ public class Activities {
     };
 
     public void returnToGameMenu() {
+        game.userInput.removeActionListener(activityMenuListener);
+        game.userInput.addActionListener(game.menuListener);
         game.updateStats();
         game.writeGameInfo();
         passBackVar();

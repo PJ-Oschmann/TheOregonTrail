@@ -66,7 +66,7 @@ public class OregonTrailGUI {
         OregonTrailGUI game = new OregonTrailGUI();
         JFrame frame = new JFrame();
         frame.setContentPane(game.MainPanel);
-        frame.setTitle("The Oregon Trail -- Remake");
+        frame.setTitle("THE OREGON TRAIL: IN A WOMAN'S VOICE");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //Give the application the System's theme.
@@ -250,7 +250,7 @@ public class OregonTrailGUI {
                 I: INVENTORY
                 P: SET PACE
                 T: TRAVEL ONE DAY
-                D: DAILY ACTIONS (resets each travel)
+                A: ACTIVITIES (spend daily actions here, resets each day)
                 M: RETURN TO PREVIOUS MENU
                 
                 ABOUT PACE:
@@ -299,7 +299,18 @@ public class OregonTrailGUI {
     }
 
     private void resetDailies() {
-        dailyActions = 2;
+        boolean isAnyoneInjured = false;
+        for (Character character : characterArrayList) {
+            if (character.isInjured()){
+                isAnyoneInjured = true;
+            }
+        }
+        if (isAnyoneInjured) {
+            dailyActions = 1;
+        }
+        else {
+            dailyActions = 2;
+        }
         activities.setJournCounter(0);
     }
 

@@ -4,9 +4,12 @@
 
 -- win conditons + options (KEN)
 -- UPDATE RANDEVENTSGUI (KEN)
+-- FIX DAILY ACTIONS (KEN)
+-- Encounter encounter native americans event -- trail of tears + indian removal act
 -- debug passBackVar methods across the classes that use it (if/else throw new exception)
 -- insert storyline
 -- insert all scenes
 -- insert landmarks
+-- Add river dialogue GUI (PJ)
 -- implement location (URGENT)
     --> Location mile markers and location names dont have same sizes LOL

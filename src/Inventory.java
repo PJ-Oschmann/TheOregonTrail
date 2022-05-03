@@ -189,6 +189,9 @@ public class Inventory extends JDialog {
     }
 
     private void passBackVar() {
+
+
+
         game.setFood(this.food);
         game.setAmmunition(this.ammunition);
         game.setMedicine(this.medicine);

@@ -1,5 +1,6 @@
 import javax.management.RuntimeErrorException;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +40,7 @@ public class RandomEventGUI extends JDialog {
         // call onCancel() when cross is clicked
         this.game = game;
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        inputField.addFocusListener(inputHelp);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 onCancel();
@@ -155,15 +157,19 @@ public class RandomEventGUI extends JDialog {
         boolean isGood = eventType(eventChance(happiness));
         int temp;
         if (isGood) {
-            temp = game.rand.nextInt(3);
+            temp = game.rand.nextInt(4);
             if (temp == 0) {
                 return "encounterTraveler"; //player encounters another traveler
             } else if (temp == 1) {
                 return "smallStream"; //player encounters
-            } else {
+            } else if (temp == 2) {
                 return "wagonFound"; //found abandoned wagon
             }
-        } else {
+            else {
+                return "nativeAmericanEncounter";
+            }
+        }
+        else {
             temp = game.rand.nextInt(4);
             if (temp == 0) {
                 return "injury"; //random party member is injured
@@ -183,46 +189,51 @@ public class RandomEventGUI extends JDialog {
 
         //Good events
         switch (event) {
-            case "encounterTraveler":
+            case "encounterTraveler" -> {
                 this.imageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/encounterTraveler.png"));
                 inputField.addActionListener(encounterAL);
                 encounterTraveler();
-                break;
-            case "smallStream":
+            }
+            case "smallStream" -> {
                 this.imageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/smallStream.png"));
                 inputField.addActionListener(streamAL);
                 promptPane.setText("""
-                You found a small stream!
-                
-                S: SWIM (Happiness++)
-                F: FISHING (Food++)
-                """);
-                break;
-            case "wagonFound":  //TODO: FIX THIS @@KEN@@
-
-
+                        You found a small stream!
+                                        
+                        S: SWIM (Happiness++)
+                        F: FISHING (Food++)
+                        """);
+            }
+            case "wagonFound" -> {
+                int dollars = wagonFound("D");
+                int ammo = wagonFound("A");
+                int clothes = wagonFound("C");
+                int splints = wagonFound("S");
+                int wTools = wagonFound("W");
                 promptPane.setText(String.format(
                         """
-                        Your party has stumbled upon an abandoned wagon on the side of the road.
-                        You find some resources after scavenging around the area!
-                        
-                        YOU FIND:
-                        %d DOLLARS
-                        %d boxes of AMMUNITION
-                        %d sets of CLOTHING
-                        %d usable SPLINTS
-                        %d sets of WAGON TOOLS
-                        
-                        Press "C" to continue on your journey.
-                        """
+                                Your party has stumbled upon an abandoned wagon on the side of the road.
+                                You find some resources after scavenging around the area!
+                                                        
+                                YOU FOUND:
+                                %d DOLLARS
+                                %d boxes of AMMUNITION
+                                %d sets of CLOTHING
+                                %d usable SPLINTS
+                                %d sets of WAGON TOOLS
+                                                        
+                                Press "C" to continue on your journey.
+                                """, dollars, ammo, clothes, splints, wTools
                 ));
                 game.calculateHappiness(5);
                 inputField.addActionListener(closeAL);
-
-                break;
+            }
+            case "nativeAmericanEncounter" -> {
+                //TODO:@@KEN@@
+            }
 
             //Bad events
-            case "injury":
+            case "injury" -> {
                 if (!characterArrayList.get(characterIndex).isInjured()) {
                     characterArrayList.get(characterIndex).setInjured(true);
                     promptPane.setText(characterArrayList.get(characterIndex).getName() + " got injured. Press \"C\" to continue.");
@@ -232,8 +243,8 @@ public class RandomEventGUI extends JDialog {
                     promptPane.setText(characterArrayList.get(characterIndex).getName() + " got injured again. Press \"C\" to continue.");
                     inputField.addActionListener(closeAL);
                 }
-                break;
-            case "wagonDamage":
+            }
+            case "wagonDamage" -> {
                 game.calculateHappiness(-5);
                 game.wagon.setState(game.wagon.getState() + 1);
                 if (game.wagon.getState() == 0) {
@@ -242,22 +253,31 @@ public class RandomEventGUI extends JDialog {
                 promptPane.setText("As you traveled your wagon hit a rock and became damaged. Everyone is saddened. Press " +
                         "\"C\" to continue.");
                 inputField.addActionListener(closeAL);
-                break;
-            case "foodSpoiled":
+            }
+            case "foodSpoiled" -> {
                 double spoiledFoodDb = game.getFood() * .2;
                 int spoiledFood = (int) spoiledFoodDb;
                 game.calculateFood(-spoiledFood);
                 promptPane.setText("Some of your food spoiled. You lost " + spoiledFood + " food. Press \"C\" to continue.");
                 inputField.addActionListener(closeAL);
-                break;
-            case "illness":
+            }
+            case "illness" -> {
                 if (!characterArrayList.get(characterIndex).isSick()) {
                     promptPane.setText(characterArrayList.get(characterIndex).getName() + " has fallen sick! Press \"C\" to continue.");
                     characterArrayList.get(characterIndex).setSick(true);
                     inputField.addActionListener(closeAL);
                 }
+            }
+            default -> throw new RuntimeException("Something bad happened in the doEvent method");
+        }
+    }
 
-                break;
+    private int wagonFound(String i) {
+        switch (i.toUpperCase()) {
+            case "D" -> { return game.rand.nextInt(13); }
+            case "A" -> { return game.rand.nextInt(3); }
+            case "C", "S", "W" -> { return game.rand.nextInt(2); }
+            default -> throw new RuntimeException("There was an error with wagonFound method in RandomEvent class");
         }
     }
 
@@ -283,6 +303,7 @@ public class RandomEventGUI extends JDialog {
                 You can enter "S" to share stories of your travels and increase party happiness.
                 """, nameArrayList.get(randName1), nameArrayList.get(randName2)
         ));
+        inputField.addActionListener(encounterAL);
     }
 
     private void trade(int step) {
@@ -318,12 +339,11 @@ public class RandomEventGUI extends JDialog {
     private final ActionListener encounterAL = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (inputField.getText().equalsIgnoreCase("T")) {
-                trade(1);
-            }
-            else if (inputField.getText().equalsIgnoreCase("S")) {
-                shareStories();
-                onCancel();
+            String i = inputField.getText().toUpperCase();
+            switch (i) {
+                case "T" -> {} //trade here
+                case "S" -> { shareStories(); onCancel(); }
+                default -> staticMethods.notValidInput();
             }
         }
     };
@@ -388,4 +408,18 @@ public class RandomEventGUI extends JDialog {
                 "10 happiness!","Share Stories",JOptionPane.PLAIN_MESSAGE);
         game.setHappiness(game.calculateHappiness(10));
     }
+
+    private final FocusAdapter inputHelp = new FocusAdapter() { //Grey text for input box when not focused on
+        @Override
+        public void focusGained(FocusEvent e) {
+            inputField.setText("");
+            inputField.setForeground(Color.BLACK);
+        }
+
+        @Override
+        public void focusLost(FocusEvent e) {
+            inputField.setText("Input Option Here");
+            inputField.setForeground(new Color(147, 147,147));
+        }
+    };
 }

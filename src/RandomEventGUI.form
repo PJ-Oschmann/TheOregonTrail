@@ -61,6 +61,7 @@
             </constraints>
             <properties>
               <editable value="false"/>
+              <requestFocusEnabled value="false"/>
             </properties>
           </component>
         </children>
@@ -81,6 +82,7 @@
               </grid>
             </constraints>
             <properties>
+              <requestFocusEnabled value="false"/>
               <text value="IMAGE GO BRRRRRRRRRR"/>
             </properties>
           </component>
