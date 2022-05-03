@@ -15,7 +15,6 @@ public class OregonTrailGUI {
     private JPanel IMGPanel;
     private JLabel ImageLabel;
     private JPanel BottomPanel;
-    private JTextField StoryTextField;
     private JPanel GeneralPanel;
     private JPanel BenPanel;
     private JPanel AugustaPanel;
@@ -374,7 +373,7 @@ public class OregonTrailGUI {
     //TODO: Implement Strings for location, pace, and rations
     //Call this function whenever the game info is updated.
     public void writeGameInfo() {
-        storyTextArea.setText(String.format(
+        this.storyTextArea.setText(String.format(
                 """
                 Last Location: %s, %s
                 Distance Travelled: %d

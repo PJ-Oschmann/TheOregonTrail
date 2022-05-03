@@ -120,11 +120,12 @@ public class Activities {
     };
 
     public void returnToGameMenu() {
+        game.storyTextArea.setText("");
+        inGameMenu();
+        manageListeners();
         passBackVar();
         game.writeGameInfo();
         game.updateStats();
-        inGameMenu();
-        manageListeners();
     }
 
     private void displayAdditionalInfo(){
@@ -132,11 +133,17 @@ public class Activities {
                 """
                 MORE INFO ABOUT DAILY ACTIVITIES:
                 
-                Hunting
-                Foraging
-                Sowing Clothes
-                Repairing the wagon
+                Hunting yields 5 to 15 food, while consuming 1 daily action & 1 ammo
                 
+                Foraging is free but takes two daily actions and yields 1 to 6 food
+                
+                Sowing Clothes consumes 1 daily action, takes 3 instances to make one set of clothes
+                
+                Repairing the wagon allows you to mend the damage on the wagon if it is damaged
+                
+                You can write in your journal once a day at most to gain some happiness
+                
+                Sleeping helps recover 5 HP for a short nap
                 """
         );
     }
@@ -191,8 +198,6 @@ public class Activities {
 
     public void forage() {
         if (checkDailyActions()) {
-
-
             int newFood;
             String[] searchButton = {"Look Around!"};
             JOptionPane.showOptionDialog(null, "You enter the woods, being careful to watch your step...",
