@@ -282,6 +282,7 @@ public class OregonTrailGUI {
         checkForRandomEvent();
         dailyHealthBoost(5);
         if (!godModeOn) { staticMethods.incrementNFC(); }
+        if (godModeOn) { wagon.setState(0); }
         sickCharacters = countSickCharacters();
         injuredCharacters = countInjuredCharacters();
         resetDailies();
@@ -290,7 +291,7 @@ public class OregonTrailGUI {
         date.advanceDate();
         weather.setRandomWeather();
         //doStoryLine();
-        if (sickCharacters > 0) {handleSickCharacters();}
+        if (sickCharacters > 0) { handleSickCharacters(); }
         if (injuredCharacters > 0) { handleInjuredCharacters(); }
         writeGameInfo();
         oxenInjured();

@@ -22,7 +22,7 @@ public class Character {
      * @param hunger - Amount of hunger set by default.
      */
     public Character(String name, int health, int hunger, boolean isAdult) {
-        this.health = health; //We can report a string "good, poor, very poor, etc" based on this number.
+        this.health = health;
         this.name = name;
         this.hunger = hunger;
         this.isAdult = isAdult;
@@ -31,7 +31,6 @@ public class Character {
     }
 
     //Getters
-
     /**
      * Player's health getter
      * @return the Player's health as an integer
@@ -67,6 +66,7 @@ public class Character {
 
     public void godMode() {
         this.canDie = false;
+        this.setHasClothing(true);
     }
 
     public void setDaysInjured(int daysInjured) {
@@ -151,7 +151,7 @@ public class Character {
     public String isInjuredToString() {
         String injured = "Not injured";
         if (isInjured) {
-            injured = "Injured";
+            injured = "Injured, day" + daysInjured;
         }
         return injured;
     }

@@ -33,8 +33,8 @@ public class Party extends JDialog {
         this.item = item;
         setGlobalVar();
         initializePartyTextArea(item);
-        //promptTextPane.setText("Select a character to give this " + item.toLowerCase() + " item to!");
-        //this.setUndecorated(true);
+        promptTextPane.setText("Select a character to give " + item.toLowerCase() + " to!");
+        this.setUndecorated(true);
         setContentPane(contentPane);
         setModal(true);
 
@@ -45,6 +45,9 @@ public class Party extends JDialog {
                     doAction(item);
                     game.writeGameInfo();
                     userInput.setText("");
+                }
+                else {
+                    staticMethods.notValidInput();
                 }
             }
         });
@@ -70,7 +73,6 @@ public class Party extends JDialog {
 
         // call onCancel() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        addWindowListener(windowClose);
 
         // call onCancel() on ESCAPE
         contentPane.registerKeyboardAction(new ActionListener() {
@@ -86,60 +88,71 @@ public class Party extends JDialog {
                 """
                 Please select the character you would like to use %s on using the input text area below:
                 
-                H: Hattie
-                C: Charles
-                A: Augusta
-                B: Ben
-                J: Jake
+                %s
+                %s
+                %s
+                %s
+                %S
                 
                 Press ESC at anytime to exit this menu.
-                """, itemName));
+                """, itemName,  printChar("H"), printChar("C"), printChar("A"), printChar("B"),
+                printChar("J")));
     }
 
-    /*private String printChar(String i) {
+    private String printChar(String i) {
         switch (toString().toUpperCase()) {
             case "H" -> {
                 if (!characterArrayList.get(0).isDead) {
                     return "H: Hattie";
                 }
-                else { return ""; }
+                else { return "DEAD"; }
             }
             case "C" -> {
-
+                if (!characterArrayList.get(1).isDead) {
+                    return "C: Charles";
+                }
+                else { return "DEAD"; }
             }
             case "A" -> {
-
+                if (!characterArrayList.get(2).isDead) {
+                    return "A: Augusta";
+                }
+                else { return "DEAD"; }
             }
             case "B" -> {
-
+                if (!characterArrayList.get(3).isDead) {
+                    return "B: Ben";
+                }
+                else { return "DEAD"; }
             }
             case "J" -> {
-
+                if (!characterArrayList.get(4).isDead) {
+                    return "J: Jake";
+                }
+                else { return "DEAD"; }
             }
             default -> throw new RuntimeException("There was an error in printing the character in Party initializePartyTextArea");
         }
-    }*/
+    }
 
     /**
      * Selects a character to use for the desired action.
-     * @param character - The character being selected
+     * @param ch - The character being selected
      * @return A string of the character selected. If the selection was invalid, "INVALID" is returned.
      */
-    private boolean selectCharacter(String character) {
+    private boolean selectCharacter(String ch) {
         int charIndex;
-        if (character.equalsIgnoreCase("H")) {
-            charIndex = 0;
-        } else if (character.equalsIgnoreCase("C")) {
-            charIndex = 1;
-        } else if (character.equalsIgnoreCase("A")) {
-            charIndex = 2;
-        } else if (character.equalsIgnoreCase("B")) {
-            charIndex = 3;
-        } else if (character.equalsIgnoreCase("J")) {
-            charIndex = 4;
+        switch (ch) {
+            case "H" -> charIndex = 0;
+            case "C" -> charIndex = 1;
+            case "A" -> charIndex = 2;
+            case "B" -> charIndex = 3;
+            case "J" -> charIndex = 4;
+            default -> throw new RuntimeException("Error in selecting character in party");
         }
-        else {
-            staticMethods.notValidInput();
+        if (characterArrayList.get(charIndex).isDead) {
+            JOptionPane.showMessageDialog(null, "That character is dead.\nYou can't use an item on" +
+                    "them.", "ERROR", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         selectedCharacter = characterArrayList.get(charIndex);
@@ -263,61 +276,54 @@ public class Party extends JDialog {
     }
 
     private void takeMeds() {
-        if(!selectedCharacter.isSick()) {
-            JOptionPane.showMessageDialog(null,selectedCharacter.getName()+" is not sick. " +
-                    "Please pick another character.",selectedCharacter.getName()+"'s Lack of Illness",
-                    JOptionPane.PLAIN_MESSAGE);
-        }
-        else {
-            if(game.getMedicine()>0){
-                game.setMedicine(game.getMedicine()-1);
-                selectedCharacter.setSick(false);
-                promptTextArea.setText(selectedCharacter.getName()+" has been cured!");
+        if(game.getMedicine() > 0){
+            if(!selectedCharacter.isSick()) {
+                JOptionPane.showMessageDialog(null,selectedCharacter.getName()+" is not sick. " +
+                        "Please pick another character.",selectedCharacter.getName()+"'s Lack of Illness",
+                        JOptionPane.PLAIN_MESSAGE);
             }
             else {
-                staticMethods.notEnoughItem("medicine");
+                    game.setMedicine(game.getMedicine() - 1);
+                    selectedCharacter.setSick(false);
+                    promptTextArea.setText(selectedCharacter.getName() + " has been cured!");
+                }
             }
+        else {
+            staticMethods.notEnoughItem("medicine");
         }
     }
 
     private void equipClothes() {
-        if (selectedCharacter.getHasClothing()) {
-            JOptionPane.showMessageDialog(null,selectedCharacter.getName()+" already has " +
-                    "protective clothing.",selectedCharacter.getName()+"'s Clothing",JOptionPane.PLAIN_MESSAGE);
-        }
-        else {
-            if (game.getClothes()>0) {
-                game.setClothes(game.getClothes()-1);
-                selectedCharacter.setHasClothing(true);
-                promptTextArea.setText(selectedCharacter.getName()+" now has protective " + "clothing.");
+        if (game.getClothes()>0) {
+            if (selectedCharacter.getHasClothing()) {
+                JOptionPane.showMessageDialog(null,selectedCharacter.getName()+" already has " +
+                        "protective clothing.",selectedCharacter.getName()+"'s Clothing",JOptionPane.PLAIN_MESSAGE);
             }
             else {
-                staticMethods.notEnoughItem("clothes");
+                    game.setClothes(game.getClothes()-1);
+                    selectedCharacter.setHasClothing(true);
+                    promptTextArea.setText(selectedCharacter.getName()+" now has protective " + "clothing.");
+                }
             }
+        else {
+            staticMethods.notEnoughItem("clothes");
         }
     }
 
     private void useSplints() {
-        if (!selectedCharacter.isInjured()) {
-            JOptionPane.showMessageDialog(null,selectedCharacter.getName()+" is not injured. " +
-                    "Please select another character.",selectedCharacter.getName()+"'s Lack of Injury",
-                    JOptionPane.PLAIN_MESSAGE);
-        }
-        else {
-            if (game.getSplints()>0){
-                selectedCharacter.setInjured(false);
-                promptTextArea.setText(selectedCharacter.getName()+" now has " + "protective clothing.");
+        if (game.getSplints() > 0){
+            if (!selectedCharacter.isInjured()) {
+                JOptionPane.showMessageDialog(null,selectedCharacter.getName()+" is not injured. " +
+                        "Please select another character.",selectedCharacter.getName()+"'s Lack of Injury",
+                        JOptionPane.PLAIN_MESSAGE);
             }
             else {
-                staticMethods.notEnoughItem("splints");
+                    selectedCharacter.setInjured(false);
+                    promptTextArea.setText(selectedCharacter.getName()+" now has " + "protective clothing.");
+                }
             }
+        else {
+            staticMethods.notEnoughItem("splints");
         }
     }
-
-
-    private final WindowAdapter windowClose = new WindowAdapter() {
-        public void windowClosing(WindowEvent e) {
-            onCancel();
-        }
-    };
 }

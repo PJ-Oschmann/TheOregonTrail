@@ -37,22 +37,10 @@ public class RandomEventGUI extends JDialog {
     private ArrayList<Character> characterArrayList;
 
     public RandomEventGUI(OregonTrailGUI game) {
-        // call onCancel() when cross is clicked
         this.game = game;
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         inputField.addFocusListener(inputHelp);
-        addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                onCancel();
-            }
-        });
-
-        // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        this.setUndecorated(true);
     }
 
     public void checkForRandomEvent() {

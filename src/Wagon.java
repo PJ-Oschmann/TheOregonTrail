@@ -35,6 +35,7 @@ public class Wagon {
         this.state = state;
     }
 
+
     /**
      * Setter for daysNoRepair
      * @param days - The number of days without repairing the wagon.
