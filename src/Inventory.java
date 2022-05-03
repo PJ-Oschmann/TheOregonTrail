@@ -470,6 +470,7 @@ public class Inventory extends JDialog {
     private void openParty(String item) {
         Party party = new Party(game, item);
         party.pack();
+        party.imageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/party.png"));
         party.setTitle("PARTY DETAILS");
         party.setVisible(true);
     }

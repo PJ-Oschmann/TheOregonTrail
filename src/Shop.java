@@ -69,6 +69,7 @@ public class Shop extends JDialog {
         shopComboBox.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
+                setGlobalVar();
                 int input = shopComboBox.getSelectedIndex();
                 switch (input) {
                     case 0 -> { displayMenu(); inMenu(); }
@@ -545,13 +546,13 @@ public class Shop extends JDialog {
         else {
             int buyPrice;
             switch (itemName) {
-                case "FOOD" -> { buyPrice = foodBuyPrice; }
-                case "AMMUNITION" -> { buyPrice = ammoBuyPrice; }
-                case "MEDICINE" -> { buyPrice = medBuyPrice; }
-                case "CLOTHES" -> { buyPrice = clothesBuyPrice; }
-                case "WAGON TOOLS" -> { buyPrice = toolsBuyPrice; }
-                case "SPLINTS" -> { buyPrice = splintBuyPrice; }
-                case "OXEN" -> { buyPrice = oxenBuyPrice; }
+                case "FOOD" -> { buyPrice = foodBuyPrice; shopComboBox.setSelectedIndex(1); }
+                case "AMMUNITION" -> { buyPrice = ammoBuyPrice; shopComboBox.setSelectedIndex(2); }
+                case "MEDICINE" -> { buyPrice = medBuyPrice; shopComboBox.setSelectedIndex(3); }
+                case "CLOTHES" -> { buyPrice = clothesBuyPrice; shopComboBox.setSelectedIndex(4); }
+                case "WAGON TOOLS" -> { buyPrice = toolsBuyPrice; shopComboBox.setSelectedIndex(5); }
+                case "SPLINTS" -> { buyPrice = splintBuyPrice; shopComboBox.setSelectedIndex(6); }
+                case "OXEN" -> { buyPrice = oxenBuyPrice; shopComboBox.setSelectedIndex(7); }
                 default -> { throw new RuntimeException("error in buying item"); }
             }
             int costOfPurchase = quantity * buyPrice;
