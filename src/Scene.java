@@ -64,6 +64,24 @@ public class Scene extends JDialog {
         else if (sceneName.toLowerCase().contains("river")) {
             return "river";
         }
+        else if (sceneName.equalsIgnoreCase("blueMountains")) {
+            return "landmarks/blueMountains";
+        }
+        else if (sceneName.equalsIgnoreCase("chimneyRock")) {
+            return "landmarks/chimneyspeak";
+        }
+        else if (sceneName.equalsIgnoreCase("courtHouseRock")) {
+            return "landmarks/courthousejail";
+        }
+        else if (sceneName.equalsIgnoreCase("oregonCity")) {
+            return "landmarks/oregonCity";
+        }
+        else if (sceneName.equalsIgnoreCase("scottsBluff")) {
+            return "landmarks/scottsbluff";
+        }
+        else if (sceneName.equalsIgnoreCase("threeIslandCrossing")) {
+            return "landmarks/threeislandcrossing";
+        }
         else {
             return "NOIMAGE";
         }

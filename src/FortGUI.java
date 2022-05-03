@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -14,9 +15,14 @@ public class FortGUI extends JDialog {
     private Random rand = new Random();
 
     public FortGUI(OregonTrailGUI game) {
+
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
+
+        //TODO: FIX THE CENTERING
+        center();
+        this.setUndecorated(true);
         this.game = game;
 
         inputText.addActionListener(new ActionListener() {
@@ -46,6 +52,14 @@ public class FortGUI extends JDialog {
             case "4" -> leaveFort();
             default -> badInput();
         }
+    }
+
+    private void center() {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setMinimumSize(new Dimension(200,250));
+        int width = screenSize.width/2-this.getWidth()/2;
+        int height = screenSize.height/2-this.getHeight()/2;
+        this.setLocation(width, height);
     }
 
     private void shop() {
