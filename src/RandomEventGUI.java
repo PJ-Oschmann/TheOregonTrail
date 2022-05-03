@@ -212,8 +212,9 @@ public class RandomEventGUI extends JDialog {
                 int wTools = wagonFound("W");
                 promptPane.setText(String.format(
                         """
-                                Your party has stumbled upon an abandoned wagon on the side of the road.
-                                You find some resources after scavenging around the area!
+                                Your party has stumbled upon an abandoned wagon on the
+                                side of the road. You find some resources after scavenging 
+                                around the area!
                                                         
                                 YOU FOUND:
                                 %d DOLLARS
@@ -229,7 +230,16 @@ public class RandomEventGUI extends JDialog {
                 inputField.addActionListener(closeAL);
             }
             case "nativeAmericanEncounter" -> {
-                //TODO:@@KEN@@
+                promptPane.setText(String.format(
+                        """
+                        You encounter Native Americans that are traveling to Oklahoma in
+                        search of a new home. They ask for any supplies you can spare to
+                        help them with their journey.
+                        
+                        
+                                
+                        """
+                ));
             }
 
             //Bad events

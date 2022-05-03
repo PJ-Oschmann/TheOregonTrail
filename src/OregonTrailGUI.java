@@ -47,7 +47,7 @@ public class OregonTrailGUI {
 
     //game variables
     private int money = 200, food = 0, ammunition = 0, medicine = 0, clothes = 0, wagonTools = 0, splints = 0, oxen = 4,
-    currentPace = 0, sickCharacters = 0, dailyActions = 2, happiness = 75;
+    currentPace = 0, sickCharacters = 0, injuredCharacters = 0, dailyActions = 2, happiness = 75;
     private boolean godModeOn;
     private Weather weather = new Weather();
     public Wagon wagon = new Wagon();
@@ -283,13 +283,15 @@ public class OregonTrailGUI {
         dailyHealthBoost(5);
         if (!godModeOn) { staticMethods.incrementNFC(); }
         sickCharacters = countSickCharacters();
+        injuredCharacters = countInjuredCharacters();
         resetDailies();
         weatherAffectPlayer();
         impactHappiness();
         date.advanceDate();
         weather.setRandomWeather();
         //doStoryLine();
-        if (sickCharacters>0) {handleSickCharacters();}
+        if (sickCharacters > 0) {handleSickCharacters();}
+        if (injuredCharacters > 0) { handleInjuredCharacters(); }
         writeGameInfo();
         oxenInjured();
         killPlayer();
@@ -402,11 +404,18 @@ public class OregonTrailGUI {
     //Figured "setHappiness" wasn't appropriate. Is there a better name we can use?
     //Should each factor have its own method?
     public void impactHappiness() {
-        //Weather
-        if (weather.getWeatherCondition().equals("Good")) {happiness = calculateHappiness(5);}
-        else if (weather.getWeatherCondition().equals("Bad")) {happiness = calculateHappiness(-5);}
-        //Player is ill
-        happiness = calculateHappiness(-2*sickCharacters);
+        if (!godModeOn) {
+            //Weather
+            if (weather.getWeatherCondition().equals("Good")) {
+                happiness = calculateHappiness(5);
+            } else if (weather.getWeatherCondition().equals("Bad")) {
+                happiness = calculateHappiness(-5);
+            }
+            //Player is ill
+            happiness = calculateHappiness(-2 * sickCharacters);
+            //Player is injured
+            happiness = calculateHappiness(-1 * injuredCharacters);
+        }
     }
 
     public void calculateHealth(Character character, int value) {
@@ -594,6 +603,7 @@ public class OregonTrailGUI {
     private void gameOver(boolean lose, String msg) {
         if (lose) {
             JOptionPane.showMessageDialog(null, msg, "YOU LOSE", JOptionPane.INFORMATION_MESSAGE);
+            resetGame();
         }
     }
 
@@ -611,20 +621,40 @@ public class OregonTrailGUI {
         return counter;
     }
 
+    private int countInjuredCharacters() {
+        int counter = 0;
+        for (Character character : characterArrayList) {
+            if (character.isInjured()) {
+                counter++;
+            }
+        }
+        return  counter;
+    }
+
     /**
      * Handles sickness for all characters. Each day a character is sick, they lose 5 HP.
      * They are cured naturally after 5 days.
      */
-    public void handleSickCharacters() {
+    private void handleSickCharacters() {
         for (Character character : characterArrayList) {
-            if (character.getDaysSick()>=5) {
+            if (character.getDaysSick() >= 5) {
                 character.setSick(false);
-                JOptionPane.showMessageDialog(null, character.getName()+" has been cured!",
+                JOptionPane.showMessageDialog(null, character.getName()+" is no longer sick!",
                         character.getName()+"'s Illness",JOptionPane.INFORMATION_MESSAGE);
             }
             if (character.isSick()) {
                 character.setDaysSick(character.getDaysSick()+1);
                 character.setHealth(character.getHealth() - 5);
+            }
+        }
+    }
+
+    private void handleInjuredCharacters() {
+        for (Character character : characterArrayList) {
+            if (character.getDaysInjured() >= 14) {
+                character.setInjured(false);
+                JOptionPane.showMessageDialog(null, character.getName()+" is no longer injured!",
+                        character.getName()+ "'s Injury", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }
@@ -863,7 +893,7 @@ public class OregonTrailGUI {
 
         userInput.addFocusListener(playHelp);
         if(inMenu) {
-            ImageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/MainMenu.png"));
+            ImageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/mainMenu.png"));
             displayMainMenu();
             userInput.addActionListener(menuListener);
             hideStatusPanels();
