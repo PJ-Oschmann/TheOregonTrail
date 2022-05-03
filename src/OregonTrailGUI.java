@@ -741,7 +741,7 @@ public class OregonTrailGUI {
         inv.setVisible(true);
     }
 
-    private void openShop() {
+    public void openShop() {
         Shop shop = new Shop(this);
         shop.pack();
         shop.setVisible(true);

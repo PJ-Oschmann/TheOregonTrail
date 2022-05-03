@@ -15,14 +15,15 @@ public class Location {
     private int pace;
     private OregonTrailGUI game;
     private RiverGUI river;
+    private FortGUI fort;
     private Scene scene = new Scene();
     private int milesTravd = 0;
     private String currentLocation = "Independence";
     private String riverChoice;
     private int markerCounter = 1; //Index of the milage marker we're at
-    ArrayList<Integer> mileMarkers = new ArrayList<>(List.of(0,17, 50, 80, 108, 221, 273, 550, 591, 620, 672,
+    ArrayList<Integer> mileMarkers = new ArrayList<>(List.of(0,1, 17, 50, 80, 108, 221, 273, 550, 591, 620, 672,
             1063, 1279, 1454, 1700, 1900, 2000, 2170));
-    ArrayList<String> names = new ArrayList<>(List.of("Independence", "Blue River", "Wakarusa River",
+    ArrayList<String> names = new ArrayList<>(List.of("Independence", "Fort Asshole","Blue River", "Wakarusa River",
             "Kansas River", "Vermilion", "Little Blue River", "Big Blue River","Fort Kearny", "Courthouse Rock", "Chimney Rock",
             "Scotts Bluff", "Fort Laramie", "Fort Bridger", "Fort Hall", "Three Island Crossing", "Fort Boise",
             "Blue Mountains", "Oregon City"));
@@ -41,6 +42,7 @@ public class Location {
         this.game = game;
         this.pace = game.getCurrentPace();
         this.river = new RiverGUI(this, game);
+        this.fort = new FortGUI(game);
         /*Fort Bridger //wyoming --
         Fort Kearney //nebraska --
         Fort Laramie //wyoming --
@@ -77,6 +79,17 @@ public class Location {
         river.crossRiver();
     }
 
+    public void seeFort() {
+        fort.setText("You reached " + names.get(markerCounter) + "! You can:\n" +
+                "1 - Grab goods from the local shop\n" +
+                "2 - Rest up at the inn\n" +
+                "3 - Repair a damaged wagon at the local Wagon Repair Shop\n" +
+                "4 - Leave the fort and continue your journey");
+        fort.pack();
+        fort.fortImage.setIcon(new javax.swing.ImageIcon("src/assets/images/fort.png"));
+        fort.setVisible(true);
+    }
+
     public String getCurrentState() {
         int counter = markerCounter-1;
         if(counter==0){
@@ -109,7 +122,6 @@ public class Location {
         System.out.println("Location: " + names.get(markerCounter-1));
         if (firstTimeInLocation){
             switch (names.get(markerCounter-1)) {
-                case "Blue River" -> scene.loadScene("blueRiver"); //TEST ONLY DON'T WORRY WILL BE REMOVED
                 case "Fort Kearny" -> scene.loadScene("fortKearny");
                 case "Courthouse Rock" -> scene.loadScene("courthouseRock");
             }
@@ -135,7 +147,14 @@ public class Location {
                 markerCounter++;
                 firstTimeInLocation=true;
             }
-
+            //Fort
+            else if ((milesTravd >= mileMarkers.get(markerCounter)) && (names.get(markerCounter).contains("Fort"))) {
+                seeFort();
+                currentLocation = names.get(markerCounter);
+                milesTravd=mileMarkers.get(markerCounter);
+                markerCounter++;
+                firstTimeInLocation=true;
+            }
             //Landmark
             else if (milesTravd >= mileMarkers.get(markerCounter) && !names.get(markerCounter).equals("Independence")) {
                 JOptionPane.showMessageDialog(null, "You reached " + names.get(markerCounter) +
