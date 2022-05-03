@@ -520,6 +520,7 @@ public class Shop extends JDialog {
             case 7 -> { itemName = "OXEN"; oxen = checkBuy(itemName, oxen, oxenBuyPrice); } //oxen
             default -> { staticMethods.notValidInput(); }
         }
+        shopComboBox.setSelectedIndex(0);
     }
 
     private void sellItem() {
@@ -535,6 +536,7 @@ public class Shop extends JDialog {
             case 7 -> { itemName = "OXEN"; oxen = checkSell(itemName, oxen); } //oxen
             default -> { staticMethods.notValidInput(); }
         }
+        shopComboBox.setSelectedIndex(0);
         game.setMoney(money);
     }
 

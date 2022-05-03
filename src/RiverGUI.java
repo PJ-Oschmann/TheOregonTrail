@@ -30,47 +30,39 @@ public class RiverGUI extends JDialog {
     private void resetRiver() {
         inputText.setText("");
     }
+
     public void crossRiver() {
         crossChoice = inputText.getText();
         switch (crossChoice) {
-            case "1":
+            case "1" -> {
                 System.out.println("1");
-                if(takeFerry()){
+                if (takeFerry()) {
                     dispose();
-                    break;
-                }
-                else {
+                } else {
                     resetRiver();
-                    break;
                 }
-            case "2":
+            }
+            case "2" -> {
                 System.out.println("2");
-                if(buildRaft()){
+                if (buildRaft()) {
                     dispose();
-                    break;
-                }
-                else {
+                } else {
                     resetRiver();
-                    break;
-
                 }
-
-            case "3":
+            }
+            case "3" -> {
                 System.out.println("3");
-                if(crossAlone()){
+                if (crossAlone()) {
                     dispose();
-                    break;
-                }
-                else {
+                } else {
                     resetRiver();
-                    break;
                 }
-
-            default:
+            }
+            default -> {
                 System.out.println("DEFAULT");
                 staticMethods.notValidInput();
                 resetRiver();
-                break;
+            }
         }
     }
 
