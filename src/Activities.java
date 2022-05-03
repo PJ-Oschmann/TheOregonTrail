@@ -187,7 +187,7 @@ public class Activities {
                 JOptionPane.showMessageDialog(null, "You found " + newFood + " food!", "Hunting activity",
                         JOptionPane.PLAIN_MESSAGE);
                 food = newFood;
-                dailyActions -= 1;
+                game.setDailyActions(dailyActions -= 1);
             } else {
                 staticMethods.notEnoughItem("AMMUNITION");
             }
@@ -217,7 +217,7 @@ public class Activities {
             JOptionPane.showMessageDialog(null, "You found " + newFood + " food!",
                     "Foraging activity", JOptionPane.PLAIN_MESSAGE);
             food = newFood;
-            dailyActions -= 2;
+            game.setDailyActions(dailyActions -= 2);
         }
     }
 
@@ -233,7 +233,7 @@ public class Activities {
                         "They have been added ot your inventory.", "Clothes-making Activity", JOptionPane.PLAIN_MESSAGE);
                 clothes += 1;
             }
-            dailyActions -= 1;
+            game.setDailyActions(dailyActions -= 1);
         }
     }
 
@@ -252,7 +252,7 @@ public class Activities {
                 JOptionPane.showMessageDialog(null, "You take out your journal and pen and begin to write",
                         "Writing Activity", JOptionPane.PLAIN_MESSAGE);
                 happiness += 5;
-                dailyActions -= 1;
+                game.setDailyActions(dailyActions -= 1);
             } else {
                 JOptionPane.showMessageDialog(null, "You have already written in your Journal today.",
                         "Nothing to write, head empty", JOptionPane.ERROR_MESSAGE);
@@ -278,7 +278,7 @@ public class Activities {
             for (Character character : characterArrayList) {
                 game.calculateHealth(character, 5);
             }
-            dailyActions -= 1;
+            game.setDailyActions(dailyActions -= 1);
         }
     }
 }
