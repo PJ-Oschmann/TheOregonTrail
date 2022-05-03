@@ -73,42 +73,7 @@ public class Location {
                 " across.");
         river.pack();
         river.setVisible(true);
-        String crossChoice = riverChoice;
-        System.out.println("Location: crossChoice="+crossChoice);
-        switch (crossChoice) {
-            case "1":
-                System.out.println("1");
-                if(river.takeFerry()){
-                    break;
-                }
-                else {
-                    crossRiver();
-                }
-            case "2":
-                System.out.println("2");
-                if(river.buildRaft()){
-                    break;
-                }
-                else {
-                    crossRiver();
-
-                }
-
-            case "3":
-                System.out.println("3");
-                if(river.crossAlone()){
-                    break;
-                }
-                else {
-                    crossRiver();
-                }
-
-            default:
-                System.out.println("DEFAULT");
-                staticMethods.notValidInput();
-                crossRiver();
-                break;
-        }
+        river.crossRiver();
     }
 
     public String getCurrentState() {

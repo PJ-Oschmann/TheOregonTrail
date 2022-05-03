@@ -22,17 +22,61 @@ public class RiverGUI extends JDialog {
         inputText.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                getText();
+                crossRiver();
             }
         });
     }
+    private void resetRiver() {
+        inputText.setText("");
+    }
+    public void crossRiver() {
+        crossChoice = inputText.getText();
+        switch (crossChoice) {
+            case "1":
+                System.out.println("1");
+                if(takeFerry()){
+                    dispose();
+                    break;
+                }
+                else {
+                    resetRiver();
+                    break;
+                }
+            case "2":
+                System.out.println("2");
+                if(buildRaft()){
+                    dispose();
+                    break;
+                }
+                else {
+                    resetRiver();
+                    break;
 
+                }
 
+            case "3":
+                System.out.println("3");
+                if(crossAlone()){
+                    dispose();
+                    break;
+                }
+                else {
+                    resetRiver();
+                    break;
+                }
+
+            default:
+                System.out.println("DEFAULT");
+                staticMethods.notValidInput();
+                resetRiver();
+                break;
+        }
+    }
 
     public void setText(String message) {
         promptTextArea.setText(message);
     }
-
+    String crossChoice;
     public void getText() {
         location.setRiverChoice(inputText.getText());
         dispose();
