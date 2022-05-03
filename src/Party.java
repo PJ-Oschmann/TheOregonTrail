@@ -142,7 +142,7 @@ public class Party extends JDialog {
      */
     private boolean selectCharacter(String ch) {
         int charIndex;
-        switch (ch) {
+        switch (ch.toUpperCase()) {
             case "H" -> charIndex = 0;
             case "C" -> charIndex = 1;
             case "A" -> charIndex = 2;

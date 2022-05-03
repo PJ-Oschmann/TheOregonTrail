@@ -15,6 +15,7 @@ public class Location {
     private int pace;
     private OregonTrailGUI game;
     private RiverGUI river;
+    private Scene scene = new Scene();
     private int milesTravd = 0;
     private String currentLocation = "Independence";
     private String riverChoice;
@@ -95,6 +96,20 @@ public class Location {
         }
         else {
             return "Oregon";
+        }
+    }
+    /*
+    "Independence", "Blue River", "Wakarusa River",
+            "Kansas River", "Vermilion", "Little Blue River", "Big Blue River","Fort Kearny", "Courthouse Rock", "Chimney Rock",
+            "Scotts Bluff", "Fort Laramie", "Fort Bridger", "Fort Hall", "Three Island Crossing", "Fort Boise",
+            "Blue Mountains", "Oregon City"
+     */
+    public void doStoryLine() {
+        System.out.println("Location: " + names.get(markerCounter-1));
+        switch (names.get(markerCounter-1)) {
+            case "Blue River" -> scene.loadScene("blueRiver"); //TEST ONLY DON'T WORRY WILL BE REMOVED
+            case "Fort Kearny" -> scene.loadScene("fortKearny");
+            case "Courthouse Rock" -> scene.loadScene("courthouseRock");
         }
     }
     public void addMileage() {

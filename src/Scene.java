@@ -19,7 +19,6 @@ public class Scene extends JDialog {
     private JTextArea storyTextArea;
     private JLabel imageLabel;
     private JButton continueButton;
-    //private final SceneManager sceneMan = new SceneManager(continueButton,storyTextArea,imageLabel,this);
 
     public Scene() {
         this.setTitle("Scene");
@@ -56,11 +55,25 @@ public class Scene extends JDialog {
             }
         });
     }
+
+    private String getImagePath(String sceneName) {
+    //TODO change to .contains you fucking dumbass
+        if (sceneName.toLowerCase().contains("fort")) {
+            return "fort";
+        }
+        else if (sceneName.toLowerCase().contains("river")) {
+            return "river";
+        }
+        else {
+            return "NOIMAGE";
+        }
+    }
+
     //Load scene. Saves to global variable to avoid reopening textfile.
     public void loadScene(String sceneName) {
         if (!sceneIsLoaded) {
             sceneToRead = ReadText.readScene(sceneName);
-            imageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/"+sceneName+".png"));
+            imageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/"+getImagePath(sceneName)+".png"));
             sceneIsLoaded = true;
             continueButton.setVisible(true);
             continueScene();
