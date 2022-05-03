@@ -32,16 +32,11 @@ public class Shop extends JDialog {
     private boolean itemListenerActive = false;
     private boolean inMenu = true;
     private boolean inItem = false;
-
-
     private final OregonTrailGUI game;
-
-    public int money; int food; int ammunition; int medicine; int clothes; int wagonTools; int splints; int oxen;
 
     public Shop(OregonTrailGUI game){
         maximize();
         this.game = game;
-        setGlobalVar();
         setContentPane(shopPane);
         setModal(true);
         this.setTitle("THE SHOP");
@@ -69,17 +64,16 @@ public class Shop extends JDialog {
         shopComboBox.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
-                setGlobalVar();
                 int input = shopComboBox.getSelectedIndex();
                 switch (input) {
                     case 0 -> { displayMenu(); inMenu(); }
-                    case 1 -> { displayFood(food); inItem();}
-                    case 2 -> { displayAmmo(ammunition); inItem(); }
-                    case 3 -> { displayMed(medicine); inItem(); }
-                    case 4 -> { displayClothes(clothes); inItem(); }
-                    case 5 -> { displayWT(wagonTools); inItem(); }
-                    case 6 -> { displaySplints(splints); inItem(); }
-                    case 7 -> { displayOxen(oxen); inItem(); }
+                    case 1 -> { displayFood(game.getFood()); inItem();}
+                    case 2 -> { displayAmmo(game.getAmmunition()); inItem(); }
+                    case 3 -> { displayMed(game.getMedicine()); inItem(); }
+                    case 4 -> { displayClothes(game.getClothes()); inItem(); }
+                    case 5 -> { displayWT(game.getWagonTools()); inItem(); }
+                    case 6 -> { displaySplints(game.getSplints()); inItem(); }
+                    case 7 -> { displayOxen(game.getOxen()); inItem(); }
                 }
                 if (inMenu && !menuListenerActive) {
                     menuSelected();
@@ -149,7 +143,7 @@ public class Shop extends JDialog {
             R: RETURN TO THIS MENU
             
             Press ESC to exit the SHOP once you are finished shopping.
-            """, money
+            """, game.getMoney()
         ));
     }
 
@@ -359,7 +353,6 @@ public class Shop extends JDialog {
     private void onCancel() {
         if (JOptionPane.showConfirmDialog(null,"Are you sure you want to leave the shop?",
                 "Leave SHOP?",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-            passBackVar();
             dispose();
         }
     }
@@ -390,13 +383,13 @@ public class Shop extends JDialog {
             String input = shopInput.getText().toUpperCase();
             switch (input) {
                 case "R" -> { displayMenu(); shopComboBox.setSelectedIndex(0); }
-                case "F" -> { displayFood(food); shopComboBox.setSelectedIndex(1); }
-                case "A" -> { displayAmmo(ammunition); shopComboBox.setSelectedIndex(2); }
-                case "M" -> { displayMed(medicine); shopComboBox.setSelectedIndex(3); }
-                case "C" -> { displayClothes(clothes); shopComboBox.setSelectedIndex(4); }
-                case "W" -> { displayWT(wagonTools); shopComboBox.setSelectedIndex(5); }
-                case "S" -> { displaySplints(splints); shopComboBox.setSelectedIndex(6); }
-                case "O" -> { displayOxen(oxen); shopComboBox.setSelectedIndex(7); }
+                case "F" -> { displayFood(game.getFood()); shopComboBox.setSelectedIndex(1); }
+                case "A" -> { displayAmmo(game.getAmmunition()); shopComboBox.setSelectedIndex(2); }
+                case "M" -> { displayMed(game.getMedicine()); shopComboBox.setSelectedIndex(3); }
+                case "C" -> { displayClothes(game.getClothes()); shopComboBox.setSelectedIndex(4); }
+                case "W" -> { displayWT(game.getWagonTools()); shopComboBox.setSelectedIndex(5); }
+                case "S" -> { displaySplints(game.getSplints()); shopComboBox.setSelectedIndex(6); }
+                case "O" -> { displayOxen(game.getOxen()); shopComboBox.setSelectedIndex(7); }
                 default -> staticMethods.notValidInput();
             }
             shopInput.setText("");
@@ -425,28 +418,6 @@ public class Shop extends JDialog {
         }
     };
 
-    private void setGlobalVar() {
-        this.food = game.getFood();
-        this.ammunition = game.getAmmunition();
-        this.medicine = game.getMedicine();
-        this.clothes = game.getClothes();
-        this.wagonTools = game.getWagonTools();
-        this.splints = game.getSplints();
-        this.oxen = game.getOxen();
-        this.money = game.getMoney();
-    }
-
-    public void passBackVar() {
-        game.setFood(this.food);
-        game.setAmmunition(this.ammunition);
-        game.setMedicine(this.medicine);
-        game.setClothes(this.clothes);
-        game.setWagonTools(this.wagonTools);
-        game.setSplints(this.splints);
-        game.setOxen(this.oxen);
-        game.setMoney(this.money);
-    }
-
     private void itemSelected(){
         shopInput.removeActionListener(shopMenuListener);
         shopInput.addActionListener(shopItemListener);
@@ -471,11 +442,11 @@ public class Shop extends JDialog {
                                             You have $%d available to spend. This item costs $%d.
                                             How many %s would you like to purchase?
                                             (Enter 0 to cancel):
-                                            """, money, itemCost, item)));
-                            if (quantity * itemCost > money) {
+                                            """, game.getMoney(), itemCost, item)));
+                            if (quantity * itemCost > game.getMoney()) {
                                 staticMethods.notEnoughMoney();
                             }
-                } while (quantity * itemCost > money);
+                } while (quantity * itemCost > game.getMoney());
             }
             catch (InputMismatchException e) {
                 e.printStackTrace();
@@ -511,13 +482,13 @@ public class Shop extends JDialog {
         int index = shopComboBox.getSelectedIndex();
         String itemName = "";
         switch (index) {
-            case 1 -> { itemName = "FOOD"; food = checkBuy(itemName, food, foodBuyPrice); } //food
-            case 2 -> { itemName = "AMMUNITION"; ammunition = checkBuy(itemName, ammunition, ammoBuyPrice);} //ammo
-            case 3 -> { itemName = "MEDICINE"; medicine = checkBuy(itemName, medicine, medBuyPrice); } //meds
-            case 4 -> { itemName = "CLOTHES"; clothes = checkBuy(itemName, clothes, clothesBuyPrice); } //clothes
-            case 5 -> { itemName = "WAGON TOOLS"; wagonTools = checkBuy(itemName, wagonTools, toolsBuyPrice); } //wagonTools
-            case 6 -> { itemName = "SPLINTS"; splints = checkBuy(itemName, splints, splintBuyPrice); } //splints
-            case 7 -> { itemName = "OXEN"; oxen = checkBuy(itemName, oxen, oxenBuyPrice); } //oxen
+            case 1 -> { itemName = "FOOD"; game.setFood(checkBuy(itemName, game.getFood(), foodBuyPrice)); } //food
+            case 2 -> { itemName = "AMMUNITION"; game.setAmmunition(checkBuy(itemName, game.getAmmunition(), ammoBuyPrice));} //ammo
+            case 3 -> { itemName = "MEDICINE"; game.setMedicine(checkBuy(itemName, game.getMedicine(), medBuyPrice)); } //meds
+            case 4 -> { itemName = "CLOTHES"; game.setClothes(checkBuy(itemName, game.getClothes(), clothesBuyPrice)); } //clothes
+            case 5 -> { itemName = "WAGON TOOLS"; game.setWagonTools(checkBuy(itemName, game.getWagonTools(), toolsBuyPrice)); } //wagonTools
+            case 6 -> { itemName = "SPLINTS"; game.setSplints(checkBuy(itemName, game.getSplints(), splintBuyPrice)); } //splints
+            case 7 -> { itemName = "OXEN"; game.setOxen(checkBuy(itemName, game.getOxen(), oxenBuyPrice)); } //oxen
             default -> { staticMethods.notValidInput(); }
         }
         shopComboBox.setSelectedIndex(0);
@@ -527,17 +498,16 @@ public class Shop extends JDialog {
         int index = shopComboBox.getSelectedIndex();
         String itemName = "";
         switch (index) {
-            case 1 -> { itemName = "FOOD"; food = checkSell(itemName, food); } //food
-            case 2 -> { itemName = "AMMUNITION"; ammunition = checkSell(itemName, ammunition);} //ammo
-            case 3 -> { itemName = "MEDICINE"; medicine = checkSell(itemName, medicine); } //meds
-            case 4 -> { itemName = "CLOTHES"; clothes = checkSell(itemName, clothes); } //clothes
-            case 5 -> { itemName = "WAGON TOOLS"; wagonTools = checkSell(itemName, wagonTools); } //wagonTools
-            case 6 -> { itemName = "SPLINTS"; splints = checkSell(itemName, splints); } //splints
-            case 7 -> { itemName = "OXEN"; oxen = checkSell(itemName, oxen); } //oxen
+            case 1 -> { itemName = "FOOD"; game.setFood(checkSell(itemName, game.getFood())); } //food
+            case 2 -> { itemName = "AMMUNITION"; game.setAmmunition(checkSell(itemName, game.getAmmunition())); } //ammo
+            case 3 -> { itemName = "MEDICINE"; game.setMedicine(checkSell(itemName, game.getMedicine())); } //meds
+            case 4 -> { itemName = "CLOTHES"; game.setClothes(checkSell(itemName, game.getClothes())); } //clothes
+            case 5 -> { itemName = "WAGON TOOLS"; game.setWagonTools(checkSell(itemName, game.getWagonTools())); } //wagonTools
+            case 6 -> { itemName = "SPLINTS"; game.setSplints(checkSell(itemName, game.getSplints())); } //splints
+            case 7 -> { itemName = "OXEN"; game.setOxen(checkSell(itemName, game.getOxen())); } //oxen
             default -> { staticMethods.notValidInput(); }
         }
         shopComboBox.setSelectedIndex(0);
-        game.setMoney(money);
     }
 
     private int checkBuy(String itemName, int item, int itemCost) {
@@ -558,13 +528,13 @@ public class Shop extends JDialog {
                 default -> { throw new RuntimeException("error in buying item"); }
             }
             int costOfPurchase = quantity * buyPrice;
-            if (money < costOfPurchase) {
+            if (game.getMoney() < costOfPurchase) {
                 staticMethods.notEnoughMoney();
             }
             else {
                 boolean yn = confirmBuy(itemName, costOfPurchase, quantity);
                 if (yn) {
-                    money -= costOfPurchase;
+                    game.setMoney(game.getMoney() - costOfPurchase);
                     item = item + quantity;
                     buyDialogue(itemName, costOfPurchase, quantity);
                 }
@@ -573,7 +543,6 @@ public class Shop extends JDialog {
                 }
             }
         }
-        game.setMoney(money);
         return item;
     }
 
@@ -599,7 +568,6 @@ public class Shop extends JDialog {
             game.setMoney(game.getMoney() + moneyEarned);
             sellDialogue(itemName, moneyEarned, quantity);
         }
-        game.setMoney(money);
         return item;
     }
 
