@@ -172,7 +172,6 @@ public class RandomEventGUI extends JDialog {
         switch (event) {
             case "encounterTravelers" -> {
                 this.imageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/encounterTraveler.png"));
-                inputField.addActionListener(encounterAL);
                 encounterTraveler();
             }
             case "smallStream" -> {
@@ -566,15 +565,18 @@ public class RandomEventGUI extends JDialog {
         inputField.addActionListener(e2 -> {
             String yn = inputField.getText().toUpperCase();
             inputField.removeActionListener((ActionListener) e2);
-            if (yn.equals("N")) {
-                tradeCancelled();
-            }
-            else if (checkQuantity(n) >= amt){
-                setQuantity(n, amt, get,received);
-            }
-            else {
-                staticMethods.notEnoughItem(n);
-                tradeCancelled();
+            switch (yn) {
+                case "Y" -> {
+                    if (checkQuantity(n) >= amt) {
+                        setQuantity(n, amt, get, received);
+                    }
+                    else {
+                        staticMethods.notEnoughItem(n);
+                        tradeCancelled();
+                    }
+                }
+                case "N" -> tradeCancelled();
+                default -> throw new RuntimeException("pls just make the trade");
             }
         });
     }

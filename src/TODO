@@ -1,6 +1,3 @@
 -- Change file references from repository paths to 'getResourceAsStream' for jar compilation/file
 -- correct private/public notations
 -- add javadocs once completed
-
-hunting broken (no ammo even when have ammo)
-fix daily actions system to deny actions when not enough
