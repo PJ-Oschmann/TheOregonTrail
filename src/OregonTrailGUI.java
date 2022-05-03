@@ -681,6 +681,7 @@ public class OregonTrailGUI {
     private void thanos() {
         JOptionPane.showMessageDialog(null,"God Mode On!", "r/THANOSDIDNOTHINGWRONG",
                 JOptionPane.INFORMATION_MESSAGE);
+        this.writeGameInfo();
         money = 999999;
         oxen = 999999;
         food = 999999;

@@ -20,7 +20,7 @@ public class RandomEventGUI extends JDialog {
             "Skyler","Sonia","Joanne","Crystal","Melissa","Amy","Sharron","Kelly","Shelly","Chrysanthemum","Ally",
             "Sally","Maria"));
     private ArrayList itemArrayList;
-    private int food, ammunition, medicine, clothes, wagonTools, splints, oxen, money, happiness;
+    private int food, medicine, clothes, wagonTools, splints, oxen, money, happiness;
     private ArrayList<Character> characterArrayList;
     private int randName1, randName2;
     private boolean isStreamAL = false, isEncounterAL = false, isCloseAL = false,  isNativeAL = false;
@@ -63,7 +63,6 @@ public class RandomEventGUI extends JDialog {
 
     private void setGlobalVar() {
         this.food = game.getFood();
-        this.ammunition = game.getAmmunition();
         this.medicine = game.getMedicine();
         this.clothes = game.getClothes();
         this.wagonTools = game.getWagonTools();
@@ -76,7 +75,6 @@ public class RandomEventGUI extends JDialog {
 
     private void passBackVar() {
         game.setFood(this.food);
-        game.setAmmunition(this.ammunition);
         game.setMedicine(this.medicine);
         game.setClothes(this.clothes);
         game.setWagonTools(this.wagonTools);
@@ -207,6 +205,11 @@ public class RandomEventGUI extends JDialog {
                                 Press "C" to continue on your journey.
                                 """, dollars, ammo, clothes, splints, wTools
                 ));
+                money += dollars;
+                game.setAmmunition(game.getAmmunition() + ammo);
+                this.clothes += clothes;
+                this.splints += splints;
+                wagonTools += wTools;
                 game.calculateHappiness(5);
                 inputField.addActionListener(closeAL);
             }
@@ -515,7 +518,7 @@ public class RandomEventGUI extends JDialog {
         switch (n) {
             case "MONEY" -> { q = money; }
             case "FOOD" -> { q = food; }
-            case "AMMUNITION" -> { q = ammunition; }
+            case "AMMUNITION" -> { q = game.getAmmunition(); }
             case "MEDICINE" -> { q = medicine;}
             case "CLOTHES" -> { q = clothes; }
             case "WAGON TOOLS" -> { q = wagonTools; }
@@ -529,7 +532,7 @@ public class RandomEventGUI extends JDialog {
         switch (n) {
             case "MONEY" -> { money -= amt; }
             case "FOOD" -> { food -= amt; }
-            case "AMMUNITION" -> { ammunition -= amt; }
+            case "AMMUNITION" -> { game.setAmmunition(game.getAmmunition() - amt); }
             case "MEDICINE" -> { medicine -= amt; }
             case "CLOTHES" -> { clothes -= amt; }
             case "WAGON TOOLS" -> { wagonTools -= amt; }
@@ -537,13 +540,13 @@ public class RandomEventGUI extends JDialog {
             case "OXEN" -> { oxen -= amt; }
         }
         switch (get) {
-            case "FOOD" -> { food += 20; }
-            case "AMMUNITION" -> { ammunition += 6; }
-            case "MEDICINE" -> { medicine += 5; }
-            case "CLOTHES" -> { clothes += 2; }
-            case "WAGON TOOLS" -> { wagonTools += 2; }
-            case "SPLINTS" -> { splints += 3; }
-            case "OXEN" -> { oxen += 2; }
+            case "FOOD" -> food += 20;
+            case "AMMUNITION" -> game.setAmmunition(game.getAmmunition() + 6);
+            case "MEDICINE" -> medicine += 5;
+            case "CLOTHES" -> clothes += 2;
+            case "WAGON TOOLS" -> wagonTools += 2;
+            case "SPLINTS" -> splints += 3;
+            case "OXEN" -> oxen += 2;
         }
         tradeSuccessful(n, amt, get, received);
     }
@@ -564,18 +567,19 @@ public class RandomEventGUI extends JDialog {
     private void makeTrade(String n, int amt, String get, int received) {
         inputField.addActionListener(e2 -> {
             String yn = inputField.getText().toUpperCase();
-            inputField.removeActionListener((ActionListener) e2);
             switch (yn) {
                 case "Y" -> {
                     if (checkQuantity(n) >= amt) {
                         setQuantity(n, amt, get, received);
+                        inputField.removeActionListener((ActionListener) e2);
                     }
                     else {
                         staticMethods.notEnoughItem(n);
                         tradeCancelled();
+                        inputField.removeActionListener((ActionListener) e2);
                     }
                 }
-                case "N" -> tradeCancelled();
+                case "N" -> { tradeCancelled(); inputField.removeActionListener((ActionListener) e2); }
                 default -> throw new RuntimeException("pls just make the trade");
             }
         });
@@ -634,7 +638,7 @@ public class RandomEventGUI extends JDialog {
                         switch (itemInd) {
                             case 0 -> money -= ask;
                             case 1 -> clothes -= ask;
-                            case 2 -> ammunition -= ask;
+                            case 2 -> game.setAmmunition(game.getAmmunition() - ask);
                             case 3 -> food -= ask;
                             case 4 -> medicine -= ask;
                         }

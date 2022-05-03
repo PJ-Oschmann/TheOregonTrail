@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 public class Activities {
     private int food;
-    private int ammunition;
     private int medicine;
     private int clothes;
     private int wagonTools;
@@ -25,7 +24,6 @@ public class Activities {
 
     private void setGlobalVar() {
         this.food = game.getFood();
-        this.ammunition = game.getAmmunition();
         this.medicine = game.getMedicine();
         this.clothes = game.getClothes();
         this.wagonTools = game.getWagonTools();
@@ -38,7 +36,6 @@ public class Activities {
 
     private void passBackVar() {
         game.setFood(this.food);
-        game.setAmmunition(this.ammunition);
         game.setMedicine(this.medicine);
         game.setClothes(this.clothes);
         game.setWagonTools(this.wagonTools);
@@ -162,11 +159,12 @@ public class Activities {
 
     public void hunt() {
         if (checkDailyActions()) {
-            if (ammunition >= 1) {
+            if (game.getAmmunition() >= 1) {
                 int newFood;
                 String[] shootButton = {"Shoot!"};
                 JOptionPane.showOptionDialog(null, "You point your gun into the woods...",
                         "Hunting Activity", JOptionPane.YES_OPTION, JOptionPane.PLAIN_MESSAGE, null, shootButton, null);
+                game.setAmmunition(game.getAmmunition() - 1);
                 int n = game.rand.nextInt(99);
                 if (n < 9) {
                     newFood = 5;
