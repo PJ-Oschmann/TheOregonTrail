@@ -6,6 +6,7 @@ public class RiverGUI extends JDialog {
     private JPanel contentPane;
     private JTextField inputText;
     private JTextArea promptTextArea;
+    public JLabel riverImage;
     private JLabel promptLabel;
     private JButton buttonOK;
     private OregonTrailGUI game;

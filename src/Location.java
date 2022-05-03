@@ -72,6 +72,7 @@ public class Location {
                 " across.");
         river.pack();
         river.setVisible(true);
+        river.riverImage.setIcon(new javax.swing.ImageIcon("src/assets/images/river.png"));
         river.crossRiver();
     }
 
