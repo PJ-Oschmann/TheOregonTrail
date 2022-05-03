@@ -39,7 +39,7 @@ public class Location {
     public Location(OregonTrailGUI game) {
         this.game = game;
         this.pace = game.getCurrentPace();
-
+        this.river = new RiverGUI(this, game);
         /*Fort Bridger //wyoming --
         Fort Kearney //nebraska --
         Fort Laramie //wyoming --
@@ -67,7 +67,6 @@ public class Location {
     }
 
     public void crossRiver() {
-        river = new RiverGUI(this, game);
         river.setText("You reached " + names.get(markerCounter) + "! How would you like to cross? You can:\n" +
                 "1 - Take the Ferry for $20\n2 - Build a raft using 2 of your wagon tools\n3 - Attempt to swim" +
                 " across.");
@@ -106,6 +105,7 @@ public class Location {
         else  {miles = 100;}
         milesTravd += miles;
         try {
+            System.out.println("milesTravd="+milesTravd+">=milesMarkers[markerCounter]="+mileMarkers.get(markerCounter)+" && contains="+names.get(markerCounter).contains("River"));
             //River
             if (milesTravd >= mileMarkers.get(markerCounter)  && names.get(markerCounter).contains("River")) {
                 crossRiver();

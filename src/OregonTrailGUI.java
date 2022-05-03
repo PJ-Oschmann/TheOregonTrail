@@ -894,6 +894,8 @@ public class OregonTrailGUI {
         date = new Date();
         date.setDate(3,18,1861);
         isTraveling = false;
+        location.setMilesTravd(0);
+        location.setMarkerCounter(0);
         staticMethods.resetNFC();
 
         userInput.addFocusListener(playHelp);
