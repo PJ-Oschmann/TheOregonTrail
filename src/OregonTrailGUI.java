@@ -292,7 +292,7 @@ public class OregonTrailGUI {
         impactHappiness();
         date.advanceDate();
         weather.setRandomWeather();
-        //doStoryLine();
+        location.doStoryLine();
         if (sickCharacters > 0) { handleSickCharacters(); }
         if (injuredCharacters > 0) { handleInjuredCharacters(); }
         writeGameInfo();
