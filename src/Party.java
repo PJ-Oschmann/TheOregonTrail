@@ -24,7 +24,7 @@ public class Party extends JDialog {
     private Character selectedCharacter;
     private JPanel InterfacePanel;
     private JPanel imagePanel;
-    private JLabel imageLabel;
+    public JLabel imageLabel;
     private JPanel statsPanel;
 
     public Party(OregonTrailGUI game, String item) {
