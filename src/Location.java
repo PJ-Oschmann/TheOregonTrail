@@ -73,6 +73,7 @@ public class Location {
         river.setText("You reached " + names.get(markerCounter) + "! How would you like to cross? You can:\n" +
                 "1 - Take the Ferry for $20\n2 - Build a raft using 2 of your wagon tools\n3 - Attempt to swim" +
                 " across.");
+        river.inputText.setText("");
         river.pack();
         river.riverImage.setIcon(new javax.swing.ImageIcon("src/assets/images/river.png"));
         river.setVisible(true);
@@ -85,6 +86,7 @@ public class Location {
                 "2 - Rest up at the inn\n" +
                 "3 - Repair a damaged wagon at the local Wagon Repair Shop\n" +
                 "4 - Leave the fort and continue your journey");
+        fort.inputText.setText("");
         fort.pack();
         fort.fortImage.setIcon(new javax.swing.ImageIcon("src/assets/images/fort.png"));
         fort.setVisible(true);

@@ -4,7 +4,7 @@ import java.awt.event.ActionListener;
 
 public class RiverGUI extends JDialog {
     private JPanel contentPane;
-    private JTextField inputText;
+    public JTextField inputText;
     private JTextArea promptTextArea;
     public JLabel riverImage;
     private JLabel promptLabel;

@@ -7,7 +7,7 @@ import java.util.Random;
 
 public class FortGUI extends JDialog {
     private JPanel contentPane;
-    private JTextField inputText;
+    public JTextField inputText;
     private JTextArea promptTextArea;
     public JLabel fortImage;
     private JButton buttonOK;
