@@ -72,10 +72,7 @@ public class Activities {
             """, game.getDailyActions()
         ));
         manageListeners();
-
     }
-
-
 
     private void inActivitiesMenu() {
         inActivitiesMenu = true;
@@ -106,24 +103,22 @@ public class Activities {
             setGlobalVar();
             String input = game.userInput.getText().toUpperCase();
             switch (input) {
-                case "H" -> {hunt(); displayActivitiesMenu();}//hunting
-                case "F" -> {forage(); displayActivitiesMenu();}//foraging
-                case "C" -> {makeClothes(); displayActivitiesMenu();} //clothes
-                case "W" -> {repairWagon(); displayActivitiesMenu();}//wagon repairs
-                case "J" -> {writeJournal(); displayActivitiesMenu();}//journaling
-                case "S" -> {sleep(); displayActivitiesMenu();}//sleep
+                case "H" -> { hunt(); displayActivitiesMenu(); } //hunting
+                case "F" -> { forage(); displayActivitiesMenu(); } //foraging
+                case "C" -> { makeClothes(); displayActivitiesMenu(); } //clothes
+                case "W" -> { repairWagon(); displayActivitiesMenu(); } //wagon repairs
+                case "J" -> { writeJournal(); displayActivitiesMenu(); } //journaling
+                case "S" -> { sleep(); displayActivitiesMenu(); } //sleep
                 case "A" -> displayAdditionalInfo(); //get additional info
                 case "R" -> returnToGameMenu();
                 default -> staticMethods.notValidInput();
             }
             passBackVar();
-
             game.userInput.setText("");
         }
     };
 
     public void returnToGameMenu() {
-        game.storyTextArea.setText("");
         inGameMenu();
         manageListeners();
         passBackVar();
