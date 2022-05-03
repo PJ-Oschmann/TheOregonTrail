@@ -195,7 +195,6 @@ public class OregonTrailGUI {
         userInput.removeFocusListener(playHelp);
         userInput.addFocusListener(gameHelp);
         weather.setRandomWeather();
-        Activities activities = new Activities(this);
         writeGameInfo();
     }
 
