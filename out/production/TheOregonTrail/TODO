@@ -2,7 +2,5 @@
 -- correct private/public notations
 -- add javadocs once completed
 
--- UPDATE RANDEVENTSGUI (KEN)
 -- fix issue of characters dying and skipping functions if they are dead until someone is alive (KEN)
--- insert storyline
--- insert all scenes/images
+-- insert storyline (PJ)

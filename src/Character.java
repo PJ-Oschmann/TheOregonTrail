@@ -1,3 +1,5 @@
+import javax.swing.*;
+
 public class Character {
 
     //Variables
@@ -84,6 +86,8 @@ public class Character {
     public void setIsDead(boolean isDead) {
         if (this.canDie) {
             this.isDead = isDead;
+            this.canDie = false;
+            JOptionPane.showMessageDialog(null,this.getName() + " died.");
         }
         else {
             this.health = 100;
@@ -118,11 +122,21 @@ public class Character {
 
     public String isSickToString() {
         String sickString = "Healthy";
-        if (isSick) {sickString="Sick, day "+daysSick;}
+        if (isSick) {sickString = "Sick, day " + daysSick;}
         return sickString;
     }
 
     public void setSick(boolean sick) {
+        if (!this.isSick && sick) {
+            JOptionPane.showMessageDialog(null, String.format("%s has gotten sick.\n" +
+                            "Use medicine to cure them!", this.getName()), "Someone got sick",
+                    JOptionPane.WARNING_MESSAGE);
+        }
+        else if (this.isSick && sick) {
+            JOptionPane.showMessageDialog(null, String.format("%s has caught a new sickness.\n" +
+                            "Use medicine to cure them!", this.getName()), "Someone got sick again...",
+                    JOptionPane.WARNING_MESSAGE);
+        }
         isSick = sick;
     }
 
@@ -147,7 +161,13 @@ public class Character {
 
     public void setInjured(boolean injured) {
         isInjured = injured;
+        this.setHealth(this.getHealth() - 10);
+        if (this.getHealth() < 0) {
+            this.setHealth(0);
+            this.setIsDead(true);
+        }
     }
+
     public String isInjuredToString() {
         String injured = "Not injured";
         if (isInjured) {

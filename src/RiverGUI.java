@@ -104,8 +104,8 @@ public class RiverGUI extends JDialog {
             if (game.rand.nextInt(9) == 0) {
                 game.setOxen(game.getOxen() - 1);
                 if (game.getOxen() == 0) {
+                    staticMethods.cantCross("All your oxen died while crossing.\nYou can't continue your journey.");
                     game.checkIfLost();
-                    staticMethods.cantCross("All your oxen died while crossing. Everyone drowned.");
                     return false;
                 }
             }
@@ -118,7 +118,10 @@ public class RiverGUI extends JDialog {
 
             //5% wagon damage
             if (game.rand.nextInt(20) == 0) {
-                wagon.setState(1);
+                wagon.setState(wagon.getState() + 1);
+                if (wagon.getState() == 2) {
+                    game.checkIfLost();
+                }
             }
             return true;
         }

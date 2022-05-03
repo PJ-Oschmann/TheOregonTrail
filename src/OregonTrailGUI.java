@@ -6,6 +6,7 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 import javax.swing.Timer;
 
@@ -293,13 +294,21 @@ public class OregonTrailGUI {
         date.advanceDate();
         weather.setRandomWeather();
         location.doStoryLine();
+        checkNewDeaths();
         if (sickCharacters > 0) { handleSickCharacters(); }
         if (injuredCharacters > 0) { handleInjuredCharacters(); }
         writeGameInfo();
         oxenInjured();
-        killPlayer();
         checkIfLost();
         updateLocation();
+    }
+
+    public void checkNewDeaths() {
+        for (Character character : characterArrayList) {
+            if (character.getHealth() <= 0) {
+                character.setIsDead(true);
+            }
+        }
     }
 
     private void resetDailies() {
@@ -422,35 +431,20 @@ public class OregonTrailGUI {
     public void calculateHealth(Character character, int value) {
         int newHealth = 0;
         if (value>=0) {
-            if (character.getHealth() + value > 100) {
-                newHealth = 100;
-            } else {
-                newHealth = character.getHealth() + value;
-            }
+            newHealth = Math.min(character.getHealth() + value, 100);
         }
         if (value<0) {
-            if (character.getHealth() + value < 0) {
-                newHealth=0;
-            }
-            else {
-                newHealth = character.getHealth() + value;
-            }
+            newHealth = Math.max(character.getHealth() + value, 0);
         }
         character.setHealth(newHealth);
     }
 
-    public int calculateFood(int value) {
-        int newFood = 0;
-        if (value >=0) {
-            newFood = food+value;
-        }
-        else {
-            if (food+value<0) {newFood=0;}
-            else {
-                newFood=food+value;
-            }
-        }
-        return newFood;
+    public void calculateFood(int value) {
+        int newFood;
+        newFood = food + value;
+        food = newFood;
+        if (food < 0) { food = 0; }
+        else if (food > 100) { food = 100; }
     }
 
     public void dailyHealthBoost(int value) {
@@ -464,16 +458,13 @@ public class OregonTrailGUI {
      * chance of getting ill.
      */
     public void weatherAffectPlayer() {
-        if (weather.getWeatherCondition()=="Bad") {
+        if (Objects.equals(weather.getWeatherCondition(), "Bad")) {
             for (Character character : characterArrayList) {
                 if (!character.getHasClothing()) {
                     character.setHealth(character.getHealth() - 25);
                     if (rand.nextInt(4) == 0) {
                         character.setSick(true);
                         character.setDaysSick(0);
-                        JOptionPane.showMessageDialog(null, String.format("%s has gotten sick.\n" +
-                                        "Use medicine to cure them!", character.getName()), "Someone got sick",
-                                JOptionPane.WARNING_MESSAGE);
                     }
                 }
             }
@@ -923,16 +914,6 @@ public class OregonTrailGUI {
         return pace;
     }
 
-    //IMPLEMENT ONE DAY GRACE PERIOD BEFORE DYING
-    public void killPlayer() {
-        for (Character character : characterArrayList) {
-            if (character.getHealth() <=0) {
-                JOptionPane.showMessageDialog(null,character.getName()+" died.");
-                updateStats();
-            }
-        }
-
-    }
     ArrayList<JTextPane> arrayOfPanes = new ArrayList<>(List.of(hattieStats,charlesStats,augustaStats,benStats,jakeStats));
 
     /**

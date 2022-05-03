@@ -22,6 +22,7 @@ public class RandomEventGUI extends JDialog {
     private ArrayList itemArrayList;
     private int food, ammunition, medicine, clothes, wagonTools, splints, oxen, money, happiness;
     private ArrayList<Character> characterArrayList;
+    private int randName1, randName2;
     private boolean isStreamAL = false, isEncounterAL = false, isCloseAL = false,  isNativeAL = false;
 
     public RandomEventGUI(OregonTrailGUI game) {
@@ -162,7 +163,10 @@ public class RandomEventGUI extends JDialog {
 
     public void doEvent(String event) {
         ArrayList<Character> characterArrayList = game.getCharacterArrayList();
-        int characterIndex = game.rand.nextInt(4);
+        int ind;
+        do {
+            ind = game.rand.nextInt(4);
+        } while (characterArrayList.get(ind).getIsDead());
 
         //Good events
         switch (event) {
@@ -224,25 +228,28 @@ public class RandomEventGUI extends JDialog {
             //Bad events
             case "injury" -> {
                 this.imageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/injury.png"));
-                if (!characterArrayList.get(characterIndex).isInjured()) {
-                    characterArrayList.get(characterIndex).setInjured(true);
-                    promptPane.setText(characterArrayList.get(characterIndex).getName() + " got injured. Press \"C\" to continue.");
+                if (!characterArrayList.get(ind).isInjured()) {
+                    characterArrayList.get(ind).setInjured(true);
+                    promptPane.setText(characterArrayList.get(ind).getName() + " got injured.\nPress \"C\" to continue.");
                     inputField.addActionListener(closeAL);
                 } else {
-                    characterArrayList.get(characterIndex).setInjured(true);
-                    promptPane.setText(characterArrayList.get(characterIndex).getName() + " got injured again. Press \"C\" to continue.");
+                    characterArrayList.get(ind).setInjured(true);
+                    promptPane.setText(characterArrayList.get(ind).getName() + " got injured again.\nPress \"C\" to " +
+                            "continue.");
                     inputField.addActionListener(closeAL);
                 }
+                game.checkNewDeaths();
+                game.checkIfLost();
             }
             case "wagonDamage" -> {
                 this.imageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/wagonDamage.png"));
-                game.calculateHappiness(-5);
+                game.calculateHappiness(- 5);
                 game.wagon.setState(game.wagon.getState() + 1);
-                if (game.wagon.getState() == 0) {
+                if (game.wagon.getState() == 2) {
                     game.checkIfLost();
                 }
-                promptPane.setText("As you traveled your wagon hit a rock and became damaged. Everyone is saddened. Press " +
-                        "\"C\" to continue.");
+                promptPane.setText("As you traveled your wagon hit a rock and became damaged. Everyone is saddened.\n" +
+                        "Press \"C\" to continue.");
                 inputField.addActionListener(closeAL);
             }
             case "foodSpoiled" -> {
@@ -250,15 +257,21 @@ public class RandomEventGUI extends JDialog {
                 double spoiledFoodDb = game.getFood() * .2;
                 int spoiledFood = (int) spoiledFoodDb;
                 game.calculateFood(-spoiledFood);
-                promptPane.setText("Some of your food spoiled. You lost " + spoiledFood + " food. Press \"C\" to continue.");
+                promptPane.setText("Some of your food spoiled. You lost " + spoiledFood + " food.\nPress \"C\" " +
+                        "to continue.");
                 inputField.addActionListener(closeAL);
             }
             case "illness" -> {
                 this.imageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/illness.png"));
-                if (!characterArrayList.get(characterIndex).isSick()) {
-                    promptPane.setText(characterArrayList.get(characterIndex).getName() + " has fallen sick! Press \"C\" to continue.");
-                    characterArrayList.get(characterIndex).setSick(true);
+                if (!characterArrayList.get(ind).isSick()) {
+                    promptPane.setText(characterArrayList.get(ind).getName() + " has fallen sick!\nPress \"C\" " +
+                            "to continue.");
+                    characterArrayList.get(ind).setSick(true);
                     inputField.addActionListener(closeAL);
+                }
+                else {
+                    promptPane.setText(characterArrayList.get(ind).getName() + "has relapsed into their illness!\n" +
+                            "Press \"C\" to continue.");
                 }
             }
             default -> throw new RuntimeException("Something bad happened in the doEvent method");
@@ -274,8 +287,6 @@ public class RandomEventGUI extends JDialog {
         }
     }
 
-    int randName1;
-    int randName2;
     private void genNames() {
         randName1 = game.rand.nextInt(nameArrayList.size());
         randName2 = game.rand.nextInt(nameArrayList.size());
@@ -297,11 +308,6 @@ public class RandomEventGUI extends JDialog {
                 """, nameArrayList.get(randName1), nameArrayList.get(randName2)
         ));
         inputField.addActionListener(encounterAL);
-    }
-
-    private void resetTraderItems() {
-        itemArrayList = new ArrayList<>(List.of("money", "clothes", "ammunition","food","medicine",
-                "splints","tools", "oxen"));
     }
 
     private void resetNAItems() {
@@ -684,11 +690,17 @@ public class RandomEventGUI extends JDialog {
 
     private void swim() {
         ArrayList<Character> characterArrayList = game.getCharacterArrayList();
-        int characterIndex = game.rand.nextInt(characterArrayList.size());
-        Character character = characterArrayList.get(characterIndex);
+        int ind;
         if (game.rand.nextInt(9)==0) {
+            do {
+                ind = game.rand.nextInt(5);
+            } while (characterArrayList.get(ind).getIsDead());
+            Character character = characterArrayList.get(ind);
             character.setInjured(true);
-            promptPane.setText("How unlucky! " + character.getName()+" got injured swimming. \nPress \"C\" to continue.");
+            promptPane.setText("How unlucky! " + character.getName()+" got injured swimming.\nHe also took some damage as" +
+                    "a result.\nPress \"C\" to continue.");
+            game.checkNewDeaths();
+            game.checkIfLost();
         }
         else {
             promptPane.setText("Your party had a great time splashing around the stream. Your happiness increased by " +
