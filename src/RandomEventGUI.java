@@ -18,7 +18,7 @@ public class RandomEventGUI extends JDialog {
             "Almudena","Chika","Mary","Nicole","Jessica","Maxine","Stephany","Kendra","Kendall","Kenifer","Elise",
             "Anna","Lizzy","Minnie","Ida","Florence","Martha","Nellie","Lena","Agnes","Candace","Jane","April", "Jordan",
             "Skyler","Sonia","Joanne","Crystal","Melissa","Amy","Sharron","Kelly","Shelly","Chrysanthemum","Ally",
-            "Sally","Maria"));
+            "Sally","Maria","Brittney"));
     private ArrayList itemArrayList;
     private int food, medicine, clothes, wagonTools, splints, oxen, money, happiness;
     private ArrayList<Character> characterArrayList;
