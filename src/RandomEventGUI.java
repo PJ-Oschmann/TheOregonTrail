@@ -40,7 +40,6 @@ public class RandomEventGUI extends JDialog {
         this.game = game;
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         inputField.addFocusListener(inputHelp);
-        this.setUndecorated(true);
     }
 
     public void checkForRandomEvent() {
@@ -54,6 +53,7 @@ public class RandomEventGUI extends JDialog {
             this.setTitle("RANDOM EVENT");
             doEvent(event);
 
+            this.setUndecorated(true);
             this.pack();
             this.setVisible(true);
         }

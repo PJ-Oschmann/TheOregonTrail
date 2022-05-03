@@ -184,6 +184,7 @@ public class OregonTrailGUI {
     private void introScene() {
         scene.loadScene("intro");
         inGame = true;
+        inMenu = false;
         ImageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/mainGame.png"));
         openShop();
         loadStatusPanels();

@@ -2,15 +2,9 @@
 -- correct private/public notations
 -- add javadocs once completed
 
--- win conditons + options (KEN)
 -- UPDATE RANDEVENTSGUI (KEN)
--- FIX DAILY ACTIONS (KEN)
+-- fix issue of characters dying and skipping functions if they are dead until someone is alive
 -- Encounter encounter native americans event -- trail of tears + indian removal act
--- debug passBackVar methods across the classes that use it (if/else throw new exception)
 -- insert storyline
--- insert all scenes
--- insert landmarks
+-- insert all scenes/images
 -- Add river dialogue GUI (PJ)
--- implement location (URGENT)
--- make river dialog (PJ)
-    --> Location mile markers and location names dont have same sizes LOL

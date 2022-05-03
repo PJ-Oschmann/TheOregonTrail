@@ -38,7 +38,7 @@ public class Location {
     public Location(OregonTrailGUI game) {
         this.game = game;
         this.pace = game.getCurrentPace();
-        this.river = new RiverGUI(game);
+
         /*Fort Bridger //wyoming --
         Fort Kearney //nebraska --
         Fort Laramie //wyoming --
@@ -55,6 +55,7 @@ public class Location {
         Platte River //Nebraska*/
     }
     //TODO: no more cancel button
+
     public void crossRiver() {
         river.setText("You reached " + names.get(markerCounter) +
                 "! How would you like to cross? You can:\n1 - Take the Ferry for $20\n2 - Build a raft using 2 " +
