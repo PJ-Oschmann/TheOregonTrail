@@ -33,7 +33,7 @@ public class Party extends JDialog {
         this.item = item;
         setGlobalVar();
         initializePartyTextArea(item);
-        promptTextPane.setText("Select a character to give " + item.toLowerCase() + " to!");
+        promptTextArea.setText("Select a character to give " + item.toLowerCase() + " to!");
         this.setUndecorated(true);
         setContentPane(contentPane);
         setModal(true);
@@ -92,7 +92,7 @@ public class Party extends JDialog {
                 %s
                 %s
                 %s
-                %S
+                %s
                 
                 Press ESC at anytime to exit this menu.
                 """, itemName,  printChar("H"), printChar("C"), printChar("A"), printChar("B"),
@@ -100,7 +100,7 @@ public class Party extends JDialog {
     }
 
     private String printChar(String i) {
-        switch (toString().toUpperCase()) {
+        switch (i.toUpperCase()) {
             case "H" -> {
                 if (!characterArrayList.get(0).isDead) {
                     return "H: Hattie";
