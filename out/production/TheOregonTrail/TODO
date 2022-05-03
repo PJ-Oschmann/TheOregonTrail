@@ -2,4 +2,5 @@
 -- correct private/public notations
 -- add javadocs once completed
 
--- insert storyline (PJ)
+hunting broken (no ammo even when have ammo)
+fix daily actions system to deny actions when not enough

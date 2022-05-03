@@ -137,7 +137,7 @@ public class RandomEventGUI extends JDialog {
         if (isGood) {
             temp = game.rand.nextInt(4);
             if (temp == 0) {
-                return "encounterTraveler"; //player encounters another traveler
+                return "encounterTravelers"; //player encounters another traveler
             } else if (temp == 1) {
                 return "smallStream"; //player encounters
             } else if (temp == 2) {
@@ -170,7 +170,7 @@ public class RandomEventGUI extends JDialog {
 
         //Good events
         switch (event) {
-            case "encounterTraveler" -> {
+            case "encounterTravelers" -> {
                 this.imageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/encounterTraveler.png"));
                 inputField.addActionListener(encounterAL);
                 encounterTraveler();
@@ -320,7 +320,7 @@ public class RandomEventGUI extends JDialog {
             isEncounterAL = true;
             String i = inputField.getText().toUpperCase();
             switch (i) {
-                case "T" -> { inputField.removeActionListener(encounterAL); initiateTrade(); onCancel(); }
+                case "T" -> { inputField.removeActionListener(encounterAL); initiateTrade(); }
                 case "S" -> { inputField.removeActionListener(encounterAL); shareStories(); onCancel(); }
                 default -> staticMethods.notValidInput();
             }
@@ -371,7 +371,7 @@ public class RandomEventGUI extends JDialog {
                             N: DECLINE THE TRADE
                             """, itemCount, item
                     ));
-                    makeTrade(item, itemCount);
+                    makeTrade(item, itemCount, "FOOD", 20);
                 }
                 case "A" -> {
                     switch (r) { //$18
@@ -392,7 +392,7 @@ public class RandomEventGUI extends JDialog {
                             N: DECLINE THE TRADE
                             """, itemCount, item
                     ));
-                    makeTrade(item, itemCount);
+                    makeTrade(item, itemCount, "AMMUNITION", 6);
                 }
                 case "M" -> {
                     switch (r) { //$15
@@ -413,7 +413,7 @@ public class RandomEventGUI extends JDialog {
                             N: DECLINE THE TRADE
                             """, itemCount, item
                     ));
-                    makeTrade(item, itemCount);
+                    makeTrade(item, itemCount, "MEDICINE", 5);
                 }
                 case "C" -> {
                     switch (r) { //$20
@@ -434,7 +434,7 @@ public class RandomEventGUI extends JDialog {
                             N: DECLINE THE TRADE
                             """, itemCount, item
                     ));
-                    makeTrade(item, itemCount);
+                    makeTrade(item, itemCount, "CLOTHES", 2);
                 }
                 case "W" -> {
                     switch (r) { // $20
@@ -455,7 +455,7 @@ public class RandomEventGUI extends JDialog {
                             N: DECLINE THE TRADE
                             """, itemCount, item
                     ));
-                    makeTrade(item, itemCount);
+                    makeTrade(item, itemCount, "WAGON TOOLS", 2);
                 }
                 case "S" -> {
                     switch (r) { //$24
@@ -476,7 +476,7 @@ public class RandomEventGUI extends JDialog {
                             N: DECLINE THE TRADE
                             """, itemCount, item
                     ));
-                    makeTrade(item, itemCount);
+                    makeTrade(item, itemCount, "SPLINTS", 3);
                 }
                 case "O" -> {
                     switch (r) { //$20
@@ -497,7 +497,7 @@ public class RandomEventGUI extends JDialog {
                             N: DECLINE THE TRADE
                             """, itemCount, item
                     ));
-                    makeTrade(item, itemCount);
+                    makeTrade(item, itemCount, "OXEN",2);
                 }
                 case "R" -> {
                     tradeCancelled();
@@ -522,7 +522,7 @@ public class RandomEventGUI extends JDialog {
         return q;
     }
 
-    private void setQuantity(String n, int amt) {
+    private void setQuantity(String n, int amt, String get, int received) {
         switch (n) {
             case "MONEY" -> { money -= amt; }
             case "FOOD" -> { food -= amt; }
@@ -533,16 +533,38 @@ public class RandomEventGUI extends JDialog {
             case "SPLINTS" -> { splints -= amt; }
             case "OXEN" -> { oxen -= amt; }
         }
+        switch (get) {
+            case "FOOD" -> { food += 20; }
+            case "AMMUNITION" -> { ammunition += 6; }
+            case "MEDICINE" -> { medicine += 5; }
+            case "CLOTHES" -> { clothes += 2; }
+            case "WAGON TOOLS" -> { wagonTools += 2; }
+            case "SPLINTS" -> { splints += 3; }
+            case "OXEN" -> { oxen += 2; }
+        }
+        tradeSuccessful(n, amt, get, received);
     }
 
-    private void makeTrade(String n, int amt) {
+    private void tradeSuccessful(String name, int amount, String getItem, int received) {
+        JOptionPane.showMessageDialog(null, String.format(
+                """
+                You successfully exchanged:
+                %d %s for %d %s
+                
+                You thank the travelers for their time and help
+                and wish them safety for their future endeavors.
+                """, amount, name, received, getItem
+        ), "TRADE SUCCESS", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private void makeTrade(String n, int amt, String get, int received) {
         inputField.addActionListener(e2 -> {
             String yn = inputField.getText().toUpperCase();
             if (yn.equals("N")) {
                 tradeCancelled();
             }
             else if (checkQuantity(n) >= amt){
-                setQuantity(n, amt);
+                setQuantity(n, amt, get,received);
             }
             else {
                 staticMethods.notEnoughItem(n);

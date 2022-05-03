@@ -719,7 +719,7 @@ public class OregonTrailGUI {
                     }
                     thanos();
                 }
-                default -> {staticMethods.notValidInput(); JOptionPane.showMessageDialog(null, "LOL!"); }
+                default -> staticMethods.notValidInput();
             }
             userInput.setText("");
         }
