@@ -121,8 +121,8 @@ public class Activities {
 
     public void returnToGameMenu() {
         passBackVar();
-        game.updateStats();
         game.writeGameInfo();
+        game.updateStats();
         inGameMenu();
         manageListeners();
     }
@@ -142,23 +142,25 @@ public class Activities {
     }
 
     private void repairWagon() {
-        if (wagonTools >= 1) {
-            game.wagon.setState(0);
-            wagonTools -= 1;
-            dailyActions -= 1;
-        }
-        else {
-            staticMethods.notEnoughItem("WAGON TOOLS");
+        if (checkDailyActions()) {
+            if (wagonTools >= 1) {
+                game.wagon.setState(0);
+                wagonTools -= 1;
+                dailyActions -= 1;
+            } else {
+                staticMethods.notEnoughItem("WAGON TOOLS");
+            }
         }
     }
 
     public void hunt() {
-        if (ammunition >= 1) {
-            int newFood;
-            String[] shootButton = {"Shoot!"};
-            JOptionPane.showOptionDialog(null,"You point your gun into the woods...",
-                    "Hunting Activity",JOptionPane.YES_OPTION,JOptionPane.PLAIN_MESSAGE,null,shootButton,null);
-            int n = game.rand.nextInt(99);
+        if (checkDailyActions()) {
+            if (ammunition >= 1) {
+                int newFood;
+                String[] shootButton = {"Shoot!"};
+                JOptionPane.showOptionDialog(null, "You point your gun into the woods...",
+                        "Hunting Activity", JOptionPane.YES_OPTION, JOptionPane.PLAIN_MESSAGE, null, shootButton, null);
+                int n = game.rand.nextInt(99);
                 if (n < 9) {
                     newFood = 5;
                 } else if (n < 24) {
@@ -172,22 +174,25 @@ public class Activities {
                 } else {
                     newFood = 15;
                 }
-            JOptionPane.showMessageDialog(null,"You found " + newFood + " food!","Hunting activity",
-                    JOptionPane.PLAIN_MESSAGE);
-            food = newFood;
-            dailyActions -= 1;
-        }
-        else {
-            staticMethods.notEnoughItem("AMMUNITION");
+                JOptionPane.showMessageDialog(null, "You found " + newFood + " food!", "Hunting activity",
+                        JOptionPane.PLAIN_MESSAGE);
+                food = newFood;
+                dailyActions -= 1;
+            } else {
+                staticMethods.notEnoughItem("AMMUNITION");
+            }
         }
     }
 
     public void forage() {
-        int newFood;
-        String[] searchButton = {"Look Around!"};
-        JOptionPane.showOptionDialog(null,"You enter the woods, being careful to watch your step...",
-                "Foraging Activity",JOptionPane.YES_OPTION,JOptionPane.PLAIN_MESSAGE,null,searchButton,null);
-        int n = game.rand.nextInt(99);
+        if (checkDailyActions()) {
+
+
+            int newFood;
+            String[] searchButton = {"Look Around!"};
+            JOptionPane.showOptionDialog(null, "You enter the woods, being careful to watch your step...",
+                    "Foraging Activity", JOptionPane.YES_OPTION, JOptionPane.PLAIN_MESSAGE, null, searchButton, null);
+            int n = game.rand.nextInt(99);
             if (n < 9) {
                 newFood = 1;
             } else if (n < 24) {
@@ -201,25 +206,27 @@ public class Activities {
             } else {
                 newFood = 6;
             }
-        JOptionPane.showMessageDialog(null,"You found " + newFood + " food!",
-                "Foraging activity",JOptionPane.PLAIN_MESSAGE);
-        food = newFood;
-        dailyActions -= 2;
+            JOptionPane.showMessageDialog(null, "You found " + newFood + " food!",
+                    "Foraging activity", JOptionPane.PLAIN_MESSAGE);
+            food = newFood;
+            dailyActions -= 2;
+        }
     }
 
     public void makeClothes() {
-        if (cloDACounter <= 2) {
-            cloDACounter++;
-            JOptionPane.showMessageDialog(null,"You have begun making a set of clothes. " +
-                    "Tired, you decide to finish making the clothes later.","Clothes-making Activity",JOptionPane.PLAIN_MESSAGE);
+        if (checkDailyActions()) {
+            if (cloDACounter <= 2) {
+                cloDACounter++;
+                JOptionPane.showMessageDialog(null, "You have begun making a set of clothes. " +
+                        "Tired, you decide to finish making the clothes later.", "Clothes-making Activity", JOptionPane.PLAIN_MESSAGE);
+            } else if (cloDACounter == 3) {
+                cloDACounter = 0;
+                JOptionPane.showMessageDialog(null, "You made a fresh set of clothes. " +
+                        "They have been added ot your inventory.", "Clothes-making Activity", JOptionPane.PLAIN_MESSAGE);
+                clothes += 1;
+            }
+            dailyActions -= 1;
         }
-        else if (cloDACounter == 3){
-            cloDACounter = 0;
-            JOptionPane.showMessageDialog(null,"You made a fresh set of clothes. " +
-                    "They have been added ot your inventory.","Clothes-making Activity",JOptionPane.PLAIN_MESSAGE);
-            clothes += 1;
-        }
-        dailyActions -= 1;
     }
 
     public int getJournCounter() {
@@ -231,23 +238,39 @@ public class Activities {
     }
 
     public void writeJournal() {
-        if (journCounter == 0) {
-            journCounter++;
-            JOptionPane.showMessageDialog(null,"You take out your journal and pen and begin to write",
-                    "Writing Activity",JOptionPane.PLAIN_MESSAGE);
-            happiness += 5;
-            dailyActions -= 1;
+        if (checkDailyActions()) {
+            if (journCounter == 0) {
+                journCounter++;
+                JOptionPane.showMessageDialog(null, "You take out your journal and pen and begin to write",
+                        "Writing Activity", JOptionPane.PLAIN_MESSAGE);
+                happiness += 5;
+                dailyActions -= 1;
+            } else {
+                JOptionPane.showMessageDialog(null, "You have already written in your Journal today.",
+                        "Nothing to write, head empty", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    private boolean checkDailyActions() {
+        if (dailyActions>0) {
+            return true;
         }
         else {
-            JOptionPane.showMessageDialog(null,"You have already written in your Journal today.",
-                    "Nothing to write, head empty", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Sorry, you're out of daily actions!","NO MORE " +
+                    "DAILY ACTIONS",JOptionPane.ERROR_MESSAGE);
+            return false;
         }
     }
 
     public void sleep() {
-        for (Character character : characterArrayList) {
-           game.calculateHealth(character,5);
+        if (checkDailyActions()) {
+            JOptionPane.showMessageDialog(null,"Everyone takes a quick nap and recovers 5 HP!",
+                    "NAP TIME",JOptionPane.PLAIN_MESSAGE);
+            for (Character character : characterArrayList) {
+                game.calculateHealth(character, 5);
+            }
+            dailyActions -= 1;
         }
-        dailyActions -= 1;
     }
 }
