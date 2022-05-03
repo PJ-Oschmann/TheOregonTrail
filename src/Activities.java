@@ -103,24 +103,22 @@ public class Activities {
             setGlobalVar();
             String input = game.userInput.getText().toUpperCase();
             switch (input) {
-                case "H" -> hunt(); //hunting
-                case "F" -> forage(); //foraging
-                case "C" -> makeClothes(); //clothes
-                case "W" -> repairWagon(); //wagon repairs
-                case "J" -> writeJournal(); //journaling
-                case "S" -> sleep(); //sleep
+                case "H" -> { hunt(); displayActivitiesMenu(); } //hunting
+                case "F" -> { forage(); displayActivitiesMenu(); } //foraging
+                case "C" -> { makeClothes(); displayActivitiesMenu(); } //clothes
+                case "W" -> { repairWagon(); displayActivitiesMenu(); } //wagon repairs
+                case "J" -> { writeJournal(); displayActivitiesMenu(); } //journaling
+                case "S" -> { sleep(); displayActivitiesMenu(); } //sleep
                 case "A" -> displayAdditionalInfo(); //get additional info
                 case "R" -> returnToGameMenu();
                 default -> staticMethods.notValidInput();
             }
             passBackVar();
-            displayActivitiesMenu();
             game.userInput.setText("");
         }
     };
 
     public void returnToGameMenu() {
-        game.storyTextArea.setText("");
         inGameMenu();
         manageListeners();
         passBackVar();
