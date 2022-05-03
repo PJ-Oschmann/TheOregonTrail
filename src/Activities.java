@@ -143,11 +143,16 @@ public class Activities {
 
     private void repairWagon() {
         if (checkDailyActions()) {
-            if (wagonTools >= 1) {
+            if (wagonTools >= 1 && game.wagon.getState()==1) {
                 game.wagon.setState(0);
                 wagonTools -= 1;
                 dailyActions -= 1;
-            } else {
+            }
+            else if (game.wagon.getState()==0) {
+                JOptionPane.showMessageDialog(null,"Your wagon is already in good shape!","WAGON " +
+                        "IS FINE",JOptionPane.PLAIN_MESSAGE);
+            }
+            else {
                 staticMethods.notEnoughItem("WAGON TOOLS");
             }
         }
