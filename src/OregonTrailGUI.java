@@ -320,6 +320,9 @@ public class OregonTrailGUI {
             dailyActions = 2;
         }
         activities.setJournCounter(0);
+        if (godModeOn) {
+            dailyActions = 1000;
+        }
     }
 
     private void checkForRandomEvent() {
@@ -690,6 +693,7 @@ public class OregonTrailGUI {
         splints = 999999;
         godModeOn = true;
         currentPace = 999999;
+        dailyActions = 1000;
     }
 
     public ActionListener gameMenu = new ActionListener() {
