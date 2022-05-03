@@ -195,7 +195,7 @@ public class RandomEventGUI extends JDialog {
                 promptPane.setText(String.format(
                         """
                                 Your party has stumbled upon an abandoned wagon on the
-                                side of the road. You find some resources after scavenging 
+                                side of the road. You find some resources after scavenging
                                 around the area!
                                                         
                                 YOU FOUND:

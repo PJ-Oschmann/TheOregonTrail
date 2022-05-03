@@ -21,7 +21,6 @@ public class Activities {
 
     public Activities(OregonTrailGUI game) {
         this.game = game;
-        setGlobalVar();
     }
     private boolean inActivitiesMenu, inGameMenu = false, activitiesMenuListener = true, gameMenulistener = false;
 
@@ -101,6 +100,7 @@ public class Activities {
     public  ActionListener activityMenuListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
+            setGlobalVar();
             String input = game.userInput.getText().toUpperCase();
             switch (input) {
                 case "H" -> hunt(); //hunting
