@@ -71,7 +71,7 @@ public class FortGUI extends JDialog {
         int price = characterArrayList.size()*4;
         if (game.getMoney() >= price) {
             int choice = JOptionPane.showOptionDialog(null,"Resting at the inn will cost your party a total of" +
-                    " " + price + ". Rest up?","REST?",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,null,null);
+                    " $" + price + ". Rest up?","REST?",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,null,null);
             if (choice==JOptionPane.YES_OPTION) {
                 //Add 25 HP to everyone, sets hunger to 0
                 for (Character character : characterArrayList) {
