@@ -104,13 +104,18 @@ public class Location {
             "Scotts Bluff", "Fort Laramie", "Fort Bridger", "Fort Hall", "Three Island Crossing", "Fort Boise",
             "Blue Mountains", "Oregon City"
      */
+    boolean firstTimeInLocation=false;
     public void doStoryLine() {
         System.out.println("Location: " + names.get(markerCounter-1));
-        switch (names.get(markerCounter-1)) {
-            case "Blue River" -> scene.loadScene("blueRiver"); //TEST ONLY DON'T WORRY WILL BE REMOVED
-            case "Fort Kearny" -> scene.loadScene("fortKearny");
-            case "Courthouse Rock" -> scene.loadScene("courthouseRock");
+        if (firstTimeInLocation){
+            switch (names.get(markerCounter-1)) {
+                case "Blue River" -> scene.loadScene("blueRiver"); //TEST ONLY DON'T WORRY WILL BE REMOVED
+                case "Fort Kearny" -> scene.loadScene("fortKearny");
+                case "Courthouse Rock" -> scene.loadScene("courthouseRock");
+            }
+            firstTimeInLocation=false;
         }
+
     }
     public void addMileage() {
         int miles;
@@ -123,11 +128,12 @@ public class Location {
         try {
             System.out.println("milesTravd="+milesTravd+">=milesMarkers[markerCounter]="+mileMarkers.get(markerCounter)+" && contains="+names.get(markerCounter).contains("River"));
             //River
-            if (milesTravd >= mileMarkers.get(markerCounter)  && names.get(markerCounter).contains("River")) {
+            if ((milesTravd >= mileMarkers.get(markerCounter)) && (names.get(markerCounter).contains("River"))) {
                 crossRiver();
                 currentLocation = names.get(markerCounter);
                 milesTravd=mileMarkers.get(markerCounter);
                 markerCounter++;
+                firstTimeInLocation=true;
             }
 
             //Landmark
@@ -136,6 +142,7 @@ public class Location {
                         "!", "CHECKPOINT", JOptionPane.INFORMATION_MESSAGE);
                 currentLocation = names.get(markerCounter);
                 markerCounter++;
+                firstTimeInLocation=true;
             }
         }
         catch (RuntimeErrorException e){
