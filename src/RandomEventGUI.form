@@ -31,7 +31,9 @@
                   </grid>
                 </constraints>
                 <properties>
+                  <foreground color="-7105645"/>
                   <requestFocusEnabled value="true"/>
+                  <text value="Input Option Here"/>
                 </properties>
               </component>
               <component id="b9dcb" class="javax.swing.JLabel">
@@ -63,6 +65,7 @@
             </constraints>
             <properties>
               <editable value="false"/>
+              <focusable value="true"/>
               <requestFocusEnabled value="false"/>
             </properties>
           </component>
