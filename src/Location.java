@@ -71,8 +71,8 @@ public class Location {
                 "1 - Take the Ferry for $20\n2 - Build a raft using 2 of your wagon tools\n3 - Attempt to swim" +
                 " across.");
         river.pack();
-        river.setVisible(true);
         river.riverImage.setIcon(new javax.swing.ImageIcon("src/assets/images/river.png"));
+        river.setVisible(true);
         river.crossRiver();
     }
 

@@ -53,7 +53,7 @@ public class OregonTrailGUI {
     public Wagon wagon = new Wagon();
     private Date date = new Date();
     private static boolean inMenu = true, inGame = false, isTraveling = false, isGameWon = false, isGameLost = false;
-    private boolean gameMenuAL;
+    private boolean gameMenuAL, menuAL;
     private RandomEventGUI reg;
     private Timer travelClock = new Timer(5000, new ActionListener() {
         @Override
@@ -663,13 +663,14 @@ public class OregonTrailGUI {
     public ActionListener menuListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-
+            menuAL = true;
             if (userInput.getText().equalsIgnoreCase("E")) {
                 exitGame();
             }
             else if (userInput.getText().equalsIgnoreCase("P")) {
                 inMenu = false;
                 introScene();
+                menuAL = false;
                 userInput.removeActionListener(menuListener);
             }
             else {
@@ -708,6 +709,7 @@ public class OregonTrailGUI {
     public ActionListener gameMenu = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
+            gameMenuAL = true;
             String input = userInput.getText().toUpperCase();
             switch (input) {
                 case "I" -> openInventory();
@@ -727,7 +729,7 @@ public class OregonTrailGUI {
                     }
                     thanos();
                 }
-                default -> staticMethods.notValidInput();
+                default -> {staticMethods.notValidInput(); JOptionPane.showMessageDialog(null, "LOL!"); }
             }
             userInput.setText("");
         }
@@ -899,6 +901,9 @@ public class OregonTrailGUI {
         staticMethods.resetNFC();
         if (gameMenuAL) {
             userInput.removeActionListener(gameMenu);
+        }
+        if (menuAL) {
+            userInput.removeActionListener(menuListener);
         }
 
         userInput.addFocusListener(playHelp);
