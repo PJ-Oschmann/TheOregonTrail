@@ -88,8 +88,6 @@ public class Character {
         else {
             this.health = 100;
             this.hunger = 0;
-            this.isSick = false;
-            this.isInjured = false;
         }
     }
 

@@ -698,6 +698,7 @@ public class OregonTrailGUI {
         wagonTools = 999999;
         splints = 999999;
         godModeOn = true;
+        currentPace = 100;
     }
 
     public ActionListener gameMenu = new ActionListener() {
