@@ -142,8 +142,8 @@ public class Shop extends JDialog {
             S: SPLINTS
             O: OXEN
             
-            You will begin the journey with 4 oxen, however, it is recommended
-            you purchase more.
+            You will begin the journey with 4 oxen, however, 
+            it is recommended you purchase more.
             
             R: RETURN TO THIS MENU
             
