@@ -14,7 +14,7 @@ public class Location {
 
     private int pace;
     private OregonTrailGUI game;
-    private River river;
+    private RiverGUI river;
     private int milesTravd = 0;
     private String currentLocation = "Independence";
     private int markerCounter = 1; //Index of the milage marker we're at
@@ -38,7 +38,7 @@ public class Location {
     public Location(OregonTrailGUI game) {
         this.game = game;
         this.pace = game.getCurrentPace();
-        this.river = new River(game);
+        this.river = new RiverGUI(game);
         /*Fort Bridger //wyoming --
         Fort Kearney //nebraska --
         Fort Laramie //wyoming --
@@ -56,9 +56,10 @@ public class Location {
     }
     //TODO: no more cancel button
     public void crossRiver() {
-        String crossChoice = JOptionPane.showInputDialog(null, "You reached " + names.get(markerCounter) +
+        river.setText("You reached " + names.get(markerCounter) +
                 "! How would you like to cross? You can:\n1 - Take the Ferry for $20\n2 - Build a raft using 2 " +
-                "of your wagon tools\n3 - Attempt to swim across", "CHECKPOINT", JOptionPane.PLAIN_MESSAGE);
+                "of your wagon tools\n3 - Attempt to swim across");
+        String crossChoice = river.getText();
         System.out.println("Location: crossChoice="+crossChoice);
         switch (crossChoice) {
             case "1":
@@ -161,5 +162,13 @@ public class Location {
 
     public void setCurrentLocation(String currentLocation) {
         this.currentLocation = currentLocation;
+    }
+
+    public int getMarkerCounter() {
+        return markerCounter;
+    }
+
+    public void setMarkerCounter(int markerCounter) {
+        this.markerCounter = markerCounter;
     }
 }

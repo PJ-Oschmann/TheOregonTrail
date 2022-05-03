@@ -323,7 +323,7 @@ public class OregonTrailGUI {
     private void updateLocation(){
         //check to see if new distance takes you to a new location
         //methods as appropriate to handle new locations and landmarks
-        if (location.getMilesTravd() >= (location.mileMarkers.size() - 1)) {
+        if (location.getMilesTravd() >= (location.mileMarkers.get(location.mileMarkers.size()- 1))) {
             gameWon();
         }
     }
