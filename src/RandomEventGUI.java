@@ -21,20 +21,21 @@ public class RandomEventGUI extends JDialog {
     private int medsAmt = 2;
     private int splintAmt = 5;
     private int toolsAmt = 8;
-    private String traderAsk;
+    private Object traderAsk;
     private int halfOff;
     private ArrayList<String> nameArrayList = new ArrayList<>(List.of("Felicia","Mia","Kristin","Katrina","Janet",
             "Almudena","Chika","Mary","Nicole","Jessica","Maxine","Stephany","Kendra","Kendall","Kenifer","Elise",
             "Anna","Lizzy","Minnie","Ida","Florence","Martha","Nellie","Lena","Agnes","Candace","Jane","April", "Jordan",
             "Skyler","Sonia","Joanne","Crystal","Melissa","Amy","Sharron","Kelly","Shelly","Chrysanthemum","Ally",
             "Sally","Maria"));
-    private ArrayList<String> itemArrayList;
+    private ArrayList itemArrayList;
     private int tradeAmt;
     private String tradeItem;
 
     private int tradeGiveAmt;
     private int food, ammunition, medicine, clothes, wagonTools, splints, oxen, money, happiness;
     private ArrayList<Character> characterArrayList;
+    private boolean isStreamAL = false, isEncounterAL = false, isCloseAL = false,  isNativeAL = false;
 
     public RandomEventGUI(OregonTrailGUI game) {
         this.game = game;
@@ -99,6 +100,7 @@ public class RandomEventGUI extends JDialog {
     }
 
     private void onCancel() {
+        closeActionListeners();
         passBackVar();
         dispose();
     }
@@ -218,16 +220,16 @@ public class RandomEventGUI extends JDialog {
                 inputField.addActionListener(closeAL);
             }
             case "nativeAmericanEncounter" -> {
-                promptPane.setText(String.format(
+                promptPane.setText(
                         """
-                        You encounter Native Americans that are traveling to Oklahoma in
+                        You encounter a Native American traveling to Oklahoma in
                         search of a new home. They ask for any supplies you can spare to
                         help them with their journey.
                         
-                        
-                                
+                        C: CONTINUE
                         """
-                ));
+                );
+                inputField.addActionListener(nativeAL);
             }
 
             //Bad events
@@ -305,14 +307,17 @@ public class RandomEventGUI extends JDialog {
     }
 
     private void trade(int step) {
-        resetItemArrayList();
+        resetTraderItems();
         traderAsk = itemArrayList.get(game.rand.nextInt(8));
-
     }
 
-    private void resetItemArrayList() {
+    private void resetTraderItems() {
         itemArrayList = new ArrayList<>(List.of("money", "clothes", "ammunition","food","medicine",
                 "splints","tools", "oxen"));
+    }
+
+    private void resetNAItems() {
+        itemArrayList = new ArrayList<>(List.of("money", "clothes", "ammunition","food","medicine"));
     }
 
     private void removeItemfromList(String i) {
@@ -337,6 +342,7 @@ public class RandomEventGUI extends JDialog {
     private final ActionListener encounterAL = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
+            isEncounterAL = true;
             String i = inputField.getText().toUpperCase();
             switch (i) {
                 case "T" -> {} //trade here
@@ -346,10 +352,110 @@ public class RandomEventGUI extends JDialog {
         }
     };
 
+    private final ActionListener nativeAL = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            isNativeAL = true;
+            if (inputField.getText().equalsIgnoreCase("C")) {
+                resetNAItems();
+                int itemIndex = game.rand.nextInt(itemArrayList.size());
+                String item = "";
+                int ask = 0, have = 0;
+                switch (itemIndex) {
+                    case 0 -> { item = "DOLLARS"; ask = game.rand.nextInt(6) + 8; have = game.getMoney(); }
+                    case 1 -> { item = "CLOTHES"; ask = game.rand.nextInt(1) + 1; have = game.getClothes(); }
+                    case 2 -> { item = "AMMUNITION"; ask = game.rand.nextInt(4) + 2; have = game.getAmmunition(); }
+                    case 3 -> { item = "FOOD"; ask = game.rand.nextInt(11) + 10; have = game.getFood(); }
+                    case 4 -> { item = "MEDICINE"; ask = game.rand.nextInt(4) + 2; have = game.getMedicine(); }
+                }
+
+                promptPane.setText(String.format(
+                        """
+                        They ask if you will donate %d %s out of goodwill to help them
+                        out on their relocation.
+                        
+                        If you donate some supplies, you and your party will gain a
+                        significant amount of happiness.
+                        
+                        You have %d %s in your inventory.
+                        
+                        D: DONATE
+                        A: APOLOGIZE
+                        """, ask, item, have, item
+                ));
+                nativeAL2(ask, itemIndex, have);
+                inputField.removeActionListener(nativeAL);
+            }
+        }
+    };
+    private void nativeAL2(int ask, int itemInd, int have) {
+        String item = String.valueOf(itemArrayList.get(itemInd));
+        inputField.addActionListener(event -> {
+            String in = inputField.getText().toUpperCase();
+            switch (in) {
+                case "D" -> {
+                    if (have >= ask) {
+                        switch (itemInd) {
+                            case 0 -> money -= ask;
+                            case 1 -> clothes -= ask;
+                            case 2 -> ammunition -= ask;
+                            case 3 -> food -= ask;
+                            case 4 -> medicine -= ask;
+                        }
+                        happiness += 20;
+                        JOptionPane.showMessageDialog(null, String.format(
+                                """
+                                You gather some %s from your belongings that you have
+                                to spare to another fellow traveler. After sharing some
+                                brief conversation, they express great gratitude towards
+                                your kind gesture and you feel warm-hearted.
+                                
+                                HAPPINESS INCREASED BY 20.
+                                """, item), "GOOD SAMARITAN", JOptionPane.INFORMATION_MESSAGE);
+                        onCancel();
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(null, "You don't have enough " +
+                                item + "to help them out.\nYou can " + "apologize and wish them luck and move on " +
+                                "instead.", "NOT ENOUGH " + item, JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+                case "A" -> { promptPane.setText(
+                        """
+                        You feel great sympathy towards the struggling Native American
+                        who is also in the process of a cross-country pilgrimage. You
+                        apologize and wish them the best on their travels.
+                        """);
+                    onCancel();
+                }
+                default -> staticMethods.notValidInput();
+            }
+        });
+    }
+
+    private void closeActionListeners(){
+        if (isCloseAL) {
+            inputField.removeActionListener(closeAL);
+            isCloseAL = false;
+        }
+        if (isEncounterAL) {
+            inputField.removeActionListener(encounterAL);
+            isEncounterAL = false;
+        }
+        if (isStreamAL) {
+            inputField.removeActionListener(streamAL);
+            isStreamAL = false;
+        }
+        if (isNativeAL) {
+            inputField.removeActionListener(nativeAL);
+            isNativeAL = false;
+        }
+    }
 
     private final ActionListener closeAL = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
+            isCloseAL = true;
             if (inputField.getText().equalsIgnoreCase("C")) {
                 passBackVar();
                 dispose();
@@ -360,6 +466,7 @@ public class RandomEventGUI extends JDialog {
     private final ActionListener streamAL = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
+            isStreamAL = true;
             if (inputField.getText().equalsIgnoreCase("S")) {
                 inputField.setText("");
                 swim();

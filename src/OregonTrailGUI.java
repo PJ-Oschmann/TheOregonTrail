@@ -53,6 +53,7 @@ public class OregonTrailGUI {
     public Wagon wagon = new Wagon();
     private Date date = new Date();
     private static boolean inMenu = true, inGame = false, isTraveling = false, isGameWon = false, isGameLost = false;
+    private boolean gameMenuAL;
     private RandomEventGUI reg;
     private Timer travelClock = new Timer(5000, new ActionListener() {
         @Override
@@ -400,11 +401,9 @@ public class OregonTrailGUI {
     }
 
     /**
-     *Impact happiness based on factors.
+     * Impact happiness based on factors.
      * Good weather increases happiness by 5; bad weather decreases it by 5.
      */
-    //Figured "setHappiness" wasn't appropriate. Is there a better name we can use?
-    //Should each factor have its own method?
     public void impactHappiness() {
         if (!godModeOn) {
             //Weather
@@ -664,6 +663,7 @@ public class OregonTrailGUI {
     public ActionListener menuListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
+
             if (userInput.getText().equalsIgnoreCase("E")) {
                 exitGame();
             }
@@ -897,6 +897,9 @@ public class OregonTrailGUI {
         location.setMilesTravd(0);
         location.setMarkerCounter(0);
         staticMethods.resetNFC();
+        if (gameMenuAL) {
+            userInput.removeActionListener(gameMenu);
+        }
 
         userInput.addFocusListener(playHelp);
         if(inMenu) {
@@ -1035,7 +1038,10 @@ public class OregonTrailGUI {
     }
 
     public void setHappiness(int happiness) {
-        this.happiness = happiness;
+        if (happiness >= 100) {
+            this.happiness = 100;
+        }
+        else this.happiness = Math.max(happiness, 0);
     }
 
     public int getDailyActions() {
