@@ -222,23 +222,18 @@ public class OregonTrailGUI {
      * @param message - The message to display to the user
      * @param title - The title of the message box.
      */
-    //Oregon image from http://www.clker.com/clipart-oregon-3.html
     private static void showAbout(String message, String title) {
         int breakTextAt = 15; //Where to break the text
         StringBuilder newMessage = new StringBuilder(message);
         int wordCounter = 0;
-        ImageIcon oregonIcon = new ImageIcon("assets/oregonState.png");
-
         for (int i=0;i<message.length();i++) {
             if (message.charAt(i)==' ') {
                 wordCounter++;
                 if (wordCounter==breakTextAt) {newMessage.setCharAt(i,'\n'); wordCounter=0;}
             }
-
         }
-
         JOptionPane.showMessageDialog(null,"<html><h1>"+title+"</h1><br>"+newMessage,title,
-                JOptionPane.PLAIN_MESSAGE,oregonIcon);
+                JOptionPane.PLAIN_MESSAGE);
     }
 
     public void displayHelpMenu() {
@@ -786,7 +781,10 @@ public class OregonTrailGUI {
     private static ActionListener aboutTrailMenuItem = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            showAbout("",""); //Insert text here for about trail menu item
+            showAbout("The Oregon Trail was a roughly 2000-mile route from Independence, Missouri, to Oregon City," +
+                    "Oregon, which was used by hundreds of thousands of American pioneers and relocated Native Americans" +
+                    "in the mid-19th century to emigrate West.\n\nThe game follows Hattie Campbell, a young girl migrating with" +
+                    "her family across the country in hopes of a new and prosperous future.", "About the Trail");
         }
     };
 
