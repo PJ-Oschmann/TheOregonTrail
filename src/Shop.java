@@ -410,7 +410,7 @@ public class Shop extends JDialog {
                 case "B" -> buyItem();
                 case "S" -> sellItem();
                 case "R" -> { shopComboBox.setSelectedIndex(0); inMenu(); }
-                default -> { staticMethods.notValidInput(); shopComboBox.setSelectedIndex(0); inMenu(); }
+                default -> { staticMethods.notValidInput(); }
             }
             if (inMenu && !menuListenerActive) {
                 menuSelected();
