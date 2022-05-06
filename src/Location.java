@@ -1,6 +1,6 @@
 /**
  * The location class is used to track the location of the character/party during
- * their journey from Missouri to Nebraska (Ash Hollow). This object will hold
+ * their journey from Missouri to Oregon City. This object will hold
  * the name of the location the party is at in the game and the location will change
  * depending on how much distance they have traveled.
  */
@@ -22,54 +22,41 @@ public class Location {
     private Date date = new Date();
     private String riverChoice;
     private int markerCounter = 1; //Index of the milage marker we're at
-    ArrayList<Integer> mileMarkers = new ArrayList<>(List.of(0,17, 50, 80, 108, 221, 273, 550, 591, 620, 672,
+    public ArrayList<Integer> mileMarkers = new ArrayList<>(List.of(0,17, 50, 80, 108, 221, 273, 550, 591, 620, 672,
             1063, 1279, 1454, 1700, 1900, 2000, 2170));
-    ArrayList<String> names = new ArrayList<>(List.of("Independence","Blue River", "Wakarusa River",
+    public ArrayList<String> names = new ArrayList<>(List.of("Independence","Blue River", "Wakarusa River",
             "Kansas River", "Vermilion", "Little Blue River", "Big Blue River","Fort Kearny", "Courthouse Rock", "Chimney Rock",
             "Scotts Bluff", "Fort Laramie", "Fort Bridger", "Fort Hall", "Three Island Crossing", "Fort Boise",
             "Blue Mountains", "Oregon City"));
 
-    /*
-    Blue //kansas 17
-    Wakarusa //kansas
-    Kansas //kansas 80
-    Big Blue //nebraska 273
-    Little Blue //Nebraska 221
-    Vermilion //kansas 108
-    Platte River //Nebraska
-
-     */
     public Location(OregonTrailGUI game) {
         this.game = game;
         this.pace = game.getCurrentPace();
         this.river = new RiverGUI(this, game);
         this.fort = new FortGUI(game);
-        /*Fort Bridger //wyoming --
-        Fort Kearney //nebraska --
-        Fort Laramie //wyoming --
-        Fort Hall //idaho --
-        Fort Boise //idaho --
-        Fort Vancouver //wyoming --
-
-        Blue //kansas
-        Wakarusa //kansas
-        Kansas //kansas
-        Big Blue //nebraska
-        Little Blue //Nebraska
-        Vermilion // ??
-        Platte River //Nebraska*/
     }
-    //TODO: no more cancel button
 
-
+    /**
+     * Gets riverChoice
+     * @return
+     */
     public String getRiverChoice() {
         return riverChoice;
     }
 
+    /**
+     * Sets riverChoice
+     * @param riverChoice
+     */
     public void setRiverChoice(String riverChoice) {
         this.riverChoice = riverChoice;
     }
 
+    /**
+     * Gives the user three choices to cross the river. If the player enters "1," they can cross by ferry for $20. If
+     * they enter "2," they can build a raft using their wagon tools. If they enter "3," they can attempt to swim
+     * across. When  method is called, the River window is shown.
+     */
     public void crossRiver() {
         river.setText("You reached " + names.get(markerCounter) + "! How would you like to cross? You can:\n" +
                 "1 - Take the Ferry for $20\n2 - Build a raft using 2 of your wagon tools\n3 - Attempt to swim" +
@@ -81,6 +68,11 @@ public class Location {
         river.crossRiver();
     }
 
+    /**
+     * Gives the user 4 choices of what to do at a fort. If the player enters "1," they can go to the local shop. If
+     * they enter "2," they can recover health and hunger at the local shop. If they enter "3," they can repair their
+     * wagon if it is damaged. If they enter "4," they leave the fort.
+     */
     public void seeFort() {
         fort.setText("You reached " + names.get(markerCounter) + "! You can:\n" +
                 "1 - Grab goods from the local shop\n" +
@@ -93,39 +85,39 @@ public class Location {
         fort.setVisible(true);
     }
 
+    /**
+     * Discovers the current U.S. state the player is in.
+     * @return the String of whatever U.S. state the player is in.
+     */
     public String getCurrentState() {
-        int counter = markerCounter-1;
-        if(counter==0){
+        if(markerCounter-1==0){
             return "Missouri";
         }
-        else if (counter>=1&&counter<4){
+        else if (markerCounter-1>=1&&markerCounter-1<4){
             return "Kansas";
         }
-        else if (counter>=4&&counter<10) {
+        else if (markerCounter-1>=4&&markerCounter-1<10) {
             return "Nebraska";
         }
-        else if (counter>=10&&counter<12){
+        else if (markerCounter-1>=10&&markerCounter-1<12){
             return "Wyoming";
         }
-        else if (counter>=12&&counter<15) {
+        else if (markerCounter-1>=12&&markerCounter-1<15) {
             return "Idaho";
         }
         else {
             return "Oregon";
         }
     }
-    /*
-    "Independence", "Blue River", "Wakarusa River",
-            "Kansas River", "Vermilion", "Little Blue River", "Big Blue River","Fort Kearny", "Courthouse Rock", "Chimney Rock",
-            "Scotts Bluff", "Fort Laramie", "Fort Bridger", "Fort Hall", "Three Island Crossing", "Fort Boise",
-            "Blue Mountains", "Oregon City"
+
+    /**
+     * Progresses the story line. Loads scenes when a landmark, river, or fort is reached.
      */
     boolean firstTimeInLocation=false;
     public void doStoryLine() {
         int index = 0;
         if (markerCounter-1>=0) {index=markerCounter-1;}
         else {index=markerCounter;}
-        System.out.println("Location: " + names.get(index));
         if (firstTimeInLocation){
             switch (names.get(index)) {
                 case "Kansas River" -> scene.loadScene("kansasRiver",date.toString());
@@ -148,6 +140,13 @@ public class Location {
         }
 
     }
+
+    /**
+     * Adds total mileage when called. Acts as "daily traveled mileage."
+     * When the pace is set to 0, 15 miles are traveled daily.
+     * When pace is set to 1, 20 miles are traveled daily.
+     * When pace is set to 2, 25 miles are traveled daily.
+     */
     public void addMileage() {
         int miles;
         pace = game.getCurrentPace();
@@ -157,7 +156,6 @@ public class Location {
         else  {miles = 100;}
         milesTravd += miles;
         try {
-            System.out.println("milesTravd="+milesTravd+">=milesMarkers[markerCounter]="+mileMarkers.get(markerCounter)+" && contains="+names.get(markerCounter).contains("River"));
             //River
             if ((milesTravd >= mileMarkers.get(markerCounter)) && (names.get(markerCounter).contains("River"))) {
                 crossRiver();
@@ -188,26 +186,50 @@ public class Location {
         }
     }
 
+    /**
+     * Gets the total miles traveled.
+     * @return the total miles traveled.
+     */
     public int getMilesTravd() {
         return milesTravd;
     }
 
+    /**
+     * Sets the total miles traveled.
+     * @param milesTravd - Number of miles to set.
+     */
     public void setMilesTravd(int milesTravd) {
         this.milesTravd = milesTravd;
     }
 
+    /**
+     * Gets the current location
+     * @return the current location
+     */
     public String getCurrentLocation() {
         return currentLocation;
     }
 
+    /**
+     * Sets the current location
+     * @param currentLocation - the current location to set
+     */
     public void setCurrentLocation(String currentLocation) {
         this.currentLocation = currentLocation;
     }
 
+    /**
+     * Gets the current marker counter, which tracks what landmark is coming up next.
+     * @return the marker counter
+     */
     public int getMarkerCounter() {
         return markerCounter;
     }
 
+    /**
+     * Sets the current marker counter, which tracks what landmark is coming up next.
+     * @param markerCounter - the marker counter to set.
+     */
     public void setMarkerCounter(int markerCounter) {
         this.markerCounter = markerCounter;
     }

@@ -1,3 +1,8 @@
+/**
+ * This class provides a GUI for our river object, and contains methods used for crossing rivers. The player can pay
+ * $20 to take a ferry, build a raft using 2 wagon tools, or attempt to swim for free, albeit with great risk.
+ */
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,56 +32,73 @@ public class RiverGUI extends JDialog {
             }
         });
     }
-    private void resetRiver() {
+
+    /**
+     * Sets the input text box to a blank String.
+     */
+    private void resetTextBox() {
         inputText.setText("");
 
     }
 
+    /**
+     * Allows the user to cross the river. The player can take a ferry across for $20, build a raft using 2 tools, or
+     * attempt to swim across.
+     */
     public void crossRiver() {
         crossChoice = inputText.getText();
         switch (crossChoice) {
             case "1" -> {
-                System.out.println("1");
                 if (takeFerry()) {
                     dispose();
                 } else {
-                    resetRiver();
+                    resetTextBox();
                 }
             }
             case "2" -> {
-                System.out.println("2");
                 if (buildRaft()) {
                     dispose();
                 } else {
-                    resetRiver();
+                    resetTextBox();
                 }
             }
             case "3" -> {
-                System.out.println("3");
                 if (crossAlone()) {
                     dispose();
                 } else {
-                    resetRiver();
+                    resetTextBox();
                 }
             }
             default -> {
-                System.out.println("DEFAULT");
                 staticMethods.notValidInput();
-                resetRiver();
+                resetTextBox();
             }
         }
     }
 
+    /**
+     * Sets the text message to be displayed in the prompt.
+     * @param message - Message to be set in the prompt.
+     */
     public void setText(String message) {
         promptTextArea.setText(message);
     }
     String crossChoice;
+
+    /**
+     * Gets the text from the prompt.
+     */
     public void getText() {
         location.setRiverChoice(inputText.getText());
         dispose();
     }
 
     //Booleans: true = crossed; false = didn't. (Still true if someone gets hurt/sick/etc but crossed successfully)
+
+    /**
+     * The player can take the ferry across the river for $20 if they have enough money.
+     * @return true if the ferry crosses the river, false, if it does not.
+     */
     public boolean takeFerry() {
         if (game.getMoney() >= 20) {
             game.setMoney(game.getMoney() - 20);
@@ -89,6 +111,11 @@ public class RiverGUI extends JDialog {
     }
 
 
+    /**
+     * The player can build a raft using 2 wagon tools to cross the river. There is a 10% chance 1 oxen dies, a 15%
+     * chance someone gets sick along the way, and a 5% chance for wagon damage.
+     * @return true if the raft crosses the river, false if it does not.
+     */
     public boolean buildRaft() {
         if (game.getWagonTools() >= 2) {
             game.setWagonTools(game.getWagonTools() - 2);
@@ -124,6 +151,11 @@ public class RiverGUI extends JDialog {
         }
     }
 
+    /**
+     * Attempt to cross the river without a medium (i.e., by swimming). There is a 10% chance 1 oxen dies or a 20%
+     * chance 2 oxen die, a 5% chance someone drowns, a 15% chance someone gets sick, and a 10% chance the wagon breaks.
+     * @return true if the party makes it across the river, false if all oxen die causing everyone to drown.
+     */
     public boolean crossAlone() {
         //10% chance 1 oxen dies
         if (game.rand.nextInt(9) == 0 && game.getOxen() > 0) {
