@@ -1,3 +1,9 @@
+/**
+ * Outlines a Character. Contains the player's health, hunger, sick status, clothing status, injury status, whether
+ * they are an adult, and whether they are dead. It also tracks how many days they've been sick
+ * or injured.
+ */
+
 import javax.swing.*;
 
 public class Character {
