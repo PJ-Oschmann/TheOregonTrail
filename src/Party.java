@@ -1,3 +1,8 @@
+/**
+ * This class creates a GUI window for the Party class, which acts as a Character picker when using items from the
+ * Inventory window.
+ */
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -83,6 +88,11 @@ public class Party extends JDialog {
                 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
+    /**
+     * Initializes the Party Text area to default values and explains that the user types the first letter of the
+     * desired Character's name to select the character.
+     * @param itemName - Item to be specified in the text area.
+     */
     private void initializePartyTextArea(String itemName) {
         promptTextArea.setText(String.format(
                 """
@@ -99,6 +109,13 @@ public class Party extends JDialog {
                 printChar("J")));
     }
 
+    /**
+     * Specifies that the user should type the first character of the desired character's name when making a selection.
+     * If the character is dead, they are marked as "DEAD."
+     * @param i - input character. 'H' is for Hattie, 'C' is for Charles, 'A' is for Augusta, 'B' is for Ben, and 'J'
+     *          is for Jake.
+     * @return
+     */
     private String printChar(String i) {
         switch (i.toUpperCase()) {
             case "H" -> {
@@ -222,6 +239,10 @@ public class Party extends JDialog {
         game.setOxen(this.oxen);
     }
 
+    /**
+     * Sets the input text color to grey when not focused on, and black when focused on. When no text is present
+     * and the text box is not focused on, "Input Selection Here" is set into the text box.
+     */
     private final FocusAdapter inputHelp = new FocusAdapter() { //Grey text for input box when not focused on
         @Override
         public void focusGained(FocusEvent e) {
@@ -236,11 +257,21 @@ public class Party extends JDialog {
         }
     };
 
+    /**
+     * When the window is closed, dispose of the window.
+     */
     private void onCancel() {
         passBackVar();
         dispose();
     }
 
+    /**
+     * Calculates hunger to ensure it does not go below 0. It will decrease by the passed value unless that value
+     * exceeds 0, in which it will simply be set to 0.
+     * @param character - The character whose hunger will be modified.
+     * @param hungerVal - The amount of hunger to add or subtract.
+     * @return the modified amount of hunger.
+     */
     private int calculateHunger(Character character, int hungerVal) {
         int newHunger;
         if (character.getHunger()-hungerVal < 0) {
@@ -252,6 +283,13 @@ public class Party extends JDialog {
         return newHunger;
     }
 
+
+    /**
+     * Determines what action should be done. if the passed action is "FOOD," the eatFood() method is called. If
+     * "MEDICINE" is passed, the takeMeds() method is called. If "CLOTHES" is passed, equipClothes(), is called.
+     * If "SPLITS" is called, the useSplints() method is called.
+     * @param item - the item being used.
+     */
     private void doAction(String item) {
         switch (item) {
             case "FOOD" -> eatFood();
@@ -262,6 +300,11 @@ public class Party extends JDialog {
         updateStats();
 
     }
+
+    /**
+     * Allows the character to eat food. 1 food item is removed from the inventory, and the selected character's hunger
+     * decreases by 2. If the player doesn't have any food items in their inventory, they won't be able to eat.
+     */
     private void eatFood() {
         if (food > 0) {
             food -= 1;
@@ -275,6 +318,11 @@ public class Party extends JDialog {
 
     }
 
+    /**
+     * Allows the player to use a medicine item. If the selected character is not sick, they won't be able to use the
+     * item on that character. Otherwise, the player is cured. If the player doesn't have any medicine items, they
+     * won't be able to use them.
+     */
     private void takeMeds() {
         if(game.getMedicine() > 0){
             if(!selectedCharacter.isSick()) {
@@ -293,6 +341,12 @@ public class Party extends JDialog {
         }
     }
 
+    /**
+     * Allows the player to equip clothes, which protect the desired character from "bad" (i.e., extremely hot or cold)
+     * weather. If the selected character already has this protective clothing, they won't be able to apply the clothing
+     * to that character. Otherwise, the character is given protective clothing. If the player doesn't have any clothing
+     * items in their inventory, they won't be able to equip any clothing.
+     */
     private void equipClothes() {
         if (game.getClothes()>0) {
             if (selectedCharacter.getHasClothing()) {
@@ -310,6 +364,12 @@ public class Party extends JDialog {
         }
     }
 
+    /**
+     * Allows the player to use a splint, which will cure the desired character's injury. If the selected character is
+     * not injured, they won't be able to use the splint on that character. Otherwise, the character's injury will
+     * be cured. If the player doesn't have enough splint items in their inventory, they won't be able to use this
+     * item.
+     */
     private void useSplints() {
         if (game.getSplints() > 0){
             if (!selectedCharacter.isInjured()) {
