@@ -317,7 +317,7 @@ public class OregonTrailGUI {
         else {
             dailyActions = 2;
         }
-        activities.setJournCounter(0);
+        activities.setHasWritten(false);
         if (godModeOn) {
             dailyActions = 1000;
         }
@@ -573,7 +573,7 @@ public class OregonTrailGUI {
         }
 
         //If the adults are dead
-        else if (augusta.getIsDead() && charles.getIsDead()) {
+        else if (areAdultsDead()){
             message = "Augusta and Charles died. Without the guidance of their elders, the young-lings find themselves " +
                     "confused. You can't continue";
             isLost = true;
@@ -586,6 +586,16 @@ public class OregonTrailGUI {
             isLost = true;
         }
         gameOver(isLost, message);
+    }
+
+    private boolean areAdultsDead() {
+        int deadAdults = 0;
+        for (Character character : characterArrayList) {
+            if (character.isAdult() && character.getIsDead()) {
+                deadAdults++;
+            }
+        }
+        return deadAdults == 2;
     }
 
     private void gameOver(boolean lose, String msg) {
