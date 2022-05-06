@@ -31,6 +31,11 @@ public class Weather {
         }
     }
 
+    /**
+     * Set a random weather There is a 10% chance of good weather, a 10% chance of bad weather, and an 80% chance of
+     * neutral weather. Good weather increases happiness while bad weather decreases it. Neutral weather has no
+     * impact. Good weather is sunny and comfortable, while bad weather may be extremely cold or hot.
+     */
     public void setRandomWeather() {
         String extraCondition="";
         String temperatureCondition;
@@ -93,6 +98,10 @@ public class Weather {
         currentWeather = temperatureCondition+extraCondition;
     }
 
+    /**
+     * Gets the current weather condition
+     * @return the current weather condition as a String.
+     */
     public String getWeatherCondition() {
         return weatherCondition;
     }
