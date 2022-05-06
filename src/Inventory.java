@@ -1,3 +1,10 @@
+/**
+ * The Inventory class is attached to a dialogue inventory form. The dialogue form is a UI to display the inventory
+ * window that displays all the items the user can store in their inventory provides flexibility for the user to
+ * choose to use those items. There are multiple ActionListeners that are traded our for each other depending on where
+ * in the inventory the user is currently within.
+ */
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -12,8 +19,6 @@ public class Inventory extends JDialog {
     private JComboBox<String> invComboBox;
     private JTextField userInput;
     private JLabel invInputLabel;
-    private ArrayList<Character> characterArrayList;
-    private int food, ammunition, medicine, clothes, wagonTools, splints, oxen, money, happiness;
     private final OregonTrailGUI game;
     private boolean inMenu, inItem, menuActionListener, itemActionListener;
 
@@ -21,7 +26,6 @@ public class Inventory extends JDialog {
         //instantiating private vars
         this.game = game;
         maximize();
-        setGlobalVar();
 
         this.setTitle("INVENTORY");
         setContentPane(contentPane);
@@ -57,14 +61,13 @@ public class Inventory extends JDialog {
                 int input = invComboBox.getSelectedIndex();
                 switch (input) {
                     case 0 -> { displayMenu(); inMenu(); }
-                    case 1 -> { displayFood(food); inItem(); }
-                    case 2 -> { displayAmmo(ammunition); inItem(); }
-                    case 3 -> { displayMed(medicine);inItem();  }
-                    case 4 -> { displayClothes(clothes); inItem(); }
-                    case 5 -> { displayWT(wagonTools); inItem(); }
-                    case 6 -> { displaySplints(splints); inItem(); }
-                    case 7 -> { displayOxen(oxen); inItem(); }
-                    default -> invInfo.setText("ERROR IN SWITCH");
+                    case 1 -> { displayFood(game.getFood()); inItem(); }
+                    case 2 -> { displayAmmo(game.getAmmunition()); inItem(); }
+                    case 3 -> { displayMed(game.getMedicine());inItem();  }
+                    case 4 -> { displayClothes(game.getClothes()); inItem(); }
+                    case 5 -> { displayWT(game.getWagonTools()); inItem(); }
+                    case 6 -> { displaySplints(game.getSplints()); inItem(); }
+                    case 7 -> { displayOxen(game.getOxen()); inItem(); }
                 }
                 if (inItem && !itemActionListener) {
                     userInput.removeActionListener(menuInputListener);
@@ -92,24 +95,32 @@ public class Inventory extends JDialog {
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
+    /**
+     * This ActionListener is in charge of the textfield user inputs when the user is in the "menu" screen of the
+     * inventory GUI form.
+     */
     private ActionListener menuInputListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             String input = userInput.getText().toUpperCase();
             switch (input) {
                 case "I" -> { displayMenu(); invComboBox.setSelectedIndex(0); }
-                case "F" -> { displayFood(food); invComboBox.setSelectedIndex(1); }
-                case "A" -> { displayAmmo(ammunition); invComboBox.setSelectedIndex(2); }
-                case "M" -> { displayMed(medicine); invComboBox.setSelectedIndex(3); }
-                case "C" -> { displayClothes(clothes); invComboBox.setSelectedIndex(4); }
-                case "W" -> { displayWT(wagonTools); invComboBox.setSelectedIndex(5); }
-                case "S" -> { displaySplints(splints); invComboBox.setSelectedIndex(6); }
-                case "O" -> { displayOxen(oxen); invComboBox.setSelectedIndex(7); }
+                case "F" -> { displayFood(game.getFood()); invComboBox.setSelectedIndex(1); }
+                case "A" -> { displayAmmo(game.getAmmunition()); invComboBox.setSelectedIndex(2); }
+                case "M" -> { displayMed(game.getMedicine()); invComboBox.setSelectedIndex(3); }
+                case "C" -> { displayClothes(game.getClothes()); invComboBox.setSelectedIndex(4); }
+                case "W" -> { displayWT(game.getWagonTools()); invComboBox.setSelectedIndex(5); }
+                case "S" -> { displaySplints(game.getSplints()); invComboBox.setSelectedIndex(6); }
+                case "O" -> { displayOxen(game.getOxen()); invComboBox.setSelectedIndex(7); }
                 default -> staticMethods.notValidInput();
             }
             userInput.setText("");
         }
     };
+
+    /**
+     * This method establishes a specific way for the dialogue form to open and display on the user's screen.
+     */
     private void maximize() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.setMinimumSize(new Dimension(screenSize.width-100,screenSize.height-100));
@@ -118,6 +129,10 @@ public class Inventory extends JDialog {
         this.setLocation(width, height);
     }
 
+    /**
+     * This ActionListener is in charge of the textfield user inputs when the user has selected an item from the "menu"
+     * screen of the inventory GUI form and is now in the "item" screen of the dialogue form.
+     */
     private ActionListener itemInputListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -181,33 +196,10 @@ public class Inventory extends JDialog {
         }
     };
 
-    private void setGlobalVar() {
-        this.food = game.getFood();
-        this.ammunition = game.getAmmunition();
-        this.medicine = game.getMedicine();
-        this.clothes = game.getClothes();
-        this.wagonTools = game.getWagonTools();
-        this.splints = game.getSplints();
-        this.oxen = game.getOxen();
-        this.money = game.getMoney();
-        this.characterArrayList = game.getCharacterArrayList();
-        this.happiness = game.getHappiness();
-    }
-
-    private void passBackVar() {
-        game.setFood(this.food);
-        game.setAmmunition(this.ammunition);
-        game.setMedicine(this.medicine);
-        game.setClothes(this.clothes);
-        game.setWagonTools(this.wagonTools);
-        game.setSplints(this.splints);
-        game.setOxen(this.oxen);
-        game.setMoney(this.money);
-        game.setCharacterArrayList(this.game.getCharacterArrayList());
-        game.setHappiness(this.happiness);
-    }
-
-    //TEXT METHODS and CANCEL METHOD
+    /**
+     * The displayMenu method prints out the available options the user can take in the respective ActionListeners
+     * corresponding to the menu screen of the inventory GUI form.
+     */
     private void displayMenu() {
         invInfo.setText(
                 """
@@ -231,6 +223,11 @@ public class Inventory extends JDialog {
                 """);
     }
 
+    /**
+     * The displayFood method prints out the available options the user can take in this "item" page and the description
+     * of the game inventory item "Food".
+     * @param food is the quantity of food that is available in the user's inventory.
+     */
     private void displayFood(int food) {
         invInfo.setText(String.format(
                 """
@@ -249,6 +246,11 @@ public class Inventory extends JDialog {
         ));
     }
 
+    /**
+     * The displayAmmo method prints out the available options the user can take in this "item" page and the description
+     * of the game inventory item "Ammunition".
+     * @param ammo the quantity of ammunition the user has in their inventory
+     */
     private void displayAmmo(int ammo) {
         invInfo.setText(String.format(
                 """
@@ -266,6 +268,11 @@ public class Inventory extends JDialog {
         ));
     }
 
+    /**
+     * The displayMed method prints out the available options the user can take in this "item" page and the description
+     * of the game inventory item "Medicine".
+     * @param med the quantity of medicine the user has in their inventory
+     */
     private void displayMed(int med) {
         invInfo.setText(String.format(
                 """
@@ -287,6 +294,11 @@ public class Inventory extends JDialog {
         ));
     }
 
+    /**
+     * The displayClothes method prints out the available options the user can take in this "item" page and the description
+     * of the game inventory item "Clothes".
+     * @param clothes the quantity of clothes the user has in their inventory
+     */
     private void displayClothes(int clothes) {
         invInfo.setText(String.format(
                 """
@@ -308,6 +320,11 @@ public class Inventory extends JDialog {
         ));
     }
 
+    /**
+     * The displayWT method prints out the available options the user can take in this "item" page and the description
+     * of the game inventory item "Wagon Tools".
+     * @param wagonTools the quantity of wagon tools the user has in their inventory
+     */
     private void displayWT(int wagonTools) {
         invInfo.setText(String.format(
                 """
@@ -331,6 +348,11 @@ public class Inventory extends JDialog {
         ));
     }
 
+    /**
+     * The displaySplints method prints out the available options the user can take in this "item" page and the description
+     * of the game inventory item "Splints".
+     * @param splints the quantity of splints the user has in their inventory
+     */
     private void displaySplints(int splints) {
         invInfo.setText(String.format(
                 """
@@ -354,6 +376,11 @@ public class Inventory extends JDialog {
         ));
     }
 
+    /**
+     * The displayOxen method prints out the available options the user can take in this "item" page and the description
+     * of the game inventory item "Oxen".
+     * @param oxen the quantity of oxen the user has in their inventory
+     */
     private void displayOxen(int oxen) {
         invInfo.setText(String.format(
                 """
@@ -376,8 +403,11 @@ public class Inventory extends JDialog {
         ));
     }
 
+    /**
+     * calls the openParty method and passes the string parameter "FOOD" if the user has more than 1 quantity.
+     */
     private void useFood() {
-        if (food > 0) {
+        if (game.getFood() > 0) {
             openParty("FOOD");
         }
         else {
@@ -385,8 +415,11 @@ public class Inventory extends JDialog {
         }
     }
 
+    /**
+     * calls the openParty method and passes the string parameter "MEDICINE" if the user has more than 1 quantity.
+     */
     private void useMedicine() {
-        if (medicine > 0) {
+        if (game.getMedicine() > 0) {
             openParty("MEDICINE");
         }
         else {
@@ -394,8 +427,11 @@ public class Inventory extends JDialog {
         }
     }
 
+    /**
+     * calls the openParty method and passes the string parameter "CLOTHES" if the user has more than 1 quantity.
+     */
     private void equipClothes() {
-        if (clothes > 0) {
+        if (game.getClothes() > 0) {
             openParty("CLOTHES");
         }
         else {
@@ -403,8 +439,11 @@ public class Inventory extends JDialog {
         }
     }
 
+    /**
+     * calls the openParty method and passes the string parameter "SPLINTS" if the user has more than 1 quantity.
+     */
     private void useSplints() {
-        if (splints > 0) {
+        if (game.getSplints() > 0) {
             openParty("SPLINTS");
         }
         else {
@@ -412,16 +451,29 @@ public class Inventory extends JDialog {
         }
     }
 
+    /**
+     * Prompts the user if they would like to consume an oxen for food. This required them to have at least five oxen
+     * available in their inventory. If they are able to and choose to consume one of their oxen, they gain 10 food and
+     * lose some happiness. Dialogue windows are popped up in accordance of the constraints of being able to consume an
+     * oxen and whether the user chooses to or not. If they choose to consume an oxen, a window pops up to let them know
+     * that oxen will be missed dearly.
+     */
     private void consumeOxen() {
         //TODO: ARE YOU SURE YOU WANT TO CONSUME AN OXEN DIALOGUE Y/N
         int reply = JOptionPane.showConfirmDialog(null, "Would you like to consume an oxen?\nYou " +
                 "must have at least 5 oxen to consume 1.", "Consume an Oxen", JOptionPane.YES_NO_OPTION);
-        if (reply == JOptionPane.YES_OPTION && oxen > 4) {
+        if (reply == JOptionPane.YES_OPTION && game.getOxen() > 4) {
             int happinessLost;
-            oxen -= 1;
-            food += 10;
-            if(happiness >= 7) { happinessLost = 7; happiness -= 7; }
-            else { happinessLost = happiness; happiness = 0; }
+            game.setOxen(game.getOxen() - 1);
+            game.setFood(game.getFood() + 10);
+            if(game.getHappiness() >= 7) {
+                happinessLost = 7;
+                game.setHappiness(game.getHappiness() - 7);
+            }
+            else {
+                happinessLost = game.getHappiness();
+                game.setHappiness(0);
+            }
 
             String oxenName = ReadText.generateOxenName();
             JOptionPane.showMessageDialog(null, String.format(
@@ -433,7 +485,7 @@ public class Inventory extends JDialog {
                     """, oxenName, oxenName, happinessLost
             ), String.format("RIP %s", oxenName), JOptionPane.INFORMATION_MESSAGE);
         }
-        else if (reply == JOptionPane.YES_OPTION && oxen <= 4) {
+        else if (reply == JOptionPane.YES_OPTION && game.getOxen() <= 4) {
             staticMethods.notEnoughItem("OXEN");
         }
         else if (reply == JOptionPane.NO_OPTION){
@@ -442,6 +494,11 @@ public class Inventory extends JDialog {
         }
     }
 
+    /**
+     * This FocusAdapter creates a grey string of text in the textfield the user will interact with. Upon selecting the
+     * textfield, the grey text will be set to empty and the foreground font color will change to black. When they click
+     * off of the textfield, the area will be emptied out and the grey text will return.
+     */
     private FocusAdapter inputHelp = new FocusAdapter() { //Grey text for input box when not focused on
         @Override
         public void focusGained(FocusEvent e) {
@@ -456,6 +513,9 @@ public class Inventory extends JDialog {
         }
     };
 
+    /**
+     * This WindowAdapter called the onClose method when the close button is pressed on the dialogue window.
+     */
     private final WindowAdapter windowClose = new WindowAdapter() {
         public void windowClosing(WindowEvent e) {
             onCancel();
@@ -463,10 +523,13 @@ public class Inventory extends JDialog {
     };
 
     private void onCancel() {
-        passBackVar();
         dispose();
     }
 
+    /**
+     * The openParty method created a new party object and opens the dialogue form binded to the party class.
+     * @param item String name of item that is passed into the party class constructor.
+     */
     private void openParty(String item) {
         Party party = new Party(game, item);
         party.pack();
@@ -475,11 +538,14 @@ public class Inventory extends JDialog {
         party.setVisible(true);
     }
 
+    /**
+     * These methods adjust the booleans to locate where the user is in the inventory GUI form and are called to
+     * add/remove the corresponding ActionListeners.
+     */
     private void inMenu() {
         inMenu = true;
         inItem = false;
     }
-
     private void inItem() {
         inItem = true;
         inMenu = false;
