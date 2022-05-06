@@ -737,9 +737,15 @@ public class RandomEventGUI extends JDialog {
                 ind = game.rand.nextInt(5);
             } while (characterArrayList.get(ind).getIsDead());
             Character character = characterArrayList.get(ind);
+            if (!character.isInjured()) {
+                promptPane.setText("How unlucky! " + character.getName() + " got injured swimming.\nHe also took some " +
+                        "damage as a result.\nPress \"C\" to continue.");
+            }
+            else if (character.isInjured()) {
+                promptPane.setText("How clumsy! " + character.getName() + " got injured again while swimming.\nHe also " +
+                        "took some damage as a result.\nPress \"C\" to continue.");
+            }
             character.setInjured(true);
-            promptPane.setText("How unlucky! " + character.getName()+" got injured swimming.\nHe also took some damage as" +
-                    "a result.\nPress \"C\" to continue.");
             game.checkNewDeaths();
             game.checkIfLost();
         }
