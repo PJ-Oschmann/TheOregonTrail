@@ -1,3 +1,7 @@
--- Change file references from repository paths to 'getResourceAsStream' for jar compilation/file
--- correct private/public notations
+-- Change file references from repository paths to 'getResourceAsStream' for jar compilation/file (?)
+
+-- Change methods in classes (KEN)
+
+-- correct private/public notations (KEN)
+
 -- add javadocs once completed

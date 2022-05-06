@@ -706,9 +706,7 @@ public class OregonTrailGUI {
                 case "P" -> { currentPace = setPace(); writeGameInfo(); }
                 case "T" -> travel();
                 case "A" -> {
-                    activities.displayActivitiesMenu();
-                    userInput.addActionListener(activities.activityMenuListener);
-                    userInput.removeActionListener(gameMenu);
+                    activities.displayActivityMenu();
                 }
                 case "F" -> reg.forceRandomEvent();
                 case "M" -> writeGameInfo();
