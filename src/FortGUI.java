@@ -1,3 +1,9 @@
+/**
+ * This class creates a window for Forts that contains an image, a text area containing options, and a text box
+ * for selecting options. The user can choose to go to the local shop, rest at an inn to restore health and hunger,
+ * repair their wagon if it is damaged, or leave the fort and continue on their journey.
+ */
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -33,17 +39,35 @@ public class FortGUI extends JDialog {
         });
     }
 
+    /**
+     * Sets the text in the prompt area.
+     * @param message - Message to be written in the prompt area.
+     */
     public void setText(String message) {
         promptTextArea.setText(message);
     }
 
-    private void resetFort() {
+    /**
+     * Sets the input text box to a blank String.
+     */
+    private void resetTextBox() {
         inputText.setText("");
     }
+
+    /**
+     * If invalid input is entered, clear the text box and notify the user that their input was not recognized.
+     */
     private void badInput() {
-        resetFort();
+        resetTextBox();
         staticMethods.notValidInput();
     }
+
+    /**
+     * Handles fort option. The user can choose to go to the local shop, rest at an inn to restore health and hunger,
+     *  * repair their wagon if it is damaged, or leave the fort and continue on their journey.
+     * @param option - the desired option (1 to shop, 2 to go to the inn, 3 to go to the wagon shop, 4 to leave the
+     *               fort)
+     */
     public void seeFort(String option) {
         switch (option) {
             case "1" -> shop();
@@ -54,6 +78,9 @@ public class FortGUI extends JDialog {
         }
     }
 
+    /**
+     * Centers the window on the screen.
+     */
     private void center() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.setMinimumSize(new Dimension(200,250));
@@ -62,10 +89,19 @@ public class FortGUI extends JDialog {
         this.setLocation(width, height);
     }
 
+    /**
+     * Opens the shop GUI and clears the input text box.
+     */
     private void shop() {
-        game.openShop();resetFort();
+        game.openShop(); resetTextBox();
     }
 
+    /**
+     * Allows the player to rest . If they have enough money, then can pay $4 per party member alive to sleep. 25 HP
+     * is recovered, and hunger is set to 0. There is a 50% chance that any character can have their sickness removed
+     * if that character is sick. If the player doesn't have enough money to sleep at the inn, they won't be able to.
+     * The input text box is cleared after.
+     */
     private void rest() {
         ArrayList<Character> characterArrayList = game.getCharacterArrayList();
         int price = characterArrayList.size()*4;
@@ -91,9 +127,14 @@ public class FortGUI extends JDialog {
         else {
             staticMethods.notEnoughMoney();
         }
-        resetFort();
+        resetTextBox();
     }
 
+    /**
+     * Allows the player to repair their wagon for $12 if it's broken. If it's not broken, the wagon will not be
+     * modified. If the player doesn't have enough money to repair the wagon, they won't be able to repair it. The input
+     * text box is cleared after.
+     */
     private void wagonShop() {
         if (game.getMoney() >= 12 && game.getWagon().getState()==1) {
             int choice = JOptionPane.showOptionDialog(null,"Repairing your wagon will cost you" +
@@ -116,9 +157,12 @@ public class FortGUI extends JDialog {
         else {
             staticMethods.notEnoughMoney();
         }
-        resetFort();
+        resetTextBox();
     }
 
+    /**
+     * Player "leaves the fort" and the window is closed.
+     */
     private void leaveFort() {
         dispose();
     }
