@@ -1,7 +1,5 @@
 /**
- * This class is built around the date object. This class is used to create a date
- * object in the main program to allow for tangible advancement in time/date
- * as the party/character travels.
+ * This class keeps track of the current date. Every time the player travels, one day passes.
  */
 public class Date {
     private int currentYear; //Starts in 1848.
@@ -10,9 +8,6 @@ public class Date {
     private final String[] MONTHS = new String[]{"January","February","March","April","May","June","July","August","September","October","November","December"};
     private String date;
 
-    /**
-     * Empty default constructor for a date object
-     */
     public Date() {
     currentDay = 18;
     currentMonth = 3;
@@ -89,7 +84,7 @@ public class Date {
     }
 
     /**
-     *
+     * Progress time by one day. Accounts for the last day in a month and the last month in a year.
      */
     public void advanceDate() {
         boolean advanceMonth = false;
@@ -140,6 +135,7 @@ public class Date {
             currentMonth=1;
             currentYear++;
         }
+
     }
 }
 
