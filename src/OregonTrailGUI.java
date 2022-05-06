@@ -78,9 +78,6 @@ public class OregonTrailGUI {
         frame.setVisible(true);
     }
 
-    /**
-     * Constructor for OregonTrailGUI
-     */
     //Create application
     public OregonTrailGUI() {
         userInput.addFocusListener(playHelp);
@@ -96,7 +93,7 @@ public class OregonTrailGUI {
      * instead of using the default Metal theme.
      * On Windows, native Windows (win32) elements are used.
      * On Linux, the GTK theme is used.
-     * On MacOS, the MacOS theme is used. Probably.
+     * On MacOS, the MacOS theme is used.
      */
     public static void setTheme() {
         try {
@@ -113,6 +110,12 @@ public class OregonTrailGUI {
     }
 
     //Menu Bar Method
+
+    /**
+     * Adds a menu bar to the GUI. Contains "Main," "About," and "Help" tabs. Main allows you to return to the main
+     * menu or exit the game. "About" contains the project d
+     * @param frame
+     */
     public void addUIMenuBar(JFrame frame){
         JMenuBar menuBar = new JMenuBar();
         frame.setJMenuBar(menuBar);
