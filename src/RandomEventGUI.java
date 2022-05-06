@@ -53,7 +53,7 @@ public class RandomEventGUI extends JDialog {
         setContentPane(contentPane);
         setModal(true);
 
-        String event = "encounterTravelers"; //insert test event here
+        String event = "nativeAmericanEncounter"; //insert test event here
         this.setTitle("FORCED EVENT");
         doEvent(event);
 
@@ -598,6 +598,7 @@ public class RandomEventGUI extends JDialog {
             isNativeAL = true;
             if (inputField.getText().equalsIgnoreCase("C")) {
                 resetNAItems();
+                inputField.setText("");
                 int itemIndex = game.rand.nextInt(itemArrayList.size());
                 String item = "";
                 int ask = 0, have = 0;
@@ -623,8 +624,9 @@ public class RandomEventGUI extends JDialog {
                         A: APOLOGIZE
                         """, ask, item, have, item
                 ));
-                nativeAL2(ask, itemIndex, have);
                 inputField.removeActionListener(nativeAL);
+                isNativeAL = false;
+                nativeAL2(ask, itemIndex, have);
             }
         }
     };
@@ -632,6 +634,7 @@ public class RandomEventGUI extends JDialog {
         String item = String.valueOf(itemArrayList.get(itemInd));
         inputField.addActionListener(event -> {
             String in = inputField.getText().toUpperCase();
+            inputField.setText("");
             switch (in) {
                 case "D" -> {
                     if (have >= ask) {
@@ -652,12 +655,14 @@ public class RandomEventGUI extends JDialog {
                                 
                                 HAPPINESS INCREASED BY 20.
                                 """, item), "GOOD SAMARITAN", JOptionPane.INFORMATION_MESSAGE);
+                        inputField.removeActionListener((ActionListener) event);
                         onCancel();
                     }
                     else {
                         JOptionPane.showMessageDialog(null, "You don't have enough " +
-                                item + "to help them out.\nYou can " + "apologize and wish them luck and move on " +
+                                item + " to help them out.\nYou can " + "apologize and wish them luck and move on " +
                                 "instead.", "NOT ENOUGH " + item, JOptionPane.ERROR_MESSAGE);
+                        inputField.removeActionListener((ActionListener) event);
                     }
                 }
                 case "A" -> { promptPane.setText(
@@ -666,6 +671,7 @@ public class RandomEventGUI extends JDialog {
                         who is also in the process of a cross-country pilgrimage. You
                         apologize and wish them the best on their travels.
                         """);
+                    inputField.removeActionListener((ActionListener) event);
                     onCancel();
                 }
                 default -> staticMethods.notValidInput();
