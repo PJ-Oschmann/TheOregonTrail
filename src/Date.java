@@ -88,7 +88,9 @@ public class Date {
         currentYear = year;
     }
 
-
+    /**
+     *
+     */
     public void advanceDate() {
         boolean advanceMonth = false;
         boolean advanceYear = false;
@@ -138,9 +140,6 @@ public class Date {
             currentMonth=1;
             currentYear++;
         }
-
-
-
     }
 }
 
