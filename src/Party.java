@@ -23,9 +23,8 @@ public class Party extends JDialog {
     private JTextPane promptTextPane;
     private JTextArea promptTextArea;
     public ArrayList<Character> characterArrayList;
-    private int happiness, money, food, ammo, medicine, clothes, tools, splints, oxen;
     private final OregonTrailGUI game;
-    private  String item;
+    private String item;
     private Character selectedCharacter;
     private JPanel InterfacePanel;
     private JPanel imagePanel;
@@ -36,7 +35,6 @@ public class Party extends JDialog {
         //instantiating variables
         this.game = game;
         this.item = item;
-        setGlobalVar();
         initializePartyTextArea(item);
         promptTextArea.setText("Select a character to give " + item.toLowerCase() + " to!");
         this.setUndecorated(true);
@@ -185,8 +183,8 @@ public class Party extends JDialog {
                 Money: $Money
                 Happiness: $Happiness
                 """;
-        partyStatsText = partyStatsText.replace("$Money","$"+money);
-        partyStatsText = partyStatsText.replace("$Happiness",Integer.toString(happiness));
+        partyStatsText = partyStatsText.replace("$Money","$"+game.getMoney());
+        partyStatsText = partyStatsText.replace("$Happiness",Integer.toString(game.getHappiness()));
         partyStats.setText(partyStatsText);
         int characterIndex = 0;
         String statsText = """
@@ -213,31 +211,6 @@ public class Party extends JDialog {
             characterIndex++;
         }
     }
-    private void setGlobalVar() {
-        this.happiness = game.getHappiness();
-        this.money = game.getMoney();
-        this.characterArrayList = game.getCharacterArrayList();
-        this.food = game.getFood();
-        this.ammo = game.getAmmunition();
-        this.medicine = game.getMedicine();
-        this.clothes = game.getClothes();
-        this.tools = game.getWagonTools();
-        this.splints = game.getSplints();
-        this.oxen = game.getOxen();
-    }
-
-    private void passBackVar() {
-        game.setHappiness(this.happiness);
-        game.setMoney(this.money);
-        game.setCharacterArrayList(this.characterArrayList);
-        game.setFood(this.food);
-        game.setAmmunition(this.ammo);
-        game.setMedicine(this.medicine);
-        game.setClothes(this.clothes);
-        game.setWagonTools(this.tools);
-        game.setSplints(this.splints);
-        game.setOxen(this.oxen);
-    }
 
     /**
      * Sets the input text color to grey when not focused on, and black when focused on. When no text is present
@@ -261,7 +234,6 @@ public class Party extends JDialog {
      * When the window is closed, dispose of the window.
      */
     private void onCancel() {
-        passBackVar();
         dispose();
     }
 
@@ -306,8 +278,8 @@ public class Party extends JDialog {
      * decreases by 2. If the player doesn't have any food items in their inventory, they won't be able to eat.
      */
     private void eatFood() {
-        if (food > 0) {
-            food -= 1;
+        if (game.getFood() > 0) {
+            game.setFood(game.getFood() - 1);
             selectedCharacter.setHunger(calculateHunger(selectedCharacter,2));
             promptTextArea.setText(selectedCharacter.getName() + " ate some food!");
             staticMethods.resetNFC();
