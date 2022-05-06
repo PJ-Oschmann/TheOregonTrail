@@ -19,6 +19,7 @@ public class Location {
     private Scene scene = new Scene();
     private int milesTravd = 0;
     private String currentLocation = "Independence";
+    private Date date = new Date();
     private String riverChoice;
     private int markerCounter = 1; //Index of the milage marker we're at
     ArrayList<Integer> mileMarkers = new ArrayList<>(List.of(0,17, 50, 80, 108, 221, 273, 550, 591, 620, 672,
@@ -127,21 +128,21 @@ public class Location {
         System.out.println("Location: " + names.get(index));
         if (firstTimeInLocation){
             switch (names.get(index)) {
-                case "Kansas River" -> scene.loadScene("kansasRiver");
-                case "Vermilion River" -> scene.loadScene("vermilionRiver");
-                case "Little Blue River" -> scene.loadScene("littleBlueRiver");
-                case "Big Blue River" -> scene.loadScene("bigBlueRiver");
-                case "Fort Kearny" -> scene.loadScene("fortKearny");
-                case "Courthouse Rock" -> scene.loadScene("courthouseRock");
-                case "Chimney Rock" -> scene.loadScene("chimneyRock");
-                case "Scotts Bluff" -> scene.loadScene("scottsBluff");
-                case "Fort Laramie" -> scene.loadScene("fortLaramie");
-                case "Fort Bridger" -> scene.loadScene("fortBridger");
-                case "Fort Hall" -> scene.loadScene("fortHall");
-                case "Three Island Crossing" -> scene.loadScene("threeIslandCrossing");
-                case "Fort Boise" -> scene.loadScene("fortBoise");
-                case "Blue Mountains" -> scene.loadScene("blueMountains");
-                case "Oregon City" -> scene.loadScene("oregonCity");
+                case "Kansas River" -> scene.loadScene("kansasRiver",date.toString());
+                case "Vermilion River" -> scene.loadScene("vermilionRiver",date.toString());
+                case "Little Blue River" -> scene.loadScene("littleBlueRiver",date.toString());
+                case "Big Blue River" -> scene.loadScene("bigBlueRiver",date.toString());
+                case "Fort Kearny" -> scene.loadScene("fortKearny",date.toString());
+                case "Courthouse Rock" -> scene.loadScene("courthouseRock",date.toString());
+                case "Chimney Rock" -> scene.loadScene("chimneyRock",date.toString());
+                case "Scotts Bluff" -> scene.loadScene("scottsBluff",date.toString());
+                case "Fort Laramie" -> scene.loadScene("fortLaramie",date.toString());
+                case "Fort Bridger" -> scene.loadScene("fortBridger",date.toString());
+                case "Fort Hall" -> scene.loadScene("fortHall",date.toString());
+                case "Three Island Crossing" -> scene.loadScene("threeIslandCrossing",date.toString());
+                case "Fort Boise" -> scene.loadScene("fortBoise",date.toString());
+                case "Blue Mountains" -> scene.loadScene("blueMountains",date.toString());
+                case "Oregon City" -> scene.loadScene("oregonCity",date.toString());
             }
             firstTimeInLocation=false;
         }

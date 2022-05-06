@@ -1,3 +1,9 @@
+/**
+ * Scene provides a GUI for text-based scenes. It can present an image to give the scene illustration,
+ * and reads a text file to present text. The scenes are presented line-by-line so that the player is not overwhelmed
+ * by text. A "continue" button is provided to progress through the text scene. The player can also simply press 'C'
+ * to continue as well.
+ */
 import javax.management.RuntimeErrorException;
 import javax.swing.*;
 import java.awt.*;
@@ -20,6 +26,7 @@ public class Scene extends JDialog {
     private JLabel imageLabel;
     private JButton continueButton;
 
+    //Constructor
     public Scene() {
         this.setTitle("Scene");
         Dimension screenRes = Toolkit.getDefaultToolkit().getScreenSize();
@@ -56,8 +63,12 @@ public class Scene extends JDialog {
         });
     }
 
+    /**
+     * Gets the path for an image to present. fort.png is presented when a scene as "fort" in its name, and river.png
+     * is presented when a scene as "river" in its name. Specialized images are used for individual landmarks.
+     * @return String containing the path to the image without the file extension (which is presumed to be .png)
+     */
     private String getImagePath(String sceneName) {
-    //TODO change to .contains you fucking dumbass
         if (sceneName.toLowerCase().contains("fort")) {
             return "fort";
         }
@@ -87,13 +98,18 @@ public class Scene extends JDialog {
         }
     }
 
+    /**
+     * Loads the scene. The ReadText class is used to read the desired text file (specified in sceneName) and saves it
+     * to an ArrayList. The scene is marked as "loaded" and the scene Window is opened.
+     * If a scene is already loaded, another scene cannot be loaded until the previous scene is over.
+     * @param sceneName - Name of the scene file, without the file extension or path.
+     */
     //Load scene. Saves to global variable to avoid reopening textfile.
     public void loadScene(String sceneName) {
         if (!sceneIsLoaded) {
             sceneToRead = ReadText.readScene(sceneName);
             imageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/"+getImagePath(sceneName)+".png"));
             sceneIsLoaded = true;
-            continueButton.setVisible(true);
             continueScene();
             this.pack();
             this.setVisible(true);
@@ -103,13 +119,20 @@ public class Scene extends JDialog {
         }
     }
 
+    /**
+     * Loads the scene. The ReadText class is used to read the desired text file (specified in sceneName) and saves it
+     * to an ArrayList. The scene is marked as "loaded" and the scene Window is opened. The current date is prepended
+     * to the beginning of the scene. This is particularly used for journal entries.
+     * If a scene is already loaded, another scene cannot be loaded until the previous scene is over.
+     * @param sceneName - Name of the scene file, without the file extension or path.
+     * @param currentDate - String of the current date, written in "Month, DD, YYYY" format.
+     */
     public void loadScene(String sceneName, String currentDate) {
         if (!sceneIsLoaded) {
             sceneToRead = ReadText.readScene(sceneName);
             sceneToRead.add(0, currentDate);
             imageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/"+sceneName+".png"));
             sceneIsLoaded = true;
-            continueButton.setVisible(true);
             continueScene();
             this.pack();
             this.setVisible(true);
@@ -118,7 +141,12 @@ public class Scene extends JDialog {
             throw new RuntimeException("There was an error in unloading the previous scene.");
         }
     }
+
     int readTextCounter = 0;
+
+    /**
+     * Continues the scene to the next line when the "Continue" button is pressed or the 'C' key is pressed.
+     */
     public void continueScene() {
         try {
             storyTextArea.setText(sceneToRead.get(readTextCounter));
@@ -134,19 +162,26 @@ public class Scene extends JDialog {
             }
         }
     }
-    //Unload the scene by setting all values back to default.
+
+    /**
+     * Unloads the scene. All elements are reset to their default, blank state and the window is closed.
+     * @param destroyWindow
+     */
     public void unloadScene(boolean destroyWindow) {
         storyTextArea.setText("");
         imageLabel.setIcon(null); //We can set a default image here as well
         readTextCounter = 0;
         sceneIsLoaded = false;
-        continueButton.setVisible(false);
         chainScenes = false;
         sceneToRead.clear();
         if (destroyWindow) {closeSceneWindow();}
 
 
     }
+
+    /**
+     * Closes the scene window.
+     */
     public void closeSceneWindow() {
         dispose();
     }
