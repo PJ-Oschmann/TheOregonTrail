@@ -124,7 +124,7 @@ public class RiverGUI extends JDialog {
             if (game.rand.nextInt(9) == 0) {
                 game.setOxen(game.getOxen() - 1);
                 if (game.getOxen() == 0) {
-                    staticMethods.cantCross("All your oxen died while crossing.\nYou can't continue your journey.");
+                    cantCross("All your oxen died while crossing.\nYou can't continue your journey.");
                     game.checkIfLost();
                     return false;
                 }
@@ -162,7 +162,7 @@ public class RiverGUI extends JDialog {
             game.setOxen(game.getOxen() - 1);
             if (game.getOxen() <= 0) {
                 game.checkIfLost();
-                staticMethods.cantCross("All your oxen died while crossing. Everyone drowned.");
+                cantCross("All your oxen died while crossing. Everyone drowned.");
                 return false;
             }
         }
@@ -176,7 +176,7 @@ public class RiverGUI extends JDialog {
             }
             if (game.getOxen() <= 0) {
                 game.checkIfLost();
-                staticMethods.cantCross("All your oxen died while crossing. Everyone drowned.");
+                cantCross("All your oxen died while crossing. Everyone drowned.");
                 return false;
             }
         }
@@ -207,5 +207,13 @@ public class RiverGUI extends JDialog {
             game.checkIfLost();
         }
         return true;
+    }
+
+    /**
+     * The cantCross method is used to inform the user that they lost the game while trying to cross the river.
+     * @param message string-format information that is displayed to the user in a JOptionPane
+     */
+    public void cantCross(String message) {
+        JOptionPane.showMessageDialog(null,message,"COULDN'T CROSS",JOptionPane.ERROR_MESSAGE);
     }
 }
