@@ -196,7 +196,7 @@ public class OregonTrailGUI {
      * information.
      */
     private void introScene() {
-        scene.loadScene("intro");
+        scene.loadScene("tutorial");
         inGame = true;
         inMenu = false;
         ImageLabel.setIcon(new javax.swing.ImageIcon("assets/images/mainGame.png"));
@@ -209,6 +209,7 @@ public class OregonTrailGUI {
         userInput.addFocusListener(gameHelp);
         weather.setRandomWeather();
         writeGameInfo();
+        scene.loadScene("intro",date.toString());
     }
 
     /**
