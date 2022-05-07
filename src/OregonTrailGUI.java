@@ -45,6 +45,8 @@ public class OregonTrailGUI {
 
     public ArrayList<Character> characterArrayList = new ArrayList<>(List.of(hattie,charles,augusta,ben,jake));
 
+    private ArrayList<JTextPane> arrayOfPanes = new ArrayList<>(List.of(hattieStats,charlesStats,augustaStats,benStats,jakeStats));
+
     //game variables
     private int money = 200, food = 0, ammunition = 0, medicine = 0, clothes = 0, wagonTools = 0, splints = 0, oxen = 4,
     currentPace = 0, sickCharacters = 0, injuredCharacters = 0, dailyActions = 2, happiness = 75;
@@ -541,6 +543,7 @@ public class OregonTrailGUI {
         }
         String injuredOxenName = ReadText.generateOxenName();
         String[] consumeOxenChoices = {String.format("Harvest %s", injuredOxenName), String.format("Leave %s be", injuredOxenName)};
+        if (oxen < 5) { lessThanFour = true; }
         if (injuredOxen && lessThanFour) {
             int consumeOxen = travelingOxenInjured(injuredOxenName, consumeOxenChoices);
             oxen -= 1;
@@ -564,6 +567,13 @@ public class OregonTrailGUI {
         }
     }
 
+    /**
+     * This method generates an option window to notify the user than one of their oxen were injured. Then, they
+     * are given the choice of whether they want to harvest the dead oxen for food or leave it on the side of the road.
+     * @param oxenName string-format name of the injured oxen.
+     * @param choices the choices the user can select from.
+     * @return the choice that the user selects.
+     */
     private int travelingOxenInjured(String oxenName, String[] choices) {
         return JOptionPane.showOptionDialog(null,String.format("%s the oxen was injured while " +
                         "you were traveling today. You put %s out of their misery. You can choose to leave " +
@@ -572,6 +582,10 @@ public class OregonTrailGUI {
                 null, choices, null);
     }
 
+    /**
+     * This method is called if the user selects to consume/harvest the injured oxen and gain 10 food.
+     * @param oxenName String-format name of the oxen.
+     */
     private void consumeInjuredOxen(String oxenName) {
         JOptionPane.showMessageDialog(null, String.format("You chose to make the most out of %s's" +
                         "time here with us. You gain 10 units of food.\nRest in peace(s of food) %s.", oxenName, oxenName),
@@ -579,12 +593,20 @@ public class OregonTrailGUI {
         food += 10;
     }
 
+    /**
+     * This method is called if the user selects to leave the oxen be on the side of the road.
+     * @param oxenName name of the oxen.
+     */
     private void leaveOxenBe(String oxenName) {
         JOptionPane.showMessageDialog(null, String.format("You chose to leave %s's corpse alone" +
                         "and let nature take its course.\nRest in peace %s.", oxenName, oxenName),
                 String.format("RIP %s the oxen", oxenName), JOptionPane.PLAIN_MESSAGE);
     }
 
+    /**
+     * This method warns the user of the dangers of traveling with fewer than 4 oxen. It is called if an oxen is
+     * injured and there are fewer than 4 oxen in the party.
+     */
     private void callPETA() {
         JOptionPane.showMessageDialog(null, "Your oxen's chance of injury when traveling is " +
                 "significantly higher if you have less than 4 oxen to pull the wagon. Please buy more oxen" +
@@ -643,6 +665,10 @@ public class OregonTrailGUI {
         gameOver(isLost, message);
     }
 
+    /**
+     * Checks to see if both adults are dead. If condition is true, the player loses
+     * @return true if both parents are dead, false if one or both parents are alive
+     */
     private boolean areAdultsDead() {
         int deadAdults = 0;
         for (Character character : characterArrayList) {
@@ -653,6 +679,12 @@ public class OregonTrailGUI {
         return deadAdults == 2;
     }
 
+    /**
+     *  This method is called when the game is lost and pops up a option pane notification to inform the user that they
+     *  lost. The resetGame method is called following the defeat of the user/party.
+     * @param lose if lose is true then the game is lost.
+     * @param msg the message being displayed as to why the party lost.
+     */
     private void gameOver(boolean lose, String msg) {
         if (lose) {
             JOptionPane.showMessageDialog(null, msg, "YOU LOSE", JOptionPane.INFORMATION_MESSAGE);
@@ -674,6 +706,10 @@ public class OregonTrailGUI {
         return counter;
     }
 
+    /**
+     * Counts the current number of injured characters in the party.
+     * @return number of currently  injured characters.
+     */
     private int countInjuredCharacters() {
         int counter = 0;
         for (Character character : characterArrayList) {
@@ -702,6 +738,9 @@ public class OregonTrailGUI {
         }
     }
 
+    /**
+     * This method is called to progress the injury status of each characters who are injuries.
+     */
     private void handleInjuredCharacters() {
         for (Character character : characterArrayList) {
             if (character.getDaysInjured() >= 14) {
@@ -732,6 +771,10 @@ public class OregonTrailGUI {
         }
     };
 
+    /**
+     * This method prints out the main menu screen where the user can select if they want to play the game
+     * or exit the application.
+     */
     private void displayMainMenu() {
     storyTextArea.setText(
             """
@@ -743,6 +786,10 @@ public class OregonTrailGUI {
         );
     }
 
+    /**
+     * This method triggers GodMode for the user and their party and is mostly used for debugging more than
+     * other reasons.
+     */
     private void thanos() {
         JOptionPane.showMessageDialog(null,"God Mode On!", "r/THANOSDIDNOTHINGWRONG",
                 JOptionPane.INFORMATION_MESSAGE);
@@ -788,50 +835,61 @@ public class OregonTrailGUI {
         }
     };
 
+    /**
+     * This is the method called to create and open the inventory dialogue form.
+     */
     private void openInventory() {
         Inventory inv = new Inventory(this);
         inv.pack();
         inv.setVisible(true);
     }
 
+    /**
+     * This is the method called to create and open the shop dialogue form
+     */
     public void openShop() {
         Shop shop = new Shop(this);
         shop.pack();
         shop.setVisible(true);
     }
 
-    //check broke
+    /**
+     * This method is called when the user wants to reselect the pace that the party is traveling at.
+     * @return the pace the user wants the party to travel at.
+     */
     private int setPace() {
-        int newPaceInt = 0;
+        int newPaceInt;
         String newPace = JOptionPane.showInputDialog("Please set a new pace:\n1 - Steady\n2 - Strenuous\n3 - Grueling");
         if (newPace.equals("1") || newPace.equals("2") || newPace.equals("3")) {
-            newPaceInt = Integer.parseInt(newPace)-1;
+            newPaceInt = Integer.parseInt(newPace) - 1;
         }
         else {newPaceInt = setPace();}
         return newPaceInt;
     }
 
+    /**
+     * Menu bar action listeners
+     */
     private ActionListener returnMainMenuItem = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             resetGame();
         }
     };
-
     private static ActionListener exitMenuItem = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             exitGame();
         }
     };
-
     private static ActionListener projDescMenuItem = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             showAbout("The Oregon Trail is an educational game to teach students about the 1800s trip from " +
                     "Missouri to Oregon. This project aims to recreate this experience using the Java programming " +
                     "language. With incredible high-resolution graphics, the experience is more immersive than ever " +
-                    "before",
+                    "before. Further, we aim to be inclusive of different groups and ethnicities that were prominent " +
+                    "in the actual Oregon Trail Game but were discriminated against or stereotyped in the original game.",
                     "Project Description");
         }
     };
@@ -844,7 +902,6 @@ public class OregonTrailGUI {
                     "About This Project");
         }
     };
-
     private static ActionListener aboutTrailMenuItem = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -854,17 +911,15 @@ public class OregonTrailGUI {
                     "her family across the country in hopes of a new and prosperous future.", "About the Trail");
         }
     };
-
     private static ActionListener aboutHattieMenuItem = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             //TODO: fill this out with persona/storyboarding
-            showAbout("(Replace me with actual text) Hattie is a young lass who is setting out for a new life " +
-                    "in Oregon. Her twin sister died. What a shame.",
+            showAbout("Hattie Campbell is a 13 year old girl who's about to embark on a life-changing journey. " +
+                            "Hattie and her family are traveling along the Oregon Trail, ",
                     "About Hattie");
         }
     };
-
     private static ActionListener imgCredMenuItem = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -873,7 +928,6 @@ public class OregonTrailGUI {
                     "Image Credits");
         }
     };
-
     private static ActionListener winMenuItem = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -883,7 +937,6 @@ public class OregonTrailGUI {
                     "How do I win in the Oregon Trail Game?");
         }
     };
-
     private static ActionListener playMenuItem = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -895,7 +948,6 @@ public class OregonTrailGUI {
                     "How do I play The Oregon Trail?");
         }
     };
-
     private static ActionListener loseMenuItem = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -908,6 +960,9 @@ public class OregonTrailGUI {
         }
     };
 
+    /**
+     * inputfield focus adapters that point the user to input their selections into the textfield.
+     */
     private FocusAdapter gameHelp = new FocusAdapter() { //Grey text for input box when not focused on
         @Override
         public void focusGained(FocusEvent e) {
@@ -921,7 +976,6 @@ public class OregonTrailGUI {
             userInput.setForeground(new Color(147, 147,147));
         }
     };
-
     private FocusAdapter playHelp = new FocusAdapter() { //Grey text for input box when not focused on
         @Override
         public void focusGained(FocusEvent e) {
@@ -971,6 +1025,11 @@ public class OregonTrailGUI {
         }
     }
 
+    /**
+     * This method grabs the current pace the party is traveling at and prints it into string format for
+     * display purposes.
+     * @return String-format pace.
+     */
     public String currPaceToString() {
         String pace;
         if (currentPace == 0) {pace = "Steady";}
@@ -978,8 +1037,6 @@ public class OregonTrailGUI {
         else {pace = "Grueling";}
         return pace;
     }
-
-    ArrayList<JTextPane> arrayOfPanes = new ArrayList<>(List.of(hattieStats,charlesStats,augustaStats,benStats,jakeStats));
 
     /**
      * Update the status of each player. If the player is dead, their status is marked "DEAD."
@@ -1006,40 +1063,71 @@ public class OregonTrailGUI {
                 newText = newText.replace("$Injured", characterArrayList.get(characterIndex).isInjuredToString());
                 newText = newText.replace("$Hunger", String.valueOf(characterArrayList.get(characterIndex).getHunger()));
                 stats.setText(newText);
-
             }
             characterIndex++;
         }
     }
 
+    /**
+     * getter method for the characterArrayList arrayList
+     * @return characterArrayList
+     */
     public ArrayList<Character> getCharacterArrayList() {
         return characterArrayList;
     }
 
+    /**
+     * setter method for the characterArayList arrayList
+     * @param characterArrayList
+     */
     public void setCharacterArrayList(ArrayList<Character> characterArrayList) {
         this.characterArrayList = characterArrayList;
     }
 
+    /**
+     * gets the partys current money
+     * @return int money
+     */
     public int getMoney() {
         return money;
     }
 
+    /**
+     * sets the parts current money
+     * @param money the new money to set the partys money value to
+     */
     public void setMoney(int money) {
         this.money = money;
     }
 
+    /**
+     * gets the partys current number of units of food in inventory
+     * @return int food in inventory
+     */
     public int getFood() {
         return food;
     }
 
+    /**
+     * sets the parts current number of units of food in inventory
+     * @param food the new amount of food to set the users food quantity to
+     */
     public void setFood(int food) {
         this.food = food;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getAmmunition() {
         return ammunition;
     }
 
+    /**
+     *
+     * @param ammunition
+     */
     public void setAmmunition(int ammunition) {
         this.ammunition = ammunition;
     }
