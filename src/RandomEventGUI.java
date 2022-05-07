@@ -178,11 +178,11 @@ public class RandomEventGUI extends JDialog {
         //Good events
         switch (event) {
             case "encounterTravelers" -> {
-                this.imageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/encounterTraveler.png"));
+                this.imageLabel.setIcon(staticMethods.getImage("assets/images/encounterTraveler.png"));
                 encounterTraveler();
             }
             case "smallStream" -> {
-                this.imageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/smallStream.png"));
+                this.imageLabel.setIcon(staticMethods.getImage("assets/images/smallStream.png"));
                 inputField.addActionListener(streamAL);
                 promptPane.setText("""
                         You found a small stream!
@@ -192,7 +192,7 @@ public class RandomEventGUI extends JDialog {
                         """);
             }
             case "wagonFound" -> {
-                this.imageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/abandonedWagon.png"));
+                this.imageLabel.setIcon(staticMethods.getImage("assets/images/abandonedWagon.png"));
                 int dollars = wagonFound("D");
                 int ammo = wagonFound("A");
                 int clothes = wagonFound("C");
@@ -223,7 +223,7 @@ public class RandomEventGUI extends JDialog {
                 inputField.addActionListener(closeAL);
             }
             case "nativeAmericanEncounter" -> {
-                this.imageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/encounterNative.png"));
+                this.imageLabel.setIcon(staticMethods.getImage("assets/images/encounterNative.png"));
                 promptPane.setText(
                         """
                         You encounter a Native American traveling to Oklahoma in
@@ -238,7 +238,7 @@ public class RandomEventGUI extends JDialog {
 
             //Bad events
             case "injury" -> {
-                this.imageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/injury.png"));
+                this.imageLabel.setIcon(staticMethods.getImage("assets/images/injury.png"));
                 if (!characterArrayList.get(ind).isInjured()) {
                     characterArrayList.get(ind).setInjured(true);
                     promptPane.setText(characterArrayList.get(ind).getName() + " got injured.\nEnter \"C\" to continue.");
@@ -253,7 +253,7 @@ public class RandomEventGUI extends JDialog {
                 game.checkIfLost();
             }
             case "wagonDamage" -> {
-                this.imageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/wagonDamage.png"));
+                this.imageLabel.setIcon(staticMethods.getImage("assets/images/wagonDamage.png"));
                 game.calculateHappiness(- 5);
                 game.wagon.setState(game.wagon.getState() + 1);
                 if (game.wagon.getState() == 2) {
@@ -264,7 +264,7 @@ public class RandomEventGUI extends JDialog {
                 inputField.addActionListener(closeAL);
             }
             case "foodSpoiled" -> {
-                this.imageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/spoiledFood.png"));
+                this.imageLabel.setIcon(staticMethods.getImage("assets/images/spoiledFood.png"));
                 double spoiledFoodDb = game.getFood() * .2;
                 int spoiledFood = (int) spoiledFoodDb;
                 game.calculateFood(-spoiledFood);
@@ -273,7 +273,7 @@ public class RandomEventGUI extends JDialog {
                 inputField.addActionListener(closeAL);
             }
             case "illness" -> {
-                this.imageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/illness.png"));
+                this.imageLabel.setIcon(staticMethods.getImage("assets/images/illness.png"));
                 if (!characterArrayList.get(ind).isSick()) {
                     promptPane.setText(characterArrayList.get(ind).getName() + " has fallen sick!\nEnter \"C\" " +
                             "to continue.");

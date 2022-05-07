@@ -110,8 +110,8 @@ public class Scene extends JDialog {
     //Load scene. Saves to global variable to avoid reopening textfile.
     public void loadScene(String sceneName) {
         if (!sceneIsLoaded) {
-            sceneToRead = ReadText.readScene(sceneName);
-            imageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/"+getImagePath(sceneName)+".png"));
+            sceneToRead = ReadText.readTextFile(sceneName);
+            imageLabel.setIcon(new ImageIcon("src/assets/images/"+getImagePath(sceneName)+".png"));
             sceneIsLoaded = true;
             continueScene();
             this.pack();
@@ -132,9 +132,9 @@ public class Scene extends JDialog {
      */
     public void loadScene(String sceneName, String currentDate) {
         if (!sceneIsLoaded) {
-            sceneToRead = ReadText.readScene(sceneName);
+            sceneToRead = ReadText.readTextFile(sceneName);
             sceneToRead.add(0, currentDate);
-            imageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/"+sceneName+".png"));
+            imageLabel.setIcon(staticMethods.getImage("assets/images/"+sceneName+".png"));
             sceneIsLoaded = true;
             continueScene();
             this.pack();

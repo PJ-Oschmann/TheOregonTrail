@@ -62,7 +62,7 @@ public class Location {
                 " across.");
         river.inputText.setText("");
         river.pack();
-        river.riverImage.setIcon(new javax.swing.ImageIcon("src/assets/images/river.png"));
+        river.riverImage.setIcon(staticMethods.getImage("assets/images/river.png"));
         river.setVisible(true);
         river.crossRiver();
     }
@@ -80,7 +80,7 @@ public class Location {
                 "4 - Leave the fort and continue your journey");
         fort.inputText.setText("");
         fort.pack();
-        fort.fortImage.setIcon(new javax.swing.ImageIcon("src/assets/images/fort.png"));
+        fort.fortImage.setIcon(staticMethods.getImage("assets/images/fort.png"));
         fort.setVisible(true);
     }
 
@@ -137,7 +137,6 @@ public class Location {
             }
             firstTimeInLocation=false;
         }
-
     }
 
     /**

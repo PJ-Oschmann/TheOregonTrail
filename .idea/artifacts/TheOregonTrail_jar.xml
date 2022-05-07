@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="TheOregonTrail:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/TheOregonTrail_jar</output-path>
+    <root id="archive" name="TheOregonTrail.jar">
+      <element id="module-output" name="TheOregonTrail" />
+    </root>
+  </artifact>
+</component>

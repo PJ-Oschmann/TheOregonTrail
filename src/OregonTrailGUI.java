@@ -1,9 +1,12 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -84,7 +87,7 @@ public class OregonTrailGUI {
     public OregonTrailGUI() {
         userInput.addFocusListener(playHelp);
         if(inMenu) {
-            ImageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/mainMenu.png"));
+            ImageLabel.setIcon(staticMethods.getImage("assets/images/mainMenu.png"));
             displayMainMenu();
             userInput.addActionListener(menuListener);
         }
@@ -117,7 +120,7 @@ public class OregonTrailGUI {
      * Adds a menu bar to the GUI. Contains "Main," "About," and "Help" tabs. Main allows you to return to the main
      * menu or exit the game. "About" contains the project description, project information, information about the
      * oregon trail, and information about Hattie Campbell.
-     * @param frame
+     * @param frame the frame that the menu bar is being added onto
      */
     public void addUIMenuBar(JFrame frame){
         JMenuBar menuBar = new JMenuBar();
@@ -199,7 +202,7 @@ public class OregonTrailGUI {
         scene.loadScene("tutorial");
         inGame = true;
         inMenu = false;
-        ImageLabel.setIcon(new javax.swing.ImageIcon("assets/images/mainGame.png"));
+        ImageLabel.setIcon(staticMethods.getImage("assets/images/mainGame.png"));
         openShop();
         loadStatusPanels();
         updateStats();
@@ -1021,7 +1024,7 @@ public class OregonTrailGUI {
 
         userInput.addFocusListener(playHelp);
         if(inMenu) {
-            ImageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/mainMenu.png"));
+            ImageLabel.setIcon(staticMethods.getImage("assets/images/mainMenu.png"));
             displayMainMenu();
             userInput.addActionListener(menuListener);
             hideStatusPanels();
