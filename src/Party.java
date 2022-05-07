@@ -38,7 +38,6 @@ public class Party extends JDialog {
         this.item = item;
         characterArrayList = game.getCharacterArrayList();
         initializePartyTextArea(item);
-        promptTextArea.setText("Select a character to give " + item.toLowerCase() + " to!");
         this.setUndecorated(true);
         setContentPane(contentPane);
         setModal(true);
@@ -158,16 +157,16 @@ public class Party extends JDialog {
      * @return A string of the character selected. If the selection was invalid, "INVALID" is returned.
      */
     private boolean selectCharacter(String ch) {
-        int charIndex;
+        int charIndex = 0;
         switch (ch.toUpperCase()) {
             case "H" -> charIndex = 0;
             case "C" -> charIndex = 1;
             case "A" -> charIndex = 2;
             case "B" -> charIndex = 3;
             case "J" -> charIndex = 4;
-            default -> throw new RuntimeException("Error in selecting character in party");
+            default -> staticMethods.notValidInput();
         }
-        if (characterArrayList.get(charIndex).isDead) {
+        if (characterArrayList.get(charIndex).getIsDead()) {
             JOptionPane.showMessageDialog(null, "That character is dead.\nYou can't use an item on" +
                     "them.", "ERROR", JOptionPane.ERROR_MESSAGE);
             return false;
