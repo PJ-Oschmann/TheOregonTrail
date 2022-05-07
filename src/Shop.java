@@ -40,7 +40,7 @@ public class Shop extends JDialog {
         setContentPane(shopPane);
         setModal(true);
         this.setTitle("THE SHOP");
-        shopImage.setIcon(new javax.swing.ImageIcon("src/assets/images/Shop.png"));
+        shopImage.setIcon(staticMethods.getImage("assets/images/Shop.png"));
         shopInput.addActionListener(shopMenuListener);
         shopInput.addFocusListener(inputHelp);
         displayMenu();

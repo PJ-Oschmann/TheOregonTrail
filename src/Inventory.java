@@ -53,7 +53,7 @@ public class Inventory extends JDialog {
         });
 
         //Image goes here
-        InventoryImageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/Inventory.png"));
+        InventoryImageLabel.setIcon(staticMethods.getImage("assets/images/Inventory.png"));
 
         invComboBox.addItemListener(new ItemListener() {
             @Override
@@ -533,7 +533,7 @@ public class Inventory extends JDialog {
     private void openParty(String item) {
         Party party = new Party(game, item);
         party.pack();
-        party.imageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/party.png"));
+        party.imageLabel.setIcon(staticMethods.getImage("assets/images/party.png"));
         party.setTitle("PARTY DETAILS");
         party.setVisible(true);
     }

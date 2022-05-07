@@ -2,7 +2,12 @@
  * This is a public class containing statically used elements across different classes and the main game class.
  */
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Objects;
 
 public class staticMethods {
     //noFoodCounter used to track if no food has been consumed in 3 days, which is one of our loss conditions.
@@ -59,4 +64,23 @@ public class staticMethods {
         JOptionPane.showMessageDialog(null,"You don't have enough " + item + " to do this.",
                 "INVALID",JOptionPane.ERROR_MESSAGE);
     }
+
+    /**
+     * static method to read images to display into the JAR
+     */
+    public static ImageIcon getImage(String path) {
+        InputStream is = OregonTrailGUI.class.getResourceAsStream(path);
+        try {
+           return new ImageIcon(ImageIO.read(Objects.requireNonNull(is)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     *
+     * @param path
+     * @return
+     */
 }
