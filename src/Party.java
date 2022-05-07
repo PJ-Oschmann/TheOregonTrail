@@ -112,7 +112,7 @@ public class Party extends JDialog {
      * If the character is dead, they are marked as "DEAD."
      * @param i - input character. 'H' is for Hattie, 'C' is for Charles, 'A' is for Augusta, 'B' is for Ben, and 'J'
      *          is for Jake.
-     * @return
+     * @return string output of alive/dead status of characters when displayed in party
      */
     private String printChar(String i) {
         switch (i.toUpperCase()) {
