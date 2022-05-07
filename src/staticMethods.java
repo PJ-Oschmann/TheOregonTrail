@@ -74,16 +74,10 @@ public class staticMethods {
             return null;
         }
         try {
-           return new ImageIcon(ImageIO.read(Objects.requireNonNull(is)));
+           return new ImageIcon(ImageIO.read(is));
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
     }
-
-    /**
-     *
-     * @param path
-     * @return
-     */
 }

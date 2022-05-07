@@ -24,7 +24,7 @@ public class ReadText {
         if (is == null) {
             return null;
         }
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(Objects.requireNonNull(is)))) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
             for (String line = br.readLine(); line != null; line = br.readLine()) {
                 textStringArray.add(line);
             }

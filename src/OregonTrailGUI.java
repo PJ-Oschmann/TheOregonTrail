@@ -300,6 +300,7 @@ public class OregonTrailGUI {
      * - The locaton gets updated.
      */
     public void travel() {
+        date.advanceDate();
         location.addMileage();
         checkForRandomEvent();
         dailyHealthBoost(5);
@@ -310,7 +311,6 @@ public class OregonTrailGUI {
         resetDailies();
         weatherAffectPlayer();
         impactHappiness();
-        date.advanceDate();
         weather.setRandomWeather();
         location.doStoryLine();
         checkNewDeaths();
