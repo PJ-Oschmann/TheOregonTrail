@@ -21,6 +21,7 @@ public class Inventory extends JDialog {
     private JLabel invInputLabel;
     private final OregonTrailGUI game;
     private boolean inMenu, inItem, menuActionListener, itemActionListener;
+    private ArrayList<Character> characterArrayList;
 
     public Inventory(OregonTrailGUI game) {
         //instantiating private vars
@@ -30,6 +31,7 @@ public class Inventory extends JDialog {
         this.setTitle("INVENTORY");
         setContentPane(contentPane);
         setModal(true);
+        characterArrayList = game.getCharacterArrayList();
         this.addWindowListener(new WindowListener() {
             @Override
             public void windowOpened(WindowEvent e) {

@@ -31,10 +31,12 @@ public class Party extends JDialog {
     public JLabel imageLabel;
     private JPanel statsPanel;
 
+
     public Party(OregonTrailGUI game, String item) {
         //instantiating variables
         this.game = game;
         this.item = item;
+        characterArrayList = game.getCharacterArrayList();
         initializePartyTextArea(item);
         promptTextArea.setText("Select a character to give " + item.toLowerCase() + " to!");
         this.setUndecorated(true);
