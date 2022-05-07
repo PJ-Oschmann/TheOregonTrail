@@ -1117,16 +1117,16 @@ public class OregonTrailGUI {
     }
 
     /**
-     *
-     * @return
+     * this method gets the ammunition that the party has in their inventory
+     * @return the quantity of ammunition that the party has in their inventory
      */
     public int getAmmunition() {
         return ammunition;
     }
 
     /**
-     *
-     * @param ammunition
+     * sets the ammunition in the partys inventory to the parameter ammunition value
+     * @param ammunition the new value the partys ammunition count is set to
      */
     public void setAmmunition(int ammunition) {
         this.ammunition = ammunition;
