@@ -70,6 +70,9 @@ public class staticMethods {
      */
     public static ImageIcon getImage(String path) {
         InputStream is = OregonTrailGUI.class.getResourceAsStream(path);
+        if (is == null) {
+            return null;
+        }
         try {
            return new ImageIcon(ImageIO.read(Objects.requireNonNull(is)));
         } catch (IOException e) {

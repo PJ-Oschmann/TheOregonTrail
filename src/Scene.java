@@ -76,22 +76,22 @@ public class Scene extends JDialog {
             return "river";
         }
         else if (sceneName.equalsIgnoreCase("blueMountains")) {
-            return "landmarks/blueMountains";
+            return "blueMountains";
         }
         else if (sceneName.equalsIgnoreCase("chimneyRock")) {
-            return "landmarks/chimneyspeak";
+            return "chimneyspeak";
         }
         else if (sceneName.equalsIgnoreCase("courtHouseRock")) {
-            return "landmarks/courthousejail";
+            return "courthousejail";
         }
         else if (sceneName.equalsIgnoreCase("oregonCity")) {
-            return "landmarks/oregonCity";
+            return "oregonCity";
         }
         else if (sceneName.equalsIgnoreCase("scottsBluff")) {
-            return "landmarks/scottsbluff";
+            return "scottsbluff";
         }
         else if (sceneName.equalsIgnoreCase("threeIslandCrossing")) {
-            return "landmarks/threeislandcrossing";
+            return "threeislandcrossing";
         }
         else if (sceneName.equalsIgnoreCase("intro")) {
             return "intro";
@@ -111,7 +111,7 @@ public class Scene extends JDialog {
     public void loadScene(String sceneName) {
         if (!sceneIsLoaded) {
             sceneToRead = ReadText.readTextFile(sceneName);
-            imageLabel.setIcon(new ImageIcon("src/assets/images/"+getImagePath(sceneName)+".png"));
+            imageLabel.setIcon(staticMethods.getImage("assets/images/"+getImagePath(sceneName)+".png"));
             sceneIsLoaded = true;
             continueScene();
             this.pack();
@@ -134,7 +134,7 @@ public class Scene extends JDialog {
         if (!sceneIsLoaded) {
             sceneToRead = ReadText.readTextFile(sceneName);
             sceneToRead.add(0, currentDate);
-            imageLabel.setIcon(staticMethods.getImage("assets/images/"+sceneName+".png"));
+            imageLabel.setIcon(staticMethods.getImage("assets/images/"+getImagePath(sceneName)+".png"));
             sceneIsLoaded = true;
             continueScene();
             this.pack();
