@@ -51,7 +51,7 @@ public class OregonTrailGUI {
     private ArrayList<JTextPane> arrayOfPanes = new ArrayList<>(List.of(hattieStats,charlesStats,augustaStats,benStats,jakeStats));
 
     //game variables
-    private int money = 200, food = 0, ammunition = 0, medicine = 0, clothes = 0, wagonTools = 0, splints = 0, oxen = 4,
+    private int money = 300, food = 0, ammunition = 0, medicine = 0, clothes = 0, wagonTools = 0, splints = 0, oxen = 4,
     currentPace = 0, sickCharacters = 0, injuredCharacters = 0, dailyActions = 2, happiness = 75;
     private boolean godModeOn;
     private Weather weather = new Weather();
@@ -1004,7 +1004,7 @@ public class OregonTrailGUI {
         ben = new Character("Ben",100,0, false);
         jake = new Character("Jake",100,0, false);
         characterArrayList = new ArrayList<>(List.of(hattie,charles,augusta,ben,jake));
-        money = 200; food = 0; ammunition = 0; medicine = 0; clothes = 0; wagonTools = 0; splints = 0; oxen = 4;
+        money = 300; food = 0; ammunition = 0; medicine = 0; clothes = 0; wagonTools = 0; splints = 0; oxen = 4;
         isGameWon = false; isGameLost = false; inMenu = true; inGame = false;
         happiness = 75;
         weather = new Weather();
