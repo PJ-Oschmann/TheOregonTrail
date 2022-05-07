@@ -671,7 +671,6 @@ public class RandomEventGUI extends JDialog {
                         who is also in the process of a cross-country pilgrimage. You
                         apologize and wish them the best on their travels.
                         """);
-                    inputField.removeActionListener((ActionListener) event);
                     onCancel();
                 }
                 default -> staticMethods.notValidInput();
@@ -679,7 +678,7 @@ public class RandomEventGUI extends JDialog {
         });
     }
 
-    private void closeActionListeners(){
+    private void closeActionListeners() {
         if (isCloseAL) {
             inputField.removeActionListener(closeAL);
             isCloseAL = false;
@@ -696,7 +695,6 @@ public class RandomEventGUI extends JDialog {
             inputField.removeActionListener(nativeAL);
             isNativeAL = false;
         }
-
     }
 
     private final ActionListener closeAL = new ActionListener() {
