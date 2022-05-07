@@ -32,6 +32,7 @@ public class Party extends JDialog {
     private JPanel statsPanel;
 
     public Party(OregonTrailGUI game, String item) {
+        //center the window
         center();
         //instantiating variables
         this.game = game;
