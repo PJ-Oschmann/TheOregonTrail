@@ -21,6 +21,9 @@ public class ReadText {
         ArrayList<String> textStringArray = new ArrayList<>();
         scene = "assets/text/" + scene + ".txt";
         InputStream is = OregonTrailGUI.class.getResourceAsStream(scene);
+        if (is == null) {
+            return null;
+        }
         try (BufferedReader br = new BufferedReader(new InputStreamReader(Objects.requireNonNull(is)))) {
             for (String line = br.readLine(); line != null; line = br.readLine()) {
                 textStringArray.add(line);
