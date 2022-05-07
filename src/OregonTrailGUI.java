@@ -320,6 +320,7 @@ public class OregonTrailGUI {
         weather.setRandomWeather();
         location.doStoryLine();
         checkNewDeaths();
+        updateHunger();
         if (sickCharacters > 0) { handleSickCharacters(); }
         if (injuredCharacters > 0) { handleInjuredCharacters(); }
         writeGameInfo();
@@ -327,6 +328,27 @@ public class OregonTrailGUI {
         checkIfLost();
         updateLocation();
     }
+
+    public void updateHunger() {
+        int newHunger=0;
+
+        switch (currentPace) {
+            case 0 -> newHunger=1;
+            case 1 -> newHunger=2;
+            case 2 -> newHunger=3;
+        }
+        for (Character character : characterArrayList) {
+            if ( character.getHunger()+newHunger >=10) {
+                character.setHunger(10);
+                calculateHealth(character,-1 * (character.getHunger()+newHunger - 10) * 10);
+            }
+            else {
+                character.setHunger(character.getHunger() + newHunger);
+            }
+
+        }
+    }
+
 
     /**
      * Checks for new deaths. If a character's health is 0, they are set to "dead."
