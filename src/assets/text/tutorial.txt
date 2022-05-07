@@ -1,5 +1,11 @@
 Welcome to The Oregon Trail! Press 'C' to commence forth!
-First, you will go to the shop and gather items for your journey.
-Next, you will begin to travel. You will type 'T' to travel for one day.
-You'll also want to use your inventory to feed, clothe, and cure the Campbell family.
-Make sure at least one character eats each day!
+First, you must go to the shop and gather items for your journey.
+But make sure you weight every purchase carefully. You'll want enough of everything to make it to Oregon!
+After your shopping spree, it'll be time to travel the trail!
+In order to travel one day, type 'T' and press enter.
+Each day the weather changes, your party will grow more hungry if not fed, and a random event may occur,
+so make sure to check your stats and watch out! Make sure at least one of your party members eats every 2 days!
+It's not all bad though, because each day you get two daily activities which can boost party happiness, leading to a smoother traveling experience!
+In order to feed, clothe, and cure your party, you'll need to access your inventory.
+To access your inventory, type 'I' and press enter.
+Tread the trail steadily, and good luck!
