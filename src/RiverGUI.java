@@ -4,6 +4,7 @@
  */
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -22,6 +23,7 @@ public class RiverGUI extends JDialog {
         this.game = game;
         this.location = location;
         this.wagon = game.getWagon();
+        this.setUndecorated(true);
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -31,8 +33,21 @@ public class RiverGUI extends JDialog {
                 crossRiver();
             }
         });
+        center();
     }
 
+    /**
+     * Centers the window on the screen.
+     */
+    private void center() {
+        Dimension screenRes = Toolkit.getDefaultToolkit().getScreenSize();
+        int windowDimensions = 700; //Square window
+        int height = (screenRes.height/2)-(windowDimensions/2);
+        int width = (screenRes.width/2)-(windowDimensions/2);
+        this.setLocation(width,height);
+        this.setMinimumSize(new Dimension(windowDimensions,windowDimensions));
+        this.setUndecorated(true);
+    }
     /**
      * Sets the input text box to a blank String.
      */
@@ -216,4 +231,5 @@ public class RiverGUI extends JDialog {
     public void cantCross(String message) {
         JOptionPane.showMessageDialog(null,message,"COULDN'T CROSS",JOptionPane.ERROR_MESSAGE);
     }
+
 }

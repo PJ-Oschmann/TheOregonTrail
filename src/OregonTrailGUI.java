@@ -53,7 +53,7 @@ public class OregonTrailGUI {
     private boolean godModeOn;
     private Weather weather = new Weather();
     public Wagon wagon = new Wagon();
-    private Date date = new Date();
+    public Date date = new Date();
     private static boolean inMenu = true, inGame = false, isTraveling = false, isGameWon = false, isGameLost = false;
     private boolean gameMenuAL, menuAL;
     private RandomEventGUI reg;
@@ -196,7 +196,7 @@ public class OregonTrailGUI {
      * information.
      */
     private void introScene() {
-        scene.loadScene("intro");
+        scene.loadScene("tutorial");
         inGame = true;
         inMenu = false;
         ImageLabel.setIcon(new javax.swing.ImageIcon("assets/images/mainGame.png"));
@@ -209,6 +209,7 @@ public class OregonTrailGUI {
         userInput.addFocusListener(gameHelp);
         weather.setRandomWeather();
         writeGameInfo();
+        scene.loadScene("intro",date.toString());
     }
 
     /**

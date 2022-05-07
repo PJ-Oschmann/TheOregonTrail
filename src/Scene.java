@@ -93,6 +93,9 @@ public class Scene extends JDialog {
         else if (sceneName.equalsIgnoreCase("threeIslandCrossing")) {
             return "landmarks/threeislandcrossing";
         }
+        else if (sceneName.equalsIgnoreCase("intro")) {
+            return "intro";
+        }
         else {
             return "NOIMAGE";
         }

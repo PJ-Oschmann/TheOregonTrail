@@ -29,9 +29,23 @@ public class RandomEventGUI extends JDialog {
     private boolean isStreamAL = false, isEncounterAL = false, isCloseAL = false,  isNativeAL = false;
 
     public RandomEventGUI(OregonTrailGUI game) {
+        center();
         this.game = game;
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         inputField.addFocusListener(inputHelp);
+    }
+
+    /**
+     * Centers the window on the screen.
+     */
+    private void center() {
+        Dimension screenRes = Toolkit.getDefaultToolkit().getScreenSize();
+        int windowDimensions = 700; //Square window
+        int height = (screenRes.height/2)-(windowDimensions/2);
+        int width = (screenRes.width/2)-(windowDimensions/2);
+        this.setLocation(width,height);
+        this.setMinimumSize(new Dimension(windowDimensions,windowDimensions));
+        this.setUndecorated(true);
     }
 
     /**
