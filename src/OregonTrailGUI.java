@@ -57,15 +57,9 @@ public class OregonTrailGUI {
     private Weather weather = new Weather();
     public Wagon wagon = new Wagon();
     public Date date = new Date();
-    private static boolean inMenu = true, inGame = false, isTraveling = false, isGameWon = false, isGameLost = false;
+    private static boolean inMenu = true, inGame = false, isGameWon = false, isGameLost = false;
     private boolean gameMenuAL, menuAL;
     private RandomEventGUI reg;
-    private Timer travelClock = new Timer(5000, new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            travel();
-        }
-    });
 
     public static void main(String[] args) {
         OregonTrailGUI game = new OregonTrailGUI();
@@ -1033,7 +1027,6 @@ public class OregonTrailGUI {
         wagon = new Wagon();
         date = new Date();
         date.setDate(3,18,1861);
-        isTraveling = false;
         location.setMilesTravd(0);
         location.setMarkerCounter(0);
         staticMethods.resetNFC();
