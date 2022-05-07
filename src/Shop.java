@@ -95,6 +95,9 @@ public class Shop extends JDialog {
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
+    /**
+     * This method establishes a specific way for the dialogue form to open and display on the user's screen.
+     */
     private void maximize() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.setMinimumSize(new Dimension(screenSize.width-100,screenSize.height-100));
@@ -103,19 +106,23 @@ public class Shop extends JDialog {
         this.setLocation(width, height);
     }
 
+    /**
+     * These methods are used to track the location of the Shop GUI form that the user is in or seeing
+     */
     private void inMenu() {
         inMenu = true;
         inItem = false;
         shopInput.setText("");
     }
-
     private void inItem() {
         inItem = true;
         inMenu = false;
         shopInput.setText("");
     }
 
-    //Main Shop Menu
+    /**
+     * The displayMenu method prints out the menu displaying information about the shop and what the user can do.
+     */
     private void displayMenu() {
         shopInfo.setText(String.format(
             """
@@ -137,7 +144,7 @@ public class Shop extends JDialog {
             S: SPLINTS
             O: OXEN
             
-            You will begin the journey with 4 oxen, however, 
+            You will begin the journey with 4 oxen, however,
             it is recommended you purchase more.
             
             R: RETURN TO THIS MENU
@@ -147,6 +154,11 @@ public class Shop extends JDialog {
         ));
     }
 
+    /**
+     * The displayFood method prints out the available options the user can take in this "item" page and the description
+     * of the game shop item "Food".
+     * @param food is the quantity of food that is available in the user's inventory.
+     */
     private void displayFood(int food) {
         shopInfo.setText(String.format(
                 """
@@ -173,6 +185,11 @@ public class Shop extends JDialog {
         ));
     }
 
+    /**
+     * The displayAmmo method prints out the available options the user can take in this "item" page and the description
+     * of the game shop item "Ammunition".
+     * @param ammunition is the quantity of ammunition that is available in the user's inventory.
+     */
     private void displayAmmo(int ammunition) {
         shopInfo.setText(String.format(
                 """
@@ -199,6 +216,11 @@ public class Shop extends JDialog {
         ));
     }
 
+    /**
+     * The displayMed method prints out the available options the user can take in this "item" page and the description
+     * of the game shop item "Medicine".
+     * @param meds is the quantity of Medicine that is available in the user's inventory.
+     */
     private void displayMed(int meds) {
         shopInfo.setText(String.format(
                 """
@@ -228,6 +250,11 @@ public class Shop extends JDialog {
         ));
     }
 
+    /**
+     * The displayClothes method prints out the available options the user can take in this "item" page and the description
+     * of the game shop item "Clothes".
+     * @param clothes is the quantity of clothes that is available in the user's inventory.
+     */
     private void displayClothes(int clothes) {
         shopInfo.setText(String.format(
                 """
@@ -257,6 +284,11 @@ public class Shop extends JDialog {
         ));
     }
 
+    /**
+     * The displayWT method prints out the available options the user can take in this "item" page and the description
+     * of the game shop item "Wagon Tools".
+     * @param wagonTools is the quantity of wagon tools that is available in the user's inventory.
+     */
     private void displayWT(int wagonTools) {
         shopInfo.setText(String.format( //TODO: NEEDS EDITING
                 """
@@ -289,6 +321,11 @@ public class Shop extends JDialog {
         ));
     }
 
+    /**
+     * The displaySplints method prints out the available options the user can take in this "item" page and the description
+     * of the game shop item "Splints".
+     * @param splints is the quantity of splints that is available in the user's inventory.
+     */
     private void displaySplints(int splints) {
         shopInfo.setText(String.format( //TODO: NEEDS EDITING
                 """
@@ -320,6 +357,11 @@ public class Shop extends JDialog {
         ));
     }
 
+    /**
+     * The displayOxen method prints out the available options the user can take in this "item" page and the description
+     * of the game shop item "Oxen".
+     * @param oxen is the quantity of oxen that is available in the user's inventory.
+     */
     private void displayOxen(int oxen) {
         shopInfo.setText(String.format( //TODO: NEEDS EDITING
                 """
@@ -350,6 +392,10 @@ public class Shop extends JDialog {
         ));
     }
 
+    /**
+     * Provides a confirmation message asking if the user is sure that they want to leave the shop, exiting the
+     * dialogue form if they enter yes.
+     */
     private void onCancel() {
         if (JOptionPane.showConfirmDialog(null,"Are you sure you want to leave the shop?",
                 "Leave SHOP?",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
@@ -357,12 +403,20 @@ public class Shop extends JDialog {
         }
     }
 
+    /**
+     * calls the onCancel method when the user presses the "X" on the window or hits the ESC key.
+     */
     private WindowAdapter closeWindow = new WindowAdapter() {
         public void windowClosing(WindowEvent e) {
             onCancel();
         }
     };
 
+    /**
+     * This FocusAdapter creates a grey string of text in the textfield the user will interact with. Upon selecting the
+     * textfield, the grey text will be set to empty and the foreground font color will change to black. When they click
+     * off of the textfield, the area will be emptied out and the grey text will return.
+     */
     private final FocusAdapter inputHelp = new FocusAdapter() { //Grey text for input box when not focused on
         @Override
         public void focusGained(FocusEvent e) {
@@ -377,6 +431,10 @@ public class Shop extends JDialog {
         }
     };
 
+    /**
+     * This action listener is responsible for reading the user inputs in the textfield while they are on the menu
+     * area of the shop gui form
+     */
     private final ActionListener shopMenuListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -396,6 +454,10 @@ public class Shop extends JDialog {
         }
     };
 
+    /**
+     * This action listener is responsible for reading the user inputs in the textfield while they are on the item
+     * area or have selected an item from the shop menu of the shop gui form
+     */
     private final ActionListener shopItemListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -418,13 +480,16 @@ public class Shop extends JDialog {
         }
     };
 
+    /**
+     * These methods help keep track of where the user is inside the shop and help manage the listeners to make sure
+     * they dont duplicate or overlap.
+     */
     private void itemSelected(){
         shopInput.removeActionListener(shopMenuListener);
         shopInput.addActionListener(shopItemListener);
         itemListenerActive = true;
         menuListenerActive = false;
     }
-
     private void menuSelected() {
         shopInput.addActionListener(shopMenuListener);
         shopInput.removeActionListener(shopItemListener);
@@ -432,6 +497,14 @@ public class Shop extends JDialog {
         menuListenerActive = true;
     }
 
+    /**
+     * The enterBuyQuantity method is called from the buyItem method to ask the user how much of the item they want to
+     * purchase. It also restricts and notifies the user from inputting a quantity that costs more than the money they
+     * have to spend.
+     * @param item the item the user wants to purchase from the shop
+     * @param itemCost the cost per purchasable unit of the item the user wants to purchase
+     * @return the quantity the user wants to purchase of the item
+     */
     private int enterBuyQuantity(String item, int itemCost) {
         int quantity = 0;
             try {
@@ -455,6 +528,13 @@ public class Shop extends JDialog {
         return quantity;
     }
 
+    /**
+     * The enterSellQuantity method is called from the sellItem method to ask the user how much of the item they want to
+     * sell. It also restricts and notifies the user from inputting a quantity that is greater than the amount of
+     * the item they have in their inventory.
+     * @param item the item the user wants to sell to the shop
+     * @return the quantity the user wants to sell of the item
+     */
     private int enterSellQuantity(String itemName, int item) {
         int quantity = 0;
         try {
@@ -467,7 +547,7 @@ public class Shop extends JDialog {
                 ));
                 if (quantity == 0) { break; }
                 else if (quantity > item) {
-                    notEnoughQuantity(itemName);
+                    staticMethods.notEnoughItem(itemName);
                 }
             } while (quantity > item);
         }
@@ -478,6 +558,10 @@ public class Shop extends JDialog {
         return quantity;
     }
 
+    /**
+     * The buyItem method reads the comboBox Index to realize which item the user is trying to act on in the shop. This
+     * provides a corresponding string name of the item, and then calls the method checkBuy to confirm the quantity.
+     */
     private void buyItem() {
         int index = shopComboBox.getSelectedIndex();
         String itemName = "";
@@ -494,6 +578,10 @@ public class Shop extends JDialog {
         shopComboBox.setSelectedIndex(0);
     }
 
+    /**
+     * The sellItem method reads the comboBox Index to realize which item the user is trying to act on in the shop. This
+     * provides a corresponding string name of the item, and then calls the method checkSell to confirm the quantity.
+     */
     private void sellItem() {
         int index = shopComboBox.getSelectedIndex();
         String itemName = "";
@@ -510,6 +598,16 @@ public class Shop extends JDialog {
         shopComboBox.setSelectedIndex(0);
     }
 
+    /**
+     * The checkBuy method is responsible to make sure the constraints around the purchase are valid. After validating
+     * the constraints using the enterBuyQuantity method. If the quantity entered is 0 the transaction is cancelled.
+     * There is a confirmation popup window that displays the amount of money the user will be spending for the quantity
+     * and name of the item.
+     * @param itemName name of the item the user is purchasing
+     * @param item the quantity of the item the user is trying to purchase
+     * @param itemCost the cost of the item the user is trying to purchase
+     * @return the integer quantity of the item the user purchases
+     */
     private int checkBuy(String itemName, int item, int itemCost) {
         int quantity = enterBuyQuantity(itemName, itemCost);
         if ( quantity == 0 ) {
@@ -546,6 +644,15 @@ public class Shop extends JDialog {
         return item;
     }
 
+    /**
+     * The checkSell method is responsible to make sure the constraints around the selling of the item are valid. After
+     * validating the constraints using the enterSellQuantity method. If the quantity entered is 0 the transaction is
+     * cancelled. There is a confirmation popup window that displays the amount of money the user will be receiving for
+     * the quantity and name of the item.
+     * @param itemName name of the item the user is selling
+     * @param item the quantity of the item the user is trying to sell
+     * @return the integer quantity of the item the user sells
+     */
     private int checkSell(String itemName, int item) {
         int quantity = enterSellQuantity(itemName, item);
         if (quantity == 0) {
@@ -571,6 +678,12 @@ public class Shop extends JDialog {
         return item;
     }
 
+    /**
+     * The buyDialogue method displays a confirmation window to inform the user of the transaction they made
+     * @param name name of the item
+     * @param cost how much the item costs per unit
+     * @param amount quantity of the item purchased
+     */
     private void buyDialogue(String name, int cost, int amount) {
         if (name.equals("FOOD")) {
             amount *= 5;
@@ -579,6 +692,11 @@ public class Shop extends JDialog {
                 String.format("You've purchased %d units of %s for $%d.", amount, name, cost));
     }
 
+    /**
+     * The sellDialogue method displays a confirmation window to inform the user of the transaction they made
+     * @param name name of the item
+     * @param amount quantity of the item sold
+     */
     private void sellDialogue(String name, int profit, int amount) {
         if (name.equals("FOOD")) {
             amount *= 5;
@@ -587,6 +705,15 @@ public class Shop extends JDialog {
                 String.format("You've sold %d units of %s for $%d", amount, name, profit));
     }
 
+    /**
+     * The confirmBuy method pops up a confirmation window that asks if the user is certain of the transaction they
+     * want to make.
+     * @param name name of the item
+     * @param cost how much the item costs
+     * @param amount quantity of the item the user is asking to purchase
+     * @return true if the user selects the YES option in the JOptionPane to confirm, false if the user selected the
+     *         NO option
+     */
     private boolean confirmBuy(String name, int cost, int amount) {
         boolean confirmed;
         if (name.equals("FOOD")) {
@@ -598,12 +725,9 @@ public class Shop extends JDialog {
         return confirmed;
     }
 
-    private void notEnoughQuantity(String itemName) {
-        JOptionPane.showMessageDialog(null,
-                String.format("You don't have enough %s to make this transaction.", itemName), "INVALID",
-                JOptionPane.ERROR_MESSAGE);
-    }
-
+    /**
+     * The transactionCancelled method pops up a dialogue to notify the user that the transaction was cancelled.
+     */
     private void transactionCancelled() {
         JOptionPane.showMessageDialog(null, "The transaction was cancelled.","CANCELLED",
                 JOptionPane.PLAIN_MESSAGE);
