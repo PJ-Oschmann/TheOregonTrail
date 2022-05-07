@@ -53,7 +53,7 @@ public class OregonTrailGUI {
     private boolean godModeOn;
     private Weather weather = new Weather();
     public Wagon wagon = new Wagon();
-    private Date date = new Date();
+    public Date date = new Date();
     private static boolean inMenu = true, inGame = false, isTraveling = false, isGameWon = false, isGameLost = false;
     private boolean gameMenuAL, menuAL;
     private RandomEventGUI reg;
