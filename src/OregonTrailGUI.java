@@ -113,7 +113,8 @@ public class OregonTrailGUI {
 
     /**
      * Adds a menu bar to the GUI. Contains "Main," "About," and "Help" tabs. Main allows you to return to the main
-     * menu or exit the game. "About" contains the project d
+     * menu or exit the game. "About" contains the project description, project information, information about the
+     * oregon trail, and information about Hattie Campbell.
      * @param frame
      */
     public void addUIMenuBar(JFrame frame){
@@ -185,11 +186,18 @@ public class OregonTrailGUI {
         }
     }
 
+    /**
+     * Intro scene. The game is set to the "inGame" state and the previous "inMenu" state is disabled. A tutorial is
+     * presented and its image is set to the main game image. The shop is opened for players to gather resources,
+     * set to the main game image, and the shop is opened. Each character's status is then displayed in the main UI,
+     * and their default stats are displayed. The information text area on the left of the UI is set to display in-game
+     * information.
+     */
     private void introScene() {
         scene.loadScene("intro");
         inGame = true;
         inMenu = false;
-        ImageLabel.setIcon(new javax.swing.ImageIcon("src/assets/images/mainGame.png"));
+        ImageLabel.setIcon(new javax.swing.ImageIcon("assets/images/mainGame.png"));
         openShop();
         loadStatusPanels();
         updateStats();
