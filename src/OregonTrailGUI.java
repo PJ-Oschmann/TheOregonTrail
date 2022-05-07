@@ -209,6 +209,9 @@ public class OregonTrailGUI {
         writeGameInfo();
     }
 
+    /**
+     * Shows the character status panels. Called during the intro scene when the player starts the game.
+     */
     private void loadStatusPanels(){
         HattiePanel.setVisible(true);
         CharlesPanel.setVisible(true);
@@ -217,6 +220,9 @@ public class OregonTrailGUI {
         JakePanel.setVisible(true);
     }
 
+    /**
+     * Hides the status panels. Called when returning to the Main Menu.
+     */
     private void hideStatusPanels() {
         HattiePanel.setVisible(false);
         CharlesPanel.setVisible(false);
@@ -245,6 +251,9 @@ public class OregonTrailGUI {
                 JOptionPane.PLAIN_MESSAGE);
     }
 
+    /**
+     * Displays help information in the informational text area on the left side of the screen.
+     */
     public void displayHelpMenu() {
         storyTextArea.setText(
                 """
@@ -269,20 +278,26 @@ public class OregonTrailGUI {
         );
     }
 
-    //We can use a method to run any daily methods.
-    //We should plan on allowing it to be called back-to-back.
-    //^This means if anything requires user interaction,
-    //execution should be paused! (Otherwise the days
-    //will continue!) Dialogue boxes should handle
-    //this. I hope.
-
     /**
      * Progress the game by 1 day. Each day:
-     * - The date advanced by 1 day
-     * - The weather is randomized
-     * - Happiness decreases if any characters are sick
-     * - Any sick characters undergo their ramifications
-     * The game info gets updated.
+     * - Daily mileage is incremented.
+     * - A random event may occur.
+     * - Health increases by 5.
+     * - The number of sick characters are counted.
+     * - The number of injured characters are counted.
+     * - The number of daily actions is reset.
+     * - "Bad" weather will negatively affect players.
+     * - Happiness is updated based on conditions
+     * - The date advanced by 1 day.
+     * - The weather is randomized.
+     * - The storyline proceeds if the player reaches a significant location.
+     * - Characters are checked to see if they're dead.
+     * - Sick characters will undergo their ramifications
+     * - Injured characters will undergo their ramifications.
+     * - The left-hand informational panel is updated
+     * - Oxen have a chance of being injured.
+     * - The game checks if the player lost the game.
+     * - The locaton gets updated.
      */
     public void travel() {
         location.addMileage();
@@ -307,6 +322,9 @@ public class OregonTrailGUI {
         updateLocation();
     }
 
+    /**
+     * Checks for new deaths. If a character's health is 0, they are set to "dead."
+     */
     public void checkNewDeaths() {
         for (Character character : characterArrayList) {
             if (character.getHealth() <= 0) {
@@ -315,6 +333,10 @@ public class OregonTrailGUI {
         }
     }
 
+    /**
+     * Resets number of daily actions. If any player is injured, this number is set to 1. Otherwise, it is set to 2.
+     * The activities' pane is also marked as having been written to so that it can be updated correctly.
+     */
     private void resetDailies() {
         boolean isAnyoneInjured = false;
         for (Character character : characterArrayList) {
@@ -334,10 +356,16 @@ public class OregonTrailGUI {
         }
     }
 
+    /**
+     * A random event is checked for. If a random event is run, it will occur.
+     */
     private void checkForRandomEvent() {
         reg.checkForRandomEvent();
     }
 
+    /**
+     * Location is checked to see if the player made it to Oregon City. If they did, the game is won.
+     */
     private void updateLocation(){
         //check to see if new distance takes you to a new location
         //methods as appropriate to handle new locations and landmarks
@@ -347,6 +375,10 @@ public class OregonTrailGUI {
     }
 
 
+    /**
+     * If the player makes it to Oregon City, the player is notified that they won the game. The game is then reset so
+     * the player can play again.
+     */
     public void gameWon() {
         //create game win scene + ending monologue
         JOptionPane.showMessageDialog(null, "Congratulation on making it to Oregon City!\nYou" +
@@ -354,20 +386,12 @@ public class OregonTrailGUI {
         resetGame();
     }
 
+    /**
+     * Gets the current pace.
+     * @return the current pace as an int.
+     */
     public int getCurrentPace() {
         return currentPace;
-    }
-
-    public void doStoryLine() { //Change to switch statement and move this method into location class
-        //Journal for 3/19/1861
-        if (date.toString().equals("March 19, 1861")) {
-            scene.loadScene("1861-3-19", date.toString());
-        }
-
-        //Journal for 3/20/1861
-        if (date.toString().equals("March 20, 1861")) {
-            scene.loadScene("1861-3-20", date.toString());
-        }
     }
 
     /**
@@ -435,6 +459,13 @@ public class OregonTrailGUI {
         }
     }
 
+    /**
+     * Calculates the players health to ensure it won't go below 0. If a positive value is passed, the health is
+     * increased by the passed value. If this value would exceed 100, the health is set to 100. If a negative value is
+     * passed, the health is decreased by that value. If this value would exceed 0, the health is set to 0.
+     * @param character - The character whose health is being modified.
+     * @param value - The new value to modify the health by.
+     */
     public void calculateHealth(Character character, int value) {
         int newHealth = 0;
         if (value>=0) {
@@ -446,6 +477,10 @@ public class OregonTrailGUI {
         character.setHealth(newHealth);
     }
 
+    /**
+     * Calculates the number of food to ensure it won't exceed 0 or 100.
+     * @param value - the value to modify the amount of food by.
+     */
     public void calculateFood(int value) {
         int newFood;
         newFood = food + value;
@@ -454,6 +489,10 @@ public class OregonTrailGUI {
         else if (food > 100) { food = 100; }
     }
 
+    /**
+     * Increases the player's health by the passed value. This method is called every time the player travels.
+     * @param value - The value to modify the health by.
+     */
     public void dailyHealthBoost(int value) {
         for (Character character : characterArrayList) {
             calculateHealth(character, value);
@@ -478,6 +517,11 @@ public class OregonTrailGUI {
         }
     }
 
+    /**
+     * Injure the oxen by random chance. There is a 5% chance an oxen will be injured if there is at least 4 oxen, and
+     * a 15% chance an oxen will be injured if there are less than 4 oxen. A random oxen name is generated from a text
+     * file containing oxen names and the player
+     */
     private void oxenInjured() {
         boolean injuredOxen = false;
         boolean lessThanFour = false;
