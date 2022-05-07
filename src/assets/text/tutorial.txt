@@ -1,2 +1,5 @@
 Welcome to The Oregon Trail! Press 'C' to commence forth!
-You got it! Good luck out there!
+First, you will go to the shop and gather items for your journey.
+Next, you will begin to travel. You will type 'T' to travel for one day.
+You'll also want to use your inventory to feed, clothe, and cure the Campbell family.
+Make sure at least one character eats each day!
