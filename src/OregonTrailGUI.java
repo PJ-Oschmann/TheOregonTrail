@@ -342,9 +342,11 @@ public class OregonTrailGUI {
     private void resetDailies() {
         boolean isAnyoneInjured = false;
         for (Character character : characterArrayList) {
-            if (character.isInjured()){
-                isAnyoneInjured = true;
+            if (!character.isInjured()) {
+                continue;
             }
+            isAnyoneInjured = true;
+            break;
         }
         if (isAnyoneInjured) {
             dailyActions = 1;
