@@ -25,7 +25,7 @@ public class FortGUI extends JDialog {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
-
+        this.setUndecorated(true);
         //TODO: FIX THE CENTERING
         center();
         this.setUndecorated(true);
@@ -82,11 +82,13 @@ public class FortGUI extends JDialog {
      * Centers the window on the screen.
      */
     private void center() {
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        this.setMinimumSize(new Dimension(200,250));
-        int width = screenSize.width/2-this.getWidth()/2;
-        int height = screenSize.height/2-this.getHeight()/2;
-        this.setLocation(width, height);
+        Dimension screenRes = Toolkit.getDefaultToolkit().getScreenSize();
+        int windowDimensions = 700; //Square window
+        int height = (screenRes.height/2)-(windowDimensions/2);
+        int width = (screenRes.width/2)-(windowDimensions/2);
+        this.setLocation(width,height);
+        this.setMinimumSize(new Dimension(windowDimensions,windowDimensions));
+        this.setUndecorated(true);
     }
 
     /**

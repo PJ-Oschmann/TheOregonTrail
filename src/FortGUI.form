@@ -58,13 +58,13 @@
       </grid>
       <component id="ace09" class="javax.swing.JLabel" binding="fortImage">
         <constraints>
-          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false">
             <minimum-size width="600" height="400"/>
             <preferred-size width="600" height="400"/>
           </grid>
         </constraints>
         <properties>
-          <text value="image here yum"/>
+          <text value=""/>
         </properties>
       </component>
     </children>
