@@ -32,9 +32,11 @@ public class Party extends JDialog {
     private JPanel statsPanel;
 
     public Party(OregonTrailGUI game, String item) {
+        center();
         //instantiating variables
         this.game = game;
         this.item = item;
+        this.characterArrayList = game.getCharacterArrayList();
         initializePartyTextArea(item);
         promptTextArea.setText("Select a character to give " + item.toLowerCase() + " to!");
         this.setUndecorated(true);
@@ -86,6 +88,16 @@ public class Party extends JDialog {
                 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
+    /**
+     * Center the window
+     */
+    private void center() {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setMinimumSize(new Dimension(screenSize.width-100,screenSize.height-100));
+        int width = screenSize.width/2-this.getWidth()/2;
+        int height = screenSize.height/2-this.getHeight()/2;
+        this.setLocation(width, height);
+    }
     /**
      * Initializes the Party Text area to default values and explains that the user types the first letter of the
      * desired Character's name to select the character.
